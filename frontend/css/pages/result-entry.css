@@ -1,0 +1,331 @@
+
+/* ==========================================
+   MEDILINK LABORATORY
+   RESULT ENTRY PAGE STYLESHEET
+========================================== */
+
+/* 1. Development Notice */
+
+.result-entry-notice {
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.result-entry-notice p {
+    margin-top: 3px;
+}
+
+/* 2. Section Heading */
+
+.result-section-title {
+    margin-bottom: 16px;
+    font-size: 18px;
+}
+
+/* 3. Result Summary Grid */
+
+.result-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.result-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+    min-height: 105px;
+}
+
+.result-summary-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: var(--radius-medium);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: 21px;
+}
+
+.result-draft {
+    background-color: #edf0f2;
+    color: #52616b;
+}
+
+.result-pending {
+    background-color: #fff3d6;
+    color: #946200;
+}
+
+.result-released {
+    background-color: #def5e8;
+    color: #176c49;
+}
+
+/* 4. Result Worklist Toolbar */
+
+.result-worklist-toolbar {
+    display: grid;
+    grid-template-columns:
+        minmax(230px, 1.7fr)
+        minmax(170px, 1fr)
+        auto;
+    align-items: end;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.result-search,
+.result-worklist-filter {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.result-search label,
+.result-worklist-filter label {
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 5. Result Worklist Table */
+
+.result-worklist-table {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.result-worklist-table .data-table {
+    min-width: 1000px;
+}
+
+.result-worklist-table .data-table th,
+.result-worklist-table .data-table td {
+    padding: 14px 13px;
+}
+
+/* 6. Worklist Footer */
+
+.result-worklist-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+/* 7. Result Entry Form */
+
+.result-entry-card {
+    margin-top: 8px;
+}
+
+.result-entry-card .card-header {
+    align-items: center;
+}
+
+.result-form-section {
+    padding: 22px 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.result-form-section:first-of-type {
+    border-top: none;
+}
+
+.result-form-section-title {
+    margin-bottom: 18px;
+    font-size: 16px;
+}
+
+/* 8. Patient and Specimen Information */
+
+.result-information-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+}
+
+.result-information-grid .form-group {
+    min-width: 0;
+}
+
+.result-information-grid .form-control[readonly] {
+    background-color: #f3f6f8;
+    color: var(--color-text-secondary);
+}
+
+/* 9. Reference Range Notice */
+
+.result-range-notice {
+    align-items: flex-start;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* 10. Multi-Component Results */
+
+.result-component-title {
+    margin-bottom: 14px;
+    font-size: 14px;
+}
+
+#multiComponentResultSection {
+    margin-top: 20px;
+}
+
+#multiComponentResultSection[hidden] {
+    display: none;
+}
+
+#singleResultSection[hidden] {
+    display: none;
+}
+
+#resultComponentsBody td {
+    padding: 14px;
+}
+
+/* 11. Result Entry Actions */
+
+.result-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 22px;
+    border-top: 1px solid var(--color-border);
+}
+
+.result-submit-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.result-form-footnote {
+    margin-top: 15px;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    text-align: right;
+}
+
+/* 12. Disabled Form Controls */
+
+#resultEntryForm button:disabled,
+#resultEntryForm input:disabled,
+#resultEntryForm textarea:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* 13. Result Page Footer */
+
+.result-page-footer {
+    margin-top: 28px;
+    padding: 16px 0;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* 14. Large Screens */
+
+@media (max-width: 1200px) {
+    .result-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .result-worklist-toolbar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* 15. Tablet Screens */
+
+@media (max-width: 900px) {
+    .result-information-grid {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+    }
+}
+
+/* 16. Mobile Screens */
+
+@media (max-width: 768px) {
+    .result-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .result-summary-card {
+        min-height: 90px;
+    }
+
+    .result-worklist-toolbar {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .result-worklist-toolbar .btn {
+        width: 100%;
+    }
+
+    .result-worklist-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .result-form-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .result-submit-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .result-form-footnote {
+        text-align: left;
+    }
+}
+
+/* 17. Small Mobile Screens */
+
+@media (max-width: 480px) {
+    .result-summary-card {
+        padding: 14px;
+    }
+
+    .result-summary-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .result-summary-card .summary-value {
+        font-size: 23px;
+    }
+
+    .result-entry-notice,
+    .result-range-notice {
+        font-size: 12px;
+    }
+
+    .result-form-section {
+        padding: 18px 0;
+    }
+}

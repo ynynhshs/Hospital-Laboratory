@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Trail | MediLink</title>
+
+    <!-- Shared Stylesheets -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <!-- Page Stylesheet -->
+    <link rel="stylesheet" href="../css/pages/audit-logs.css">
+
+    <!-- Page JavaScript -->
+    <script src="../js/pages/audit-logs.js" defer></script>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- Sidebar -->
+    
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-logo">M</div>
+            <div>
+                <h2>MediLink</h2>
+                <p>Laboratory Services</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-section-title">Workspace</p>
+
+            <a href="dashboard.html" class="nav-link">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <p class="nav-section-title">Laboratory Operations</p>
+
+            <a href="test-catalog.html" class="nav-link">
+                <span class="nav-icon">▤</span>
+                <span>Test Catalog</span>
+            </a>
+
+            <a href="laboratory-requests.html" class="nav-link">
+                <span class="nav-icon">▣</span>
+                <span>Laboratory Requests</span>
+            </a>
+
+            <a href="specimen-management.html" class="nav-link">
+                <span class="nav-icon">◉</span>
+                <span>Specimen Management</span>
+            </a>
+
+            <a href="processing-worklist.html" class="nav-link">
+                <span class="nav-icon">☷</span>
+                <span>Processing Worklist</span>
+            </a>
+
+            <p class="nav-section-title">Results</p>
+
+            <a href="result-entry.html" class="nav-link">
+                <span class="nav-icon">✎</span>
+                <span>Result Entry</span>
+            </a>
+
+            <a href="result-verification.html" class="nav-link">
+                <span class="nav-icon">✓</span>
+                <span>Result Verification</span>
+            </a>
+
+            <a href="laboratory-history.html" class="nav-link">
+                <span class="nav-icon">◷</span>
+                <span>Laboratory History</span>
+            </a>
+
+            <p class="nav-section-title">Administration</p>
+
+            <a href="reports.html" class="nav-link">
+                <span class="nav-icon">▥</span>
+                <span>Reports &amp; Analytics</span>
+            </a>
+
+            <a href="audit-logs.html" class="nav-link active">
+                <span class="nav-icon">▧</span>
+                <span>Audit Trail</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <p>MediLink Laboratory</p>
+            <p>Development Version 1.0</p>
+        </div>
+
+    </aside>
+
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Top Header -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+                <button
+                    type="button"
+                    class="sidebar-toggle"
+                    id="sidebarToggle"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false">
+                    ☰
+                </button>
+
+                <div>
+                    <h1 class="topbar-title">Audit Trail</h1>
+                    <p class="topbar-subtitle">
+                        System activities, user actions, and security records
+                    </p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="user-profile">
+                    <div class="user-avatar">L</div>
+                    <div class="user-info">
+                        <strong>Laboratory Staff</strong>
+                        <span>Laboratory Workspace</span>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+
+            <!-- Page Heading -->
+            <section class="page-header">
+                <div>
+                    <h2>System Activity Monitoring</h2>
+                    <p class="page-description">
+                        Review recorded activities performed within the
+                        Laboratory Request and Results Management System.
+                    </p>
+                </div>
+
+                <div class="page-header-actions">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        id="refreshAuditLogsButton">
+                        ↻ Refresh
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="exportAuditLogsButton"
+                        disabled>
+                        Export Logs
+                    </button>
+                </div>
+            </section>
+
+            <!-- Backend Connection Notice -->
+            <section class="audit-notice" aria-live="polite">
+                <span class="notice-icon">ⓘ</span>
+                <div>
+                    <strong>Backend connection pending</strong>
+                    <p>
+                        Audit records will be loaded from the backend after
+                        the audit logging API is implemented. This page
+                        currently displays no actual user activity records.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Audit Summary Cards -->
+            <section class="audit-summary-grid">
+
+                <article class="audit-summary-card">
+                    <div class="audit-summary-icon total-icon">▧</div>
+                    <div>
+                        <p>Total Audit Events</p>
+                        <h3 id="totalAuditEventsMetric">—</h3>
+                        <span>Recorded system activities</span>
+                    </div>
+                </article>
+
+                <article class="audit-summary-card">
+                    <div class="audit-summary-icon today-icon">◷</div>
+                    <div>
+                        <p>Today's Activities</p>
+                        <h3 id="todayAuditEventsMetric">—</h3>
+                        <span>Activities recorded today</span>
+                    </div>
+                </article>
+
+                <article class="audit-summary-card">
+                    <div class="audit-summary-icon login-icon">↪</div>
+                    <div>
+                        <p>Authentication Events</p>
+                        <h3 id="authenticationEventsMetric">—</h3>
+                        <span>Login and logout activities</span>
+                    </div>
+                </article>
+
+                <article class="audit-summary-card">
+                    <div class="audit-summary-icon security-icon">!</div>
+                    <div>
+                        <p>Failed Activities</p>
+                        <h3 id="failedAuditEventsMetric">—</h3>
+                        <span>Recorded failed actions</span>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- Audit Filters -->
+            <section class="content-section audit-filter-section">
+
+                <div class="section-heading">
+                    <div>
+                        <h3>Search and Filter Audit Logs</h3>
+                        <p>
+                            Narrow down activity records using the available
+                            search criteria.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="audit-filter-grid">
+
+                    <div class="form-group">
+                        <label for="auditSearchInput">Search Records</label>
+                        <input
+                            type="search"
+                            id="auditSearchInput"
+                            placeholder="Search user, action, or reference..."
+                            autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="auditUserFilter">User</label>
+                        <select id="auditUserFilter">
+                            <option value="all">All Users</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="auditModuleFilter">Module</label>
+                        <select id="auditModuleFilter">
+                            <option value="all">All Modules</option>
+                            <option value="authentication">Authentication</option>
+                            <option value="users">User Accounts</option>
+                            <option value="test_catalog">Test Catalog</option>
+                            <option value="lab_requests">Laboratory Requests</option>
+                            <option value="specimens">Specimen Management</option>
+                            <option value="lab_processing">Laboratory Processing</option>
+                            <option value="results">Laboratory Results</option>
+                            <option value="reports">Reports and Analytics</option>
+                            <option value="system">System</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="auditActionFilter">Action</label>
+                        <select id="auditActionFilter">
+                            <option value="all">All Actions</option>
+                            <option value="create">Create</option>
+                            <option value="view">View</option>
+                            <option value="update">Update</option>
+                            <option value="delete">Delete</option>
+                            <option value="login">Login</option>
+                            <option value="logout">Logout</option>
+                            <option value="verify">Verify</option>
+                            <option value="release">Release</option>
+                            <option value="export">Export</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="auditOutcomeFilter">Outcome</label>
+                        <select id="auditOutcomeFilter">
+                            <option value="all">All Outcomes</option>
+                            <option value="success">Success</option>
+                            <option value="failed">Failed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="auditStartDate">Start Date</label>
+                        <input type="date" id="auditStartDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="auditEndDate">End Date</label>
+                        <input type="date" id="auditEndDate">
+                    </div>
+
+                    <div class="audit-filter-actions">
+
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="applyAuditFiltersButton"
+                            disabled>
+                            Apply Filters
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            id="resetAuditFiltersButton">
+                            Reset
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Audit Log Table -->
+            <section class="content-section audit-table-section">
+
+                <div class="section-heading">
+                    <div>
+                        <h3>Activity Records</h3>
+                        <p>
+                            System-generated records of important user
+                            and application activities.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="audit-table-toolbar">
+
+                    <div class="audit-results-info">
+                        <span id="auditRecordCount">0 audit records</span>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        id="clearAuditSelectionButton"
+                        disabled>
+                        Clear Selection
+                    </button>
+
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="data-table" id="auditLogsTable">
+
+                        <thead>
+                            <tr>
+                                <th>Date and Time</th>
+                                <th>User</th>
+                                <th>Action</th>
+                                <th>Module</th>
+                                <th>Record Reference</th>
+                                <th>IP Address</th>
+                                <th>Outcome</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="auditLogsTableBody">
+                            <tr>
+                                <td colspan="8" class="empty-table-message">
+                                    No audit records available.
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <!-- Pagination -->
+                <div class="audit-pagination">
+
+                    <span id="auditPaginationInfo">
+                        No records to display
+                    </span>
+
+                    <div class="pagination-controls">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            id="auditPreviousPageButton"
+                            disabled>
+                            Previous
+                        </button>
+
+                        <span id="auditCurrentPage">Page 0 of 0</span>
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            id="auditNextPageButton"
+                            disabled>
+                            Next
+                        </button>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Audit Record Details -->
+            <section
+                class="content-section audit-details-section"
+                id="auditDetailsPanel"
+                hidden>
+
+                <div class="section-heading">
+                    <div>
+                        <h3>Audit Record Details</h3>
+                        <p>
+                            Additional information about the selected
+                            activity record.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        id="closeAuditDetailsButton">
+                        Close
+                    </button>
+                </div>
+
+                <div class="audit-details-grid">
+
+                    <div class="audit-detail-item">
+                        <span>Audit Record ID</span>
+                        <strong id="detailAuditId">—</strong>
+                    </div>
+
+                    <div class="audit-detail-item">
+                        <span>Date and Time</span>
+                        <strong id="detailAuditDate">—</strong>
+                    </div>
+
+                    <div class="audit-detail-item">
+                        <span>User</span>
+                        <strong id="detailAuditUser">—</strong>
+                    </div>
+
+                    <div class="audit-detail-item">
+                        <span>Action</span>
+                        <strong id="detailAuditAction">—</strong>
+                    </div>
+
+                    <div class="audit-detail-item">
+                        <span>Module</span>
+                        <strong id="detailAuditModule">—</strong>
+                    </div>
+
+                    <div class="audit-detail-item">
+                        <span>Record Reference</span>
+                        <strong id="detailAuditReference">—</strong>
+                    </div>
+
+                    <div class="audit-detail-item">
+                        <span>IP Address</span>
+                        <strong id="detailAuditIpAddress">—</strong>
+                    </div>
+
+                    <div class="audit-detail-item">
+                        <span>Outcome</span>
+                        <strong id="detailAuditOutcome">—</strong>
+                    </div>
+
+                    <div class="audit-detail-item audit-detail-description">
+                        <span>Activity Description</span>
+                        <p id="detailAuditDescription">
+                            No activity description selected.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="audit-integrity-note">
+                    <span>🔒</span>
+                    <p>
+                        Audit records are intended to be read-only.
+                        Authorized users may review records, but should not
+                        directly edit or delete recorded audit events.
+                    </p>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

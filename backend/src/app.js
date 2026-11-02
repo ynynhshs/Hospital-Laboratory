@@ -3,6 +3,9 @@ const express = require('express');
 const helmet = require('helmet');
 const { rateLimit } = require('express-rate-limit');
 
+// Import MongoDB-backed session middleware.
+const sessionMiddleware = require('./config/session');
+
 const app = express();
 
 // Hide the Express technology header.
@@ -30,6 +33,12 @@ const apiLimiter = rateLimit({
 });
 
 app.use('/api/', apiLimiter);
+
+// Register MongoDB-backed session middleware.
+// This must run before routes that use authentication.
+app.use(sessionMiddleware);
+
+
 
 // Initial API health-check endpoint.
 app.get('/api/v1/health', (req, res) => {

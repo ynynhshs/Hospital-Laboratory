@@ -1,0 +1,468 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Processing Worklist | MediLink</title>
+
+    <!-- Global Stylesheets -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <!-- Processing Worklist Stylesheet -->
+    <link rel="stylesheet" href="../css/pages/processing-worklist.css">
+</head>
+
+<body>
+
+    <div class="app-layout" id="appLayout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-logo">M</div>
+
+                <div>
+                    <h2>MediLink</h2>
+                    <p>Laboratory Services</p>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav" aria-label="Main navigation">
+
+                <p class="nav-section-title">Workspace</p>
+
+                <a href="dashboard.html" class="nav-link">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <p class="nav-section-title">Laboratory Operations</p>
+
+                <a href="test-catalog.html" class="nav-link">
+                    <span class="nav-icon">☷</span>
+                    <span>Test Catalog</span>
+                </a>
+
+                <a href="laboratory-requests.html" class="nav-link">
+                    <span class="nav-icon">▤</span>
+                    <span>Laboratory Requests</span>
+                </a>
+
+                <a href="specimen-management.html" class="nav-link">
+                    <span class="nav-icon">◉</span>
+                    <span>Specimen Management</span>
+                </a>
+
+                <a href="processing-worklist.html"
+                   class="nav-link active"
+                   aria-current="page">
+                    <span class="nav-icon">⚙</span>
+                    <span>Processing Worklist</span>
+                </a>
+
+                <p class="nav-section-title">Results</p>
+
+                <a href="result-entry.html" class="nav-link">
+                    <span class="nav-icon">✎</span>
+                    <span>Result Entry</span>
+                </a>
+
+                <a href="result-verification.html" class="nav-link">
+                    <span class="nav-icon">✓</span>
+                    <span>Result Verification</span>
+                </a>
+
+                <a href="laboratory-history.html" class="nav-link">
+                    <span class="nav-icon">◷</span>
+                    <span>Laboratory History</span>
+                </a>
+
+                <p class="nav-section-title">Administration</p>
+
+                <a href="reports.html" class="nav-link">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports & Analytics</span>
+                </a>
+
+                <a href="audit-logs.html" class="nav-link">
+                    <span class="nav-icon">▧</span>
+                    <span>Audit Trail</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>MediLink Laboratory</p>
+                <p>Development Version 1.0</p>
+            </div>
+
+        </aside>
+
+        <!-- Mobile Sidebar Overlay -->
+        <button
+            type="button"
+            class="sidebar-overlay"
+            id="sidebarOverlay"
+            aria-label="Close navigation">
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Top Header -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button
+                        type="button"
+                        class="sidebar-toggle"
+                        id="sidebarToggle"
+                        aria-label="Open navigation"
+                        aria-controls="sidebar"
+                        aria-expanded="false">
+                        ☰
+                    </button>
+
+                    <p class="topbar-title">
+                        Laboratory Workspace
+                    </p>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="topbar-user">
+
+                        <div class="user-avatar">U</div>
+
+                        <div class="user-details">
+                            <p class="user-name">System User</p>
+                            <p class="user-role">Laboratory Technologist</p>
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline btn-small"
+                        id="logoutButton">
+                        Logout
+                    </button>
+
+                </div>
+
+            </header>
+
+            <!-- Page Content -->
+            <section class="page-content">
+
+                <!-- Page Heading -->
+                <div class="page-header">
+
+                    <div>
+                        <h1 class="page-title">
+                            Laboratory Processing Worklist
+                        </h1>
+
+                        <p class="page-description">
+                            Monitor accepted specimens and manage
+                            laboratory testing activities.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="refreshWorklistButton">
+                        ↻ Refresh Worklist
+                    </button>
+
+                </div>
+
+                <!-- Development Notice -->
+                <div class="alert alert-info processing-notice">
+
+                    <span>ⓘ</span>
+
+                    <div>
+                        <strong>Processing Worklist Setup</strong>
+
+                        <p>
+                            Processing records will be loaded from the
+                            database when the Laboratory Processing
+                            backend module is implemented.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Processing Summary -->
+                <section class="content-section">
+
+                    <h2 class="processing-section-title">
+                        Processing Overview
+                    </h2>
+
+                    <div class="processing-summary-grid">
+
+                        <article class="card processing-summary-card">
+
+                            <div class="processing-summary-icon">
+                                ▤
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Total Processing Records
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="totalProcessingCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card processing-summary-card">
+
+                            <div class="processing-summary-icon processing-pending">
+                                ◷
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Pending
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="pendingProcessingCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card processing-summary-card">
+
+                            <div class="processing-summary-icon processing-active">
+                                ⚙
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    In Progress
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="activeProcessingCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card processing-summary-card">
+
+                            <div class="processing-summary-icon processing-completed">
+                                ✓
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Completed
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="completedProcessingCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card processing-summary-card">
+
+                            <div class="processing-summary-icon processing-hold">
+                                !
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    On Hold
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="onHoldProcessingCount">—</h2>
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+                <!-- Processing Records -->
+                <section class="content-section">
+
+                    <article class="card">
+
+                        <div class="card-header">
+
+                            <div>
+                                <h2 class="card-title">
+                                    Laboratory Processing Records
+                                </h2>
+
+                                <p class="card-description">
+                                    Search and monitor laboratory testing progress.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <!-- Search and Filters -->
+                        <div class="processing-toolbar">
+
+                            <div class="processing-search">
+
+                                <label for="processingSearch">
+                                    Search Processing Records
+                                </label>
+
+                                <input
+                                    type="search"
+                                    id="processingSearch"
+                                    class="form-control"
+                                    placeholder="Search request, patient, test, or specimen..."
+                                >
+
+                            </div>
+
+                            <div class="processing-filter">
+
+                                <label for="processingStatusFilter">
+                                    Processing Status
+                                </label>
+
+                                <select
+                                    id="processingStatusFilter"
+                                    class="form-control">
+
+                                    <option value="">All Statuses</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="On Hold">On Hold</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="processing-filter">
+
+                                <label for="processingPriorityFilter">
+                                    Request Priority
+                                </label>
+
+                                <select
+                                    id="processingPriorityFilter"
+                                    class="form-control">
+
+                                    <option value="">All Priorities</option>
+                                    <option value="Routine">Routine</option>
+                                    <option value="Urgent">Urgent</option>
+                                    <option value="STAT">STAT</option>
+
+                                </select>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                id="resetProcessingFiltersButton">
+                                Reset Filters
+                            </button>
+
+                        </div>
+
+                        <!-- Processing Table -->
+                        <div class="table-container processing-table-container">
+
+                            <table class="data-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>Request Number</th>
+                                        <th>Patient</th>
+                                        <th>Laboratory Test</th>
+                                        <th>Specimen Code</th>
+                                        <th>Assigned Personnel</th>
+                                        <th>Started At</th>
+                                        <th>Priority</th>
+                                        <th>Processing Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="processingTableBody">
+
+                                    <tr>
+                                        <td colspan="9">
+
+                                            <div class="empty-state">
+
+                                                <div class="empty-state-icon">
+                                                    ⚙
+                                                </div>
+
+                                                <h3 class="empty-state-title">
+                                                    No processing records available
+                                                </h3>
+
+                                                <p class="empty-state-description">
+                                                    Accepted specimens ready
+                                                    for laboratory processing
+                                                    will appear here.
+                                                </p>
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <!-- Table Footer -->
+                        <div class="processing-table-footer">
+
+                            <p id="processingRecordCount">
+                                No processing records available.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+                <!-- Page Footer -->
+                <footer class="processing-page-footer">
+                    MediLink Laboratory Request and Results Management System
+                </footer>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Processing Worklist JavaScript -->
+    <script src="../js/pages/processing-worklist.js"></script>
+
+</body>
+</html>

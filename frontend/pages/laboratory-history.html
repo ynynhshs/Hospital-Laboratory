@@ -1,0 +1,764 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Laboratory History | MediLink</title>
+
+    <!-- Global Stylesheets -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <!-- Laboratory History Stylesheet -->
+    <link rel="stylesheet" href="../css/pages/laboratory-history.css">
+</head>
+
+<body>
+
+    <div class="app-layout" id="appLayout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-logo">M</div>
+
+                <div>
+                    <h2>MediLink</h2>
+                    <p>Laboratory Services</p>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav" aria-label="Main navigation">
+
+                <p class="nav-section-title">Workspace</p>
+
+                <a href="dashboard.html" class="nav-link">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <p class="nav-section-title">Laboratory Operations</p>
+
+                <a href="test-catalog.html" class="nav-link">
+                    <span class="nav-icon">☷</span>
+                    <span>Test Catalog</span>
+                </a>
+
+                <a href="laboratory-requests.html" class="nav-link">
+                    <span class="nav-icon">▤</span>
+                    <span>Laboratory Requests</span>
+                </a>
+
+                <a href="specimen-management.html" class="nav-link">
+                    <span class="nav-icon">◉</span>
+                    <span>Specimen Management</span>
+                </a>
+
+                <a href="processing-worklist.html" class="nav-link">
+                    <span class="nav-icon">⚙</span>
+                    <span>Processing Worklist</span>
+                </a>
+
+                <p class="nav-section-title">Results</p>
+
+                <a href="result-entry.html" class="nav-link">
+                    <span class="nav-icon">✎</span>
+                    <span>Result Entry</span>
+                </a>
+
+                <a href="result-verification.html" class="nav-link">
+                    <span class="nav-icon">✓</span>
+                    <span>Result Verification</span>
+                </a>
+
+                <a href="laboratory-history.html"
+                   class="nav-link active"
+                   aria-current="page">
+                    <span class="nav-icon">◷</span>
+                    <span>Laboratory History</span>
+                </a>
+
+                <p class="nav-section-title">Administration</p>
+
+                <a href="reports.html" class="nav-link">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports & Analytics</span>
+                </a>
+
+                <a href="audit-logs.html" class="nav-link">
+                    <span class="nav-icon">▧</span>
+                    <span>Audit Trail</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>MediLink Laboratory</p>
+                <p>Development Version 1.0</p>
+            </div>
+
+        </aside>
+
+        <!-- Mobile Sidebar Overlay -->
+        <button
+            type="button"
+            class="sidebar-overlay"
+            id="sidebarOverlay"
+            aria-label="Close navigation">
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Top Header -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button
+                        type="button"
+                        class="sidebar-toggle"
+                        id="sidebarToggle"
+                        aria-label="Open navigation"
+                        aria-controls="sidebar"
+                        aria-expanded="false">
+                        ☰
+                    </button>
+
+                    <p class="topbar-title">
+                        Laboratory Workspace
+                    </p>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="topbar-user">
+
+                        <div class="user-avatar">U</div>
+
+                        <div class="user-details">
+                            <p class="user-name">System User</p>
+                            <p class="user-role">Laboratory Personnel</p>
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline btn-small"
+                        id="logoutButton">
+                        Logout
+                    </button>
+
+                </div>
+
+            </header>
+
+            <!-- Page Content -->
+            <section class="page-content">
+
+                <!-- Page Heading -->
+                <div class="page-header">
+
+                    <div>
+                        <h1 class="page-title">
+                            Laboratory History
+                        </h1>
+
+                        <p class="page-description">
+                            Search and review previously recorded
+                            laboratory requests, specimens, and results.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        id="refreshHistoryButton">
+                        ↻ Refresh History
+                    </button>
+
+                </div>
+
+                <!-- Development Notice -->
+                <div class="alert alert-info history-notice">
+
+                    <span>ⓘ</span>
+
+                    <div>
+                        <strong>Laboratory History Setup</strong>
+
+                        <p>
+                            Historical laboratory records will be
+                            retrieved from the existing requests,
+                            specimens, and results collections when
+                            the backend modules are connected.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- History Summary -->
+                <section class="content-section">
+
+                    <h2 class="history-section-title">
+                        Historical Record Overview
+                    </h2>
+
+                    <div class="history-summary-grid">
+
+                        <article class="card history-summary-card">
+
+                            <div class="history-summary-icon">
+                                ▤
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Total History Records
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="totalHistoryCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card history-summary-card">
+
+                            <div class="history-summary-icon history-released">
+                                ✓
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Released Results
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="releasedHistoryCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card history-summary-card">
+
+                            <div class="history-summary-icon history-amended">
+                                ↻
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Amended Results
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="amendedHistoryCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card history-summary-card">
+
+                            <div class="history-summary-icon history-patients">
+                                ◉
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Patients with History
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="patientsWithHistoryCount">—</h2>
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+                <!-- Historical Records -->
+                <section class="content-section">
+
+                    <article class="card">
+
+                        <div class="card-header">
+
+                            <div>
+                                <h2 class="card-title">
+                                    Historical Laboratory Records
+                                </h2>
+
+                                <p class="card-description">
+                                    Search and filter previously recorded
+                                    laboratory activities.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <!-- History Search and Filters -->
+                        <div class="history-toolbar">
+
+                            <div class="history-search">
+
+                                <label for="historySearch">
+                                    Search Records
+                                </label>
+
+                                <input
+                                    type="search"
+                                    id="historySearch"
+                                    class="form-control"
+                                    placeholder="Search patient, request, or test..."
+                                >
+
+                            </div>
+
+                            <div class="history-filter">
+
+                                <label for="historyRecordTypeFilter">
+                                    Record Type
+                                </label>
+
+                                <select
+                                    id="historyRecordTypeFilter"
+                                    class="form-control">
+
+                                    <option value="">All Record Types</option>
+                                    <option value="Request">Requests</option>
+                                    <option value="Specimen">Specimens</option>
+                                    <option value="Result">Results</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="history-filter">
+
+                                <label for="historyStatusFilter">
+                                    Record Status
+                                </label>
+
+                                <select
+                                    id="historyStatusFilter"
+                                    class="form-control">
+
+                                    <option value="">All Statuses</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Released">Released</option>
+                                    <option value="Amended">Amended</option>
+                                    <option value="Cancelled">Cancelled</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Date Range Filters -->
+                        <div class="history-date-toolbar">
+
+                            <div class="history-date-field">
+
+                                <label for="historyStartDate">
+                                    Start Date
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="historyStartDate"
+                                    class="form-control"
+                                >
+
+                            </div>
+
+                            <div class="history-date-field">
+
+                                <label for="historyEndDate">
+                                    End Date
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="historyEndDate"
+                                    class="form-control"
+                                >
+
+                            </div>
+
+                            <div class="history-filter-actions">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    id="applyHistoryFiltersButton">
+                                    Apply Filters
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline"
+                                    id="resetHistoryFiltersButton">
+                                    Reset Filters
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <!-- History Table -->
+                        <div class="table-container history-table-container">
+
+                            <table class="data-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>Record Date</th>
+                                        <th>Record Type</th>
+                                        <th>Patient</th>
+                                        <th>Request Number</th>
+                                        <th>Laboratory Test</th>
+                                        <th>Specimen Code</th>
+                                        <th>Record Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="historyTableBody">
+
+                                    <tr>
+                                        <td colspan="8">
+
+                                            <div class="empty-state">
+
+                                                <div class="empty-state-icon">
+                                                    ◷
+                                                </div>
+
+                                                <h3 class="empty-state-title">
+                                                    No historical records available
+                                                </h3>
+
+                                                <p class="empty-state-description">
+                                                    Previously recorded laboratory
+                                                    activities will appear here.
+                                                </p>
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <!-- History Table Footer -->
+                        <div class="history-table-footer">
+
+                            <p id="historyRecordCount">
+                                No historical records available.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+                <!-- Historical Record Details -->
+                <section class="content-section">
+
+                    <article class="card history-details-card">
+
+                        <div class="card-header">
+
+                            <div>
+                                <h2 class="card-title">
+                                    Historical Record Details
+                                </h2>
+
+                                <p class="card-description">
+                                    Review information from the selected
+                                    historical laboratory record.
+                                </p>
+                            </div>
+
+                            <span
+                                class="badge badge-neutral"
+                                id="historyDetailsStatus">
+                                No Record Selected
+                            </span>
+
+                        </div>
+
+                        <!-- Historical Information -->
+                        <div class="history-details-section">
+
+                            <h3 class="history-details-title">
+                                Patient and Request Information
+                            </h3>
+
+                            <div class="history-information-grid">
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="historyPatientName">
+                                        Patient Name
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="historyPatientName"
+                                        class="form-control"
+                                        placeholder="Select a historical record"
+                                        readonly
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="historyRequestNumber">
+                                        Request Number
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="historyRequestNumber"
+                                        class="form-control"
+                                        placeholder="Request number"
+                                        readonly
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="historyTestName">
+                                        Laboratory Test
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="historyTestName"
+                                        class="form-control"
+                                        placeholder="Laboratory test"
+                                        readonly
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="historySpecimenCode">
+                                        Specimen Code
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="historySpecimenCode"
+                                        class="form-control"
+                                        placeholder="Specimen code"
+                                        readonly
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="historyRecordDate">
+                                        Record Date
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="historyRecordDate"
+                                        class="form-control"
+                                        placeholder="Record date"
+                                        readonly
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="historyRecordType">
+                                        Record Type
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="historyRecordType"
+                                        class="form-control"
+                                        placeholder="Record type"
+                                        readonly
+                                    >
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Historical Result Details -->
+                        <div class="history-details-section">
+
+                            <h3 class="history-details-title">
+                                Historical Result Information
+                            </h3>
+
+                            <div class="table-container">
+
+                                <table class="data-table">
+
+                                    <thead>
+                                        <tr>
+                                            <th>Test Component</th>
+                                            <th>Result Value</th>
+                                            <th>Unit</th>
+                                            <th>Reference Range</th>
+                                            <th>Result Flag</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="historyResultComponentsBody">
+
+                                        <tr>
+                                            <td colspan="5">
+                                                No historical result details available.
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Historical Review Information -->
+                        <div class="history-details-section">
+
+                            <h3 class="history-details-title">
+                                Verification and Release Information
+                            </h3>
+
+                            <div class="history-information-grid">
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="historyEnteredBy">
+                                        Result Entered By
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="historyEnteredBy"
+                                        class="form-control"
+                                        placeholder="Technologist"
+                                        readonly
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="historyVerifiedBy">
+                                        Verified By
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="historyVerifiedBy"
+                                        class="form-control"
+                                        placeholder="Verifier"
+                                        readonly
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="historyReleasedDate">
+                                        Released Date
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="historyReleasedDate"
+                                        class="form-control"
+                                        placeholder="Release date"
+                                        readonly
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="historyAmendmentStatus">
+                                        Amendment Status
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="historyAmendmentStatus"
+                                        class="form-control"
+                                        placeholder="Amendment information"
+                                        readonly
+                                    >
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Details Actions -->
+                        <div class="history-details-actions">
+
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                id="clearHistoryDetailsButton">
+                                Clear Selection
+                            </button>
+
+                            <button
+                                type="button"
+                                class="btn btn-outline"
+                                id="viewHistoryAmendmentsButton"
+                                disabled>
+                                View Amendment History
+                            </button>
+
+                        </div>
+
+                        <p class="history-details-footnote">
+                            Historical records are read-only.
+                            Authorized amendments will be recorded
+                            separately to preserve the original result.
+                        </p>
+
+                    </article>
+
+                </section>
+
+                <!-- Page Footer -->
+                <footer class="history-page-footer">
+                    MediLink Laboratory Request and Results Management System
+                </footer>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Laboratory History JavaScript -->
+    <script src="../js/pages/laboratory-history.js"></script>
+
+</body>
+</html>

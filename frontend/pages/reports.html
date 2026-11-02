@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports and Analytics | MediLink</title>
+
+    <!-- Shared Stylesheets -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <!-- Page Stylesheet -->
+    <link rel="stylesheet" href="../css/pages/reports.css">
+
+    <script src="../js/pages/reports.js" defer></script>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-logo">M</div>
+            <div>
+                <h2>MediLink</h2>
+                <p>Laboratory Services</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-section-title">Workspace</p>
+
+            <a href="dashboard.html" class="nav-link">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <p class="nav-section-title">Laboratory Operations</p>
+
+            <a href="test-catalog.html" class="nav-link">
+                <span class="nav-icon">▤</span>
+                <span>Test Catalog</span>
+            </a>
+
+            <a href="laboratory-requests.html" class="nav-link">
+                <span class="nav-icon">▣</span>
+                <span>Laboratory Requests</span>
+            </a>
+
+            <a href="specimen-management.html" class="nav-link">
+                <span class="nav-icon">◉</span>
+                <span>Specimen Management</span>
+            </a>
+
+            <a href="processing-worklist.html" class="nav-link">
+                <span class="nav-icon">☷</span>
+                <span>Processing Worklist</span>
+            </a>
+
+            <p class="nav-section-title">Results</p>
+
+            <a href="result-entry.html" class="nav-link">
+                <span class="nav-icon">✎</span>
+                <span>Result Entry</span>
+            </a>
+
+            <a href="result-verification.html" class="nav-link">
+                <span class="nav-icon">✓</span>
+                <span>Result Verification</span>
+            </a>
+
+            <a href="laboratory-history.html" class="nav-link">
+                <span class="nav-icon">◷</span>
+                <span>Laboratory History</span>
+            </a>
+
+            <p class="nav-section-title">Administration</p>
+
+            <a href="reports.html" class="nav-link active">
+                <span class="nav-icon">▥</span>
+                <span>Reports &amp; Analytics</span>
+            </a>
+
+            <a href="audit-logs.html" class="nav-link">
+                <span class="nav-icon">▧</span>
+                <span>Audit Trail</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <p>MediLink Laboratory</p>
+            <p>Development Version 1.0</p>
+        </div>
+
+    </aside>
+
+
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Top Header -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+                <button
+                    type="button"
+                    class="sidebar-toggle"
+                    id="sidebarToggle"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false">
+                    ☰
+                </button>
+
+                <div>
+                    <h1 class="topbar-title">Reports and Analytics</h1>
+                    <p class="topbar-subtitle">
+                        Laboratory performance and operational reports
+                    </p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="user-profile">
+                    <div class="user-avatar">L</div>
+                    <div class="user-info">
+                        <strong>Laboratory Staff</strong>
+                        <span>Laboratory Workspace</span>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+
+            <section class="page-header">
+                <div>
+                    <h2>Reports Overview</h2>
+                    <p class="page-description">
+                        Monitor laboratory requests, test activity, and processing performance.
+                    </p>
+                </div>
+
+                <div class="page-header-actions">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="generateReportButton"
+                        disabled>
+                        Generate Report
+                    </button>
+                </div>
+            </section>
+
+            <!-- Backend Connection Notice -->
+            <section class="reports-notice" aria-live="polite">
+                <span class="notice-icon">ⓘ</span>
+                <div>
+                    <strong>Backend connection pending</strong>
+                    <p>
+                        Report figures and charts will be displayed after the
+                        reports and analytics functions are connected to the database.
+                        No sample statistics are being presented as actual records.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Summary Cards -->
+            <section class="reports-summary-grid">
+
+                <article class="report-summary-card">
+                    <div class="summary-card-icon requests-icon">▣</div>
+                    <div>
+                        <p>Total Laboratory Requests</p>
+                        <h3 id="totalRequestsMetric">—</h3>
+                        <span>Selected reporting period</span>
+                    </div>
+                </article>
+
+                <article class="report-summary-card">
+                    <div class="summary-card-icon completed-icon">✓</div>
+                    <div>
+                        <p>Completed Requests</p>
+                        <h3 id="completedRequestsMetric">—</h3>
+                        <span>Selected reporting period</span>
+                    </div>
+                </article>
+
+                <article class="report-summary-card">
+                    <div class="summary-card-icon pending-icon">◷</div>
+                    <div>
+                        <p>Pending Requests</p>
+                        <h3 id="pendingRequestsMetric">—</h3>
+                        <span>Awaiting completion</span>
+                    </div>
+                </article>
+
+                <article class="report-summary-card">
+                    <div class="summary-card-icon turnaround-icon">◴</div>
+                    <div>
+                        <p>Average Turnaround Time</p>
+                        <h3 id="averageTurnaroundMetric">—</h3>
+                        <span>Based on completed tests</span>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- Report Filters -->
+            <section class="content-section report-filter-section">
+
+                <div class="section-heading">
+                    <div>
+                        <h3>Report Filters</h3>
+                        <p>Choose the reporting period and report category.</p>
+                    </div>
+                </div>
+
+                <div class="report-filter-grid">
+
+                    <div class="form-group">
+                        <label for="reportTypeFilter">Report Type</label>
+                        <select id="reportTypeFilter">
+                            <option value="all">All Reports</option>
+                            <option value="requests">Laboratory Requests</option>
+                            <option value="tests">Requested Laboratory Tests</option>
+                            <option value="turnaround">Turnaround Time</option>
+                            <option value="specimens">Specimen Processing</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reportStartDate">Start Date</label>
+                        <input type="date" id="reportStartDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reportEndDate">End Date</label>
+                        <input type="date" id="reportEndDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reportStatusFilter">Request Status</label>
+                        <select id="reportStatusFilter">
+                            <option value="all">All Statuses</option>
+                            <option value="submitted">Submitted</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="partially_completed">Partially Completed</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="report-filter-actions">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="applyReportFiltersButton"
+                            disabled>
+                            Apply Filters
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            id="resetReportFiltersButton">
+                            Reset
+                        </button>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Analytics Charts -->
+            <section class="content-section analytics-section">
+
+                <div class="section-heading">
+                    <div>
+                        <h3>Laboratory Analytics</h3>
+                        <p>Visual summaries of laboratory activity and performance.</p>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+
+                    <!-- Most Requested Tests Bar Chart -->
+                    <article class="chart-card">
+
+                        <div class="chart-card-header">
+                            <div>
+                                <h4>Most Requested Laboratory Tests</h4>
+                                <p>Number of requests per laboratory test</p>
+                            </div>
+
+                            <span class="chart-type-label">Bar Chart</span>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas
+                                id="popularTestsChart"
+                                aria-label="Bar chart showing the most frequently requested laboratory tests"
+                                role="img">
+                            </canvas>
+
+                            <div class="chart-empty-state" id="popularTestsEmpty">
+                                <span class="empty-chart-icon">▥</span>
+                                <strong>No chart data available</strong>
+                                <p>
+                                    This chart will display the most requested tests
+                                    when database records are available.
+                                </p>
+                            </div>
+                        </div>
+
+                    </article>
+
+                    <!-- Request Trends Line Chart -->
+                    <article class="chart-card">
+
+                        <div class="chart-card-header">
+                            <div>
+                                <h4>Laboratory Request Trends</h4>
+                                <p>Number of requests over time</p>
+                            </div>
+
+                            <span class="chart-type-label">Line Chart</span>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas
+                                id="requestTrendsChart"
+                                aria-label="Line chart showing laboratory request trends over time"
+                                role="img">
+                            </canvas>
+
+                            <div class="chart-empty-state" id="requestTrendsEmpty">
+                                <span class="empty-chart-icon">⌁</span>
+                                <strong>No chart data available</strong>
+                                <p>
+                                    This chart will display daily, weekly, or monthly
+                                    request trends when database records are available.
+                                </p>
+                            </div>
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+            <!-- Generated Reports Table -->
+            <section class="content-section generated-reports-section">
+
+                <div class="section-heading">
+                    <div>
+                        <h3>Laboratory Report Records</h3>
+                        <p>Review report information based on the selected filters.</p>
+                    </div>
+                </div>
+
+                <div class="table-toolbar">
+
+                    <div class="search-box">
+                        <input
+                            type="search"
+                            id="reportSearchInput"
+                            placeholder="Search report records..."
+                            aria-label="Search report records">
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        id="refreshReportsButton">
+                        ↻ Refresh
+                    </button>
+
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="data-table" id="reportsTable">
+
+                        <thead>
+                            <tr>
+                                <th>Report ID</th>
+                                <th>Report Type</th>
+                                <th>Reporting Period</th>
+                                <th>Generated By</th>
+                                <th>Date Generated</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="reportsTableBody">
+                            <tr>
+                                <td colspan="7" class="empty-table-message">
+                                    No report records available.
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="table-footer">
+                    <span id="reportRecordCount">0 report records</span>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

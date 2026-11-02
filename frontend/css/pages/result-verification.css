@@ -1,0 +1,350 @@
+
+/* ==========================================
+   MEDILINK LABORATORY
+   RESULT VERIFICATION PAGE STYLESHEET
+========================================== */
+
+/* 1. Development Notice */
+
+.verification-notice {
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.verification-notice p {
+    margin-top: 3px;
+}
+
+/* 2. Section Heading */
+
+.verification-section-title {
+    margin-bottom: 16px;
+    font-size: 18px;
+}
+
+/* 3. Verification Summary Grid */
+
+.verification-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.verification-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+    min-height: 105px;
+}
+
+.verification-summary-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: var(--radius-medium);
+    font-size: 21px;
+}
+
+.verification-pending {
+    background-color: #fff3d6;
+    color: #946200;
+}
+
+.verification-approved {
+    background-color: #e4f1ff;
+    color: #1b5c99;
+}
+
+.verification-released {
+    background-color: #def5e8;
+    color: #176c49;
+}
+
+.verification-returned {
+    background-color: #fde8e7;
+    color: #a52e23;
+}
+
+.verification-summary-card .summary-value {
+    font-size: 25px;
+}
+
+/* 4. Verification Toolbar */
+
+.verification-toolbar {
+    display: grid;
+    grid-template-columns:
+        minmax(230px, 1.7fr)
+        minmax(180px, 1fr)
+        auto;
+    align-items: end;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.verification-search,
+.verification-filter {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.verification-search label,
+.verification-filter label {
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 5. Verification Worklist Table */
+
+.verification-table-container {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.verification-table-container .data-table {
+    min-width: 1000px;
+}
+
+.verification-table-container .data-table th,
+.verification-table-container .data-table td {
+    padding: 14px 13px;
+}
+
+/* 6. Verification Table Footer */
+
+.verification-table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+/* 7. Result Review Card */
+
+.verification-review-card {
+    margin-top: 8px;
+}
+
+.verification-review-card .card-header {
+    align-items: center;
+}
+
+/* 8. Review Form Sections */
+
+.verification-form-section {
+    padding: 22px 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.verification-form-section-title {
+    margin-bottom: 18px;
+    font-size: 16px;
+}
+
+.verification-information-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+}
+
+.verification-information-grid .form-group {
+    min-width: 0;
+}
+
+.verification-information-grid .form-control[readonly] {
+    background-color: #f3f6f8;
+    color: var(--color-text-secondary);
+}
+
+/* 9. Reference Range Notice */
+
+.verification-range-notice {
+    align-items: flex-start;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* 10. Submitted Results Table */
+
+.verification-form-section .table-container {
+    margin-top: 5px;
+}
+
+.verification-form-section .data-table th,
+.verification-form-section .data-table td {
+    padding: 14px;
+}
+
+#reviewResultComponentsBody td {
+    white-space: normal;
+}
+
+/* 11. Verification Remarks */
+
+#verificationRemarks {
+    min-height: 110px;
+}
+
+/* 12. Verification Action Buttons */
+
+.verification-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 22px;
+    border-top: 1px solid var(--color-border);
+}
+
+.verification-action-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.verification-actions button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.verification-form-footnote {
+    margin-top: 15px;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    text-align: right;
+}
+
+/* 13. Review Table Actions */
+
+.verification-action-view {
+    min-height: 30px;
+    padding: 5px 10px;
+    border: 1px solid #b8d9e6;
+    border-radius: var(--radius-small);
+    background-color: white;
+    color: var(--color-primary);
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.verification-action-view:hover {
+    background-color: var(--color-primary-light);
+}
+
+/* 14. Verification Page Footer */
+
+.verification-page-footer {
+    margin-top: 28px;
+    padding: 16px 0;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* 15. Large Screens */
+
+@media (max-width: 1200px) {
+    .verification-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .verification-toolbar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* 16. Tablet Screens */
+
+@media (max-width: 900px) {
+    .verification-information-grid {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+    }
+}
+
+/* 17. Mobile Screens */
+
+@media (max-width: 768px) {
+    .verification-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .verification-summary-card {
+        min-height: 90px;
+    }
+
+    .verification-toolbar {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .verification-toolbar .btn {
+        width: 100%;
+    }
+
+    .verification-table-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .verification-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .verification-action-group {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .verification-form-footnote {
+        text-align: left;
+    }
+}
+
+/* 18. Small Mobile Screens */
+
+@media (max-width: 480px) {
+    .verification-summary-card {
+        padding: 14px;
+    }
+
+    .verification-summary-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .verification-summary-card .summary-value {
+        font-size: 23px;
+    }
+
+    .verification-notice,
+    .verification-range-notice {
+        font-size: 12px;
+    }
+
+    .verification-form-section {
+        padding: 18px 0;
+    }
+
+    .verification-action-group .btn {
+        width: 100%;
+    }
+}

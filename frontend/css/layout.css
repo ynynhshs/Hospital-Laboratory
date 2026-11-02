@@ -8,8 +8,12 @@
 /* 2. Sidebar */
 
 .sidebar {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
     width: 260px;
     min-width: 260px;
+    height: 100vh;
     min-height: 100vh;
     display: flex;
     flex-direction: column;

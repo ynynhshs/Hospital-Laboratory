@@ -260,4 +260,39 @@ if (logoutButton) {
 
 // 17. Initial Request Display
 
+
+// 17. View Laboratory Request Details
+
+if (tableBody) {
+    tableBody.addEventListener('click', (event) => {
+
+        const viewButton = event.target.closest(
+            '[data-action="view-details"]'
+        );
+
+        // Ignore clicks that are not View Details buttons.
+        if (!viewButton || !tableBody.contains(viewButton)) {
+            return;
+        }
+
+        // Get the internal database request ID.
+        const requestId = viewButton.dataset.requestId?.trim();
+
+        if (!requestId) {
+            window.alert(
+                'Unable to open request details. The request identifier is missing.'
+            );
+
+            return;
+        }
+
+        // Open Request Details with the selected request ID.
+        window.location.href =
+            `request-details.html?requestId=${encodeURIComponent(requestId)}`;
+    });
+}
+
+// 18. Initial Request Display
+
 filterLaboratoryRequests();
+

@@ -1,0 +1,474 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Specimen Management | MediLink</title>
+
+    <!-- Global Stylesheets -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <!-- Specimen Management Stylesheet -->
+    <link rel="stylesheet" href="../css/pages/specimen-management.css">
+</head>
+
+<body>
+
+    <div class="app-layout" id="appLayout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-logo">M</div>
+
+                <div>
+                    <h2>MediLink</h2>
+                    <p>Laboratory Services</p>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav" aria-label="Main navigation">
+
+                <p class="nav-section-title">Workspace</p>
+
+                <a href="dashboard.html" class="nav-link">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <p class="nav-section-title">Laboratory Operations</p>
+
+                <a href="test-catalog.html" class="nav-link">
+                    <span class="nav-icon">☷</span>
+                    <span>Test Catalog</span>
+                </a>
+
+                <a href="laboratory-requests.html" class="nav-link">
+                    <span class="nav-icon">▤</span>
+                    <span>Laboratory Requests</span>
+                </a>
+
+                <a href="specimen-management.html"
+                   class="nav-link active"
+                   aria-current="page">
+                    <span class="nav-icon">◉</span>
+                    <span>Specimen Management</span>
+                </a>
+
+                <a href="processing-worklist.html" class="nav-link">
+                    <span class="nav-icon">⚙</span>
+                    <span>Processing Worklist</span>
+                </a>
+
+                <p class="nav-section-title">Results</p>
+
+                <a href="result-entry.html" class="nav-link">
+                    <span class="nav-icon">✎</span>
+                    <span>Result Entry</span>
+                </a>
+
+                <a href="result-verification.html" class="nav-link">
+                    <span class="nav-icon">✓</span>
+                    <span>Result Verification</span>
+                </a>
+
+                <a href="laboratory-history.html" class="nav-link">
+                    <span class="nav-icon">◷</span>
+                    <span>Laboratory History</span>
+                </a>
+
+                <p class="nav-section-title">Administration</p>
+
+                <a href="reports.html" class="nav-link">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports & Analytics</span>
+                </a>
+
+                <a href="audit-logs.html" class="nav-link">
+                    <span class="nav-icon">▧</span>
+                    <span>Audit Trail</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>MediLink Laboratory</p>
+                <p>Development Version 1.0</p>
+            </div>
+
+        </aside>
+
+        <!-- Mobile Sidebar Overlay -->
+        <button
+            type="button"
+            class="sidebar-overlay"
+            id="sidebarOverlay"
+            aria-label="Close navigation">
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Top Header -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button
+                        type="button"
+                        class="sidebar-toggle"
+                        id="sidebarToggle"
+                        aria-label="Open navigation"
+                        aria-controls="sidebar"
+                        aria-expanded="false">
+                        ☰
+                    </button>
+
+                    <p class="topbar-title">
+                        Laboratory Workspace
+                    </p>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="topbar-user">
+
+                        <div class="user-avatar">U</div>
+
+                        <div class="user-details">
+                            <p class="user-name">System User</p>
+                            <p class="user-role">Laboratory Personnel</p>
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline btn-small"
+                        id="logoutButton">
+                        Logout
+                    </button>
+
+                </div>
+
+            </header>
+
+            <!-- Page Content -->
+            <section class="page-content">
+
+                <!-- Page Heading -->
+                <div class="page-header">
+
+                    <div>
+                        <h1 class="page-title">
+                            Specimen Management
+                        </h1>
+
+                        <p class="page-description">
+                            Record, receive, and monitor laboratory
+                            specimens throughout the testing workflow.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="registerSpecimenButton">
+                        + Register Specimen
+                    </button>
+
+                </div>
+
+                <!-- Development Notice -->
+                <div class="alert alert-info specimen-notice">
+
+                    <span>ⓘ</span>
+
+                    <div>
+                        <strong>Specimen Management Setup</strong>
+
+                        <p>
+                            Specimen records and tracking activities
+                            will be connected to the database when
+                            the backend module is implemented.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Specimen Summary -->
+                <section class="content-section">
+
+                    <h2 class="specimen-section-title">
+                        Specimen Overview
+                    </h2>
+
+                    <div class="specimen-summary-grid">
+
+                        <article class="card specimen-summary-card">
+
+                            <div class="specimen-summary-icon">
+                                ◉
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Total Specimens
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="totalSpecimensCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card specimen-summary-card">
+
+                            <div class="specimen-summary-icon summary-pending">
+                                ◷
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Pending Collection
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="pendingCollectionCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card specimen-summary-card">
+
+                            <div class="specimen-summary-icon summary-received">
+                                ↓
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Received Specimens
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="receivedSpecimensCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card specimen-summary-card">
+
+                            <div class="specimen-summary-icon summary-accepted">
+                                ✓
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Accepted Specimens
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="acceptedSpecimensCount">—</h2>
+                            </div>
+
+                        </article>
+
+                        <article class="card specimen-summary-card">
+
+                            <div class="specimen-summary-icon summary-rejected">
+                                !
+                            </div>
+
+                            <div>
+                                <p class="summary-label">
+                                    Rejected Specimens
+                                </p>
+
+                                <h2 class="summary-value"
+                                    id="rejectedSpecimensCount">—</h2>
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+                <!-- Specimen Records -->
+                <section class="content-section">
+
+                    <article class="card">
+
+                        <div class="card-header">
+
+                            <div>
+                                <h2 class="card-title">
+                                    Specimen Records
+                                </h2>
+
+                                <p class="card-description">
+                                    Search and monitor specimen information
+                                    and collection status.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <!-- Search and Filters -->
+                        <div class="specimen-toolbar">
+
+                            <div class="specimen-search">
+
+                                <label for="specimenSearch">
+                                    Search Specimens
+                                </label>
+
+                                <input
+                                    type="search"
+                                    id="specimenSearch"
+                                    class="form-control"
+                                    placeholder="Search specimen code, request number, or patient..."
+                                >
+
+                            </div>
+
+                            <div class="specimen-filter">
+
+                                <label for="specimenStatusFilter">
+                                    Specimen Status
+                                </label>
+
+                                <select
+                                    id="specimenStatusFilter"
+                                    class="form-control">
+
+                                    <option value="">All Statuses</option>
+                                    <option value="Pending Collection">Pending Collection</option>
+                                    <option value="Collected">Collected</option>
+                                    <option value="Received">Received</option>
+                                    <option value="Accepted">Accepted</option>
+                                    <option value="Rejected">Rejected</option>
+                                    <option value="Processing">Processing</option>
+                                    <option value="Completed">Completed</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="specimen-filter">
+
+                                <label for="specimenTypeFilter">
+                                    Specimen Type
+                                </label>
+
+                                <select
+                                    id="specimenTypeFilter"
+                                    class="form-control">
+
+                                    <option value="">All Types</option>
+                                    <option value="Blood">Blood</option>
+                                    <option value="Urine">Urine</option>
+                                    <option value="Stool">Stool</option>
+                                    <option value="Sputum">Sputum</option>
+                                    <option value="Swab">Swab</option>
+                                    <option value="Other">Other</option>
+
+                                </select>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                id="resetSpecimenFiltersButton">
+                                Reset Filters
+                            </button>
+
+                        </div>
+
+                        <!-- Specimen Table -->
+                        <div class="table-container specimen-table-container">
+
+                            <table class="data-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>Specimen Code</th>
+                                        <th>Request Number</th>
+                                        <th>Patient</th>
+                                        <th>Specimen Type</th>
+                                        <th>Collection Date</th>
+                                        <th>Received Date</th>
+                                        <th>Specimen Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="specimenTableBody">
+
+                                    <tr>
+                                        <td colspan="8">
+
+                                            <div class="empty-state">
+
+                                                <div class="empty-state-icon">
+                                                    ◉
+                                                </div>
+
+                                                <h3 class="empty-state-title">
+                                                    No specimen records available
+                                                </h3>
+
+                                                <p class="empty-state-description">
+                                                    Specimen records will appear
+                                                    here when specimens are
+                                                    registered in the system.
+                                                </p>
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <!-- Table Footer -->
+                        <div class="specimen-table-footer">
+
+                            <p id="specimenRecordCount">
+                                No specimen records available.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+                <!-- Page Footer -->
+                <footer class="specimen-page-footer">
+                    MediLink Laboratory Request and Results Management System
+                </footer>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Specimen Management JavaScript -->
+    <script src="../js/pages/specimen-management.js"></script>
+
+</body>
+</html>
