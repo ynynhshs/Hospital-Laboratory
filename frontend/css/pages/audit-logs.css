@@ -643,3 +643,471 @@
         flex-direction: column;
     }
 }
+
+/* ==========================================
+   13. UILORA-INSPIRED GLASS CARD REDESIGN
+========================================== */
+
+/* Audit Summary Cards */
+
+.audit-summary-card {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+
+    border: 1px solid transparent;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 67, 0.88),
+            rgba(12, 18, 35, 0.92)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            rgba(168, 85, 247, 0.42),
+            rgba(59, 130, 246, 0.32),
+            rgba(255, 255, 255, 0.12)
+        ) border-box;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.24),
+        0 0 16px rgba(147, 51, 234, 0.08),
+        0 0 22px rgba(59, 130, 246, 0.06);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    transition:
+        transform 1s ease,
+        box-shadow 1s ease;
+}
+
+/* Summary Card Outer Glow */
+
+.audit-summary-card::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    z-index: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        90deg,
+        #9333ea,
+        #2563eb
+    );
+
+    filter: blur(18px);
+    opacity: 0.18;
+
+    pointer-events: none;
+
+    transition:
+        opacity 1s ease,
+        filter 1s ease;
+}
+
+/* Summary Card Hover */
+
+.audit-summary-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(147, 51, 234, 0.30),
+        0 0 40px rgba(59, 130, 246, 0.22);
+
+    transition-duration: 200ms;
+}
+
+.audit-summary-card:hover::after {
+    opacity: 0.90;
+    filter: blur(23px);
+    transition-duration: 200ms;
+}
+
+/* Keep Summary Content Above Glow */
+
+.audit-summary-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Summary Card Text */
+
+.audit-summary-card p {
+    color: #b8c3d8;
+    transition: color 0.2s ease;
+}
+
+.audit-summary-card:hover p {
+    color: #ffffff;
+}
+
+.audit-summary-card h3 {
+    color: #f5f3ff;
+}
+
+.audit-summary-card span {
+    color: #a5b1c7;
+}
+
+/* Summary Card Icons */
+
+.audit-summary-icon {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 15px;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.audit-summary-card:hover .audit-summary-icon {
+    transform: scale(1.08);
+
+    box-shadow:
+        0 0 14px rgba(147, 51, 234, 0.22),
+        0 0 20px rgba(59, 130, 246, 0.12);
+}
+
+/* Main Audit Panels */
+
+.audit-filter-section,
+.audit-table-section,
+.audit-details-section {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+
+    border: 1px solid transparent;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 67, 0.88),
+            rgba(12, 18, 35, 0.92)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            rgba(168, 85, 247, 0.30),
+            rgba(59, 130, 246, 0.24),
+            rgba(255, 255, 255, 0.10)
+        ) border-box;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.24),
+        0 0 18px rgba(147, 51, 234, 0.06);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    transition:
+        transform 1s ease,
+        box-shadow 1s ease;
+}
+
+/* Main Panels Outer Glow */
+
+.audit-filter-section::after,
+.audit-table-section::after,
+.audit-details-section::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    z-index: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        90deg,
+        #9333ea,
+        #2563eb
+    );
+
+    filter: blur(18px);
+    opacity: 0.16;
+
+    pointer-events: none;
+
+    transition:
+        opacity 1s ease,
+        filter 1s ease;
+}
+
+/* Main Panels Hover */
+
+.audit-filter-section:hover,
+.audit-table-section:hover,
+.audit-details-section:not([hidden]):hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(147, 51, 234, 0.30),
+        0 0 40px rgba(59, 130, 246, 0.22);
+
+    transition-duration: 200ms;
+}
+
+.audit-filter-section:hover::after,
+.audit-table-section:hover::after,
+.audit-details-section:not([hidden]):hover::after {
+    opacity: 0.75;
+    filter: blur(23px);
+    transition-duration: 200ms;
+}
+
+/* Keep Main Panel Contents Above Glow */
+
+.audit-filter-section > *,
+.audit-table-section > *,
+.audit-details-section > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Preserve Hidden Details Panel */
+
+.audit-details-section[hidden] {
+    display: none;
+}
+
+/* Panel Headings */
+
+.audit-filter-section h3,
+.audit-table-section h3,
+.audit-details-section h3 {
+    color: #f1f5ff;
+}
+
+.audit-filter-section .section-heading p,
+.audit-table-section .section-heading p,
+.audit-details-section .section-heading p {
+    color: #a5b1c7;
+}
+
+/* Audit Filter Labels */
+
+.audit-filter-grid label {
+    color: #e7ecf7;
+}
+
+/* Audit Filter Inputs */
+
+.audit-filter-grid input,
+.audit-filter-grid select {
+    background: rgba(9, 16, 32, 0.58);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #f1f5ff;
+}
+
+.audit-filter-grid select option {
+    background: #172139;
+    color: #f1f5ff;
+}
+
+.audit-filter-grid input:focus,
+.audit-filter-grid select:focus {
+    border-color: var(--color-primary, #8b92ff);
+    box-shadow: 0 0 0 3px rgba(139, 146, 255, 0.14);
+}
+
+.audit-filter-grid input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+/* Audit Table Toolbar */
+
+.audit-table-toolbar {
+    padding: 12px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.audit-results-info {
+    color: #a5b1c7;
+}
+
+/* Audit Records Table */
+
+.table-responsive {
+    border-radius: 14px;
+    overflow-x: auto;
+}
+
+#auditLogsTable th {
+    background: rgba(255, 255, 255, 0.055);
+    color: #aebbd0;
+}
+
+#auditLogsTable td {
+    color: #e7ecf7;
+}
+
+#auditLogsTable tbody tr {
+    transition: background 0.2s ease;
+}
+
+#auditLogsTable tbody tr:hover {
+    background: rgba(139, 146, 255, 0.075);
+}
+
+/* Preserve Selected Row Highlighting */
+
+#auditLogsTable tbody tr.selected-row {
+    background: rgba(139, 146, 255, 0.15);
+    box-shadow: inset 3px 0 0 var(--color-primary, #8b92ff);
+}
+
+/* Audit Outcome Labels */
+
+.audit-outcome.success {
+    border-color: rgba(72, 214, 160, 0.20);
+    background: rgba(72, 214, 160, 0.13);
+    color: #70e4b4;
+}
+
+.audit-outcome.failed {
+    border-color: rgba(255, 123, 134, 0.22);
+    background: rgba(255, 123, 134, 0.13);
+    color: #ff9ca5;
+}
+
+/* Audit View Button */
+
+.audit-view-button {
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.audit-view-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 0 12px rgba(139, 146, 255, 0.15);
+}
+
+/* Pagination */
+
+.audit-pagination {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 15px;
+}
+
+#auditCurrentPage {
+    color: #f1f5ff;
+}
+
+/* Audit Details Grid Items */
+
+.audit-detail-item {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(35, 43, 70, 0.65),
+            rgba(13, 21, 41, 0.55)
+        );
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.audit-detail-item:hover {
+    transform: translateY(-2px);
+
+    border-color: rgba(139, 146, 255, 0.30);
+
+    background: rgba(139, 146, 255, 0.08);
+}
+
+.audit-detail-item span {
+    color: #a5b1c7;
+}
+
+.audit-detail-item strong {
+    color: #f1f5ff;
+}
+
+.audit-detail-description p {
+    color: #d5deef;
+}
+
+/* Audit Integrity Notice */
+
+.audit-integrity-note {
+    border-color: rgba(72, 214, 160, 0.20);
+    background: rgba(72, 214, 160, 0.07);
+}
+
+.audit-integrity-note p {
+    color: #acd9c8;
+}
+
+/* Responsive Adjustments */
+
+@media (max-width: 768px) {
+    .audit-summary-card,
+    .audit-filter-section,
+    .audit-table-section,
+    .audit-details-section {
+        border-radius: 20px;
+    }
+
+    .audit-summary-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .audit-filter-section:hover,
+    .audit-table-section:hover,
+    .audit-details-section:not([hidden]):hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* Reduced Motion Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    .audit-summary-card,
+    .audit-summary-card::after,
+    .audit-summary-icon,
+    .audit-filter-section,
+    .audit-filter-section::after,
+    .audit-table-section,
+    .audit-table-section::after,
+    .audit-details-section,
+    .audit-details-section::after,
+    .audit-detail-item,
+    .audit-view-button {
+        transition: none !important;
+    }
+
+    .audit-summary-card:hover,
+    .audit-filter-section:hover,
+    .audit-table-section:hover,
+    .audit-details-section:not([hidden]):hover,
+    .audit-detail-item:hover,
+    .audit-view-button:hover {
+        transform: none;
+    }
+}

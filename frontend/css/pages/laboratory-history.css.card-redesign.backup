@@ -1,7 +1,7 @@
 
 /* ==========================================
    MEDILINK LABORATORY
-   LABORATORY HISTORY PAGE STYLESHEET
+   GLASSMORPHISM LABORATORY HISTORY
 ========================================== */
 
 /* 1. Development Notice */
@@ -19,6 +19,7 @@
 
 .history-section-title {
     margin-bottom: 16px;
+    color: var(--color-text);
     font-size: 18px;
 }
 
@@ -36,37 +37,64 @@
     gap: 15px;
     min-width: 0;
     min-height: 105px;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.history-summary-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--glass-highlight);
 }
 
 .history-summary-icon {
     width: 46px;
     height: 46px;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+
+    border: 1px solid rgba(139, 146, 255, 0.20);
     border-radius: var(--radius-medium);
-    background-color: var(--color-primary-light);
+
+    background: rgba(139, 146, 255, 0.13);
     color: var(--color-primary);
+
     font-size: 21px;
 }
 
+/* History Status Colors */
+
 .history-released {
-    background-color: #def5e8;
-    color: #176c49;
+    border-color: rgba(72, 214, 160, 0.20);
+    background: rgba(72, 214, 160, 0.13);
+    color: #64e7b5;
 }
 
 .history-amended {
-    background-color: #fff3d6;
-    color: #946200;
+    border-color: rgba(245, 199, 107, 0.20);
+    background: rgba(245, 199, 107, 0.13);
+    color: #f5c76b;
 }
 
 .history-patients {
-    background-color: #e4f1ff;
-    color: #1b5c99;
+    border-color: rgba(116, 189, 255, 0.20);
+    background: rgba(116, 189, 255, 0.13);
+    color: #83c5ff;
 }
 
 .history-summary-card .summary-value {
+    color: var(--color-text);
     font-size: 25px;
 }
 
@@ -74,19 +102,32 @@
 
 .history-toolbar {
     display: grid;
+
     grid-template-columns:
         minmax(230px, 1.7fr)
         minmax(160px, 1fr)
         minmax(160px, 1fr);
+
     align-items: end;
     gap: 14px;
     margin-bottom: 18px;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .history-search,
 .history-filter,
 .history-date-field {
     min-width: 0;
+
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -104,14 +145,25 @@
 
 .history-date-toolbar {
     display: grid;
-    grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr) auto;
+
+    grid-template-columns:
+        minmax(150px, 1fr)
+        minmax(150px, 1fr)
+        auto;
+
     align-items: end;
     gap: 14px;
     margin-bottom: 22px;
-    padding: 16px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-medium);
-    background-color: #fafcfd;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .history-filter-actions {
@@ -146,6 +198,7 @@
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
+
     color: var(--color-text-secondary);
     font-size: 12px;
 }
@@ -154,6 +207,7 @@
 
 .history-details-card {
     margin-top: 8px;
+    overflow: hidden;
 }
 
 .history-details-card .card-header {
@@ -171,7 +225,9 @@
 
 .history-details-title {
     margin-bottom: 18px;
+    color: var(--color-text);
     font-size: 16px;
+    font-weight: 600;
 }
 
 /* 9. Historical Information Grid */
@@ -187,8 +243,10 @@
 }
 
 .history-information-grid .form-control[readonly] {
-    background-color: #f3f6f8;
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.045);
     color: var(--color-text-secondary);
+    cursor: default;
 }
 
 /* 10. Historical Result Table */
@@ -214,12 +272,13 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
+
     padding-top: 22px;
     border-top: 1px solid var(--color-border);
 }
 
 .history-details-actions button:disabled {
-    opacity: 0.55;
+    opacity: 0.50;
     cursor: not-allowed;
 }
 
@@ -235,7 +294,9 @@
 .history-page-footer {
     margin-top: 28px;
     padding: 16px 0;
+
     border-top: 1px solid var(--color-border);
+
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
@@ -276,16 +337,19 @@
 
     .history-summary-card {
         min-height: 90px;
+        padding: 16px;
     }
 
     .history-toolbar {
         grid-template-columns: 1fr;
         gap: 14px;
+        padding: 16px;
     }
 
     .history-date-toolbar {
         grid-template-columns: 1fr;
         gap: 14px;
+        padding: 16px;
     }
 
     .history-filter-actions {
@@ -338,5 +402,13 @@
 
     .history-details-section {
         padding: 18px 0;
+    }
+}
+
+/* 17. Reduced Motion Support */
+
+@media (prefers-reduced-motion: reduce) {
+    .history-summary-card {
+        transition: none;
     }
 }

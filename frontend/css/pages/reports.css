@@ -603,3 +603,379 @@
         padding: 13px;
     }
 }
+/* ==========================================
+   11. UILORA-INSPIRED GLASS CARD REDESIGN
+========================================== */
+
+/* Report Summary Cards */
+
+.report-summary-card {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+
+    border: 1px solid transparent;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 67, 0.88),
+            rgba(12, 18, 35, 0.92)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            rgba(168, 85, 247, 0.42),
+            rgba(59, 130, 246, 0.32),
+            rgba(255, 255, 255, 0.12)
+        ) border-box;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.24),
+        0 0 16px rgba(147, 51, 234, 0.08),
+        0 0 22px rgba(59, 130, 246, 0.06);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    transition:
+        transform 1s ease,
+        box-shadow 1s ease;
+}
+
+/* Summary Card Outer Glow */
+
+.report-summary-card::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    z-index: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        90deg,
+        #9333ea,
+        #2563eb
+    );
+
+    filter: blur(18px);
+    opacity: 0.18;
+
+    pointer-events: none;
+
+    transition:
+        opacity 1s ease,
+        filter 1s ease;
+}
+
+/* Summary Card Hover */
+
+.report-summary-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(147, 51, 234, 0.30),
+        0 0 40px rgba(59, 130, 246, 0.22);
+
+    transition-duration: 200ms;
+}
+
+.report-summary-card:hover::after {
+    opacity: 0.90;
+    filter: blur(23px);
+    transition-duration: 200ms;
+}
+
+/* Keep Summary Card Content Above Glow */
+
+.report-summary-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Summary Card Text */
+
+.report-summary-card p {
+    color: #b8c3d8;
+    transition: color 0.2s ease;
+}
+
+.report-summary-card:hover p {
+    color: #ffffff;
+}
+
+.report-summary-card h3 {
+    color: #f5f3ff;
+}
+
+.report-summary-card span {
+    color: #a5b1c7;
+}
+
+/* Summary Card Icons */
+
+.summary-card-icon {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 15px;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.report-summary-card:hover .summary-card-icon {
+    transform: scale(1.08);
+
+    box-shadow:
+        0 0 14px rgba(147, 51, 234, 0.22),
+        0 0 20px rgba(59, 130, 246, 0.12);
+}
+
+/* Shared Main Card Styling */
+
+.report-filter-section,
+.chart-card,
+.generated-reports-section {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+
+    border: 1px solid transparent;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 67, 0.88),
+            rgba(12, 18, 35, 0.92)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            rgba(168, 85, 247, 0.30),
+            rgba(59, 130, 246, 0.24),
+            rgba(255, 255, 255, 0.10)
+        ) border-box;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.24),
+        0 0 18px rgba(147, 51, 234, 0.06);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    transition:
+        transform 1s ease,
+        box-shadow 1s ease;
+}
+
+/* Main Cards Outer Glow */
+
+.report-filter-section::after,
+.chart-card::after,
+.generated-reports-section::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    z-index: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        90deg,
+        #9333ea,
+        #2563eb
+    );
+
+    filter: blur(18px);
+    opacity: 0.16;
+
+    pointer-events: none;
+
+    transition:
+        opacity 1s ease,
+        filter 1s ease;
+}
+
+/* Main Card Hover */
+
+.report-filter-section:hover,
+.chart-card:hover,
+.generated-reports-section:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(147, 51, 234, 0.30),
+        0 0 40px rgba(59, 130, 246, 0.22);
+
+    transition-duration: 200ms;
+}
+
+.report-filter-section:hover::after,
+.chart-card:hover::after,
+.generated-reports-section:hover::after {
+    opacity: 0.75;
+    filter: blur(23px);
+    transition-duration: 200ms;
+}
+
+/* Keep Main Card Contents Above Glow */
+
+.report-filter-section > *,
+.chart-card > *,
+.generated-reports-section > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Card Headings */
+
+.report-filter-section h3,
+.chart-card-header h4,
+.generated-reports-section h3 {
+    color: #f1f5ff;
+}
+
+.report-filter-section p,
+.chart-card-header p,
+.generated-reports-section .section-heading p {
+    color: #a5b1c7;
+}
+
+/* Report Filter Inputs */
+
+.report-filter-grid input,
+.report-filter-grid select {
+    background: rgba(9, 16, 32, 0.58);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #f1f5ff;
+}
+
+.report-filter-grid label {
+    color: #e7ecf7;
+}
+
+.report-filter-grid input:focus,
+.report-filter-grid select:focus {
+    border-color: var(--color-primary, #8b92ff);
+    box-shadow: 0 0 0 3px rgba(139, 146, 255, 0.14);
+}
+
+.report-filter-grid select option {
+    background: #172139;
+    color: #f1f5ff;
+}
+
+/* Chart Type Labels */
+
+.chart-type-label {
+    border-color: rgba(139, 146, 255, 0.25);
+    background: rgba(139, 146, 255, 0.15);
+    color: #c4c7ff;
+}
+
+/* Chart Containers */
+
+.chart-container {
+    border-radius: 14px;
+}
+
+.chart-empty-state strong {
+    color: #f1f5ff;
+}
+
+.chart-empty-state p {
+    color: #a5b1c7;
+}
+
+/* Generated Reports Search */
+
+.table-toolbar .search-box input {
+    background: rgba(9, 16, 32, 0.58);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #f1f5ff;
+}
+
+.table-toolbar .search-box input:focus {
+    border-color: var(--color-primary, #8b92ff);
+    box-shadow: 0 0 0 3px rgba(139, 146, 255, 0.14);
+}
+
+/* Generated Reports Table */
+
+.table-responsive {
+    border-radius: 14px;
+    overflow-x: auto;
+}
+
+#reportsTable th {
+    background: rgba(255, 255, 255, 0.055);
+    color: #aebbd0;
+}
+
+#reportsTable td {
+    color: #e7ecf7;
+}
+
+#reportsTable tbody tr {
+    transition: background 0.2s ease;
+}
+
+#reportsTable tbody tr:hover {
+    background: rgba(139, 146, 255, 0.075);
+}
+
+/* Table Footer */
+
+.table-footer {
+    color: #a5b1c7;
+}
+
+/* Responsive Adjustments */
+
+@media (max-width: 768px) {
+    .report-summary-card,
+    .report-filter-section,
+    .chart-card,
+    .generated-reports-section {
+        border-radius: 20px;
+    }
+
+    .report-summary-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .report-filter-section:hover,
+    .chart-card:hover,
+    .generated-reports-section:hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* Reduced Motion Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    .report-summary-card,
+    .report-summary-card::after,
+    .summary-card-icon,
+    .report-filter-section,
+    .report-filter-section::after,
+    .chart-card,
+    .chart-card::after,
+    .generated-reports-section,
+    .generated-reports-section::after {
+        transition: none !important;
+    }
+
+    .report-summary-card:hover,
+    .report-filter-section:hover,
+    .chart-card:hover,
+    .generated-reports-section:hover {
+        transform: none;
+    }
+}

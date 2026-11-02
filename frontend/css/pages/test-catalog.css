@@ -286,3 +286,436 @@
         transition: none;
     }
 }
+
+/* ==========================================
+   12. UILORA-INSPIRED GLASS CARD REDESIGN
+========================================== */
+
+/* Summary Cards */
+
+.catalog-summary-card {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+
+    border: 1px solid transparent;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 67, 0.88),
+            rgba(12, 18, 35, 0.92)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            rgba(168, 85, 247, 0.42),
+            rgba(59, 130, 246, 0.32),
+            rgba(255, 255, 255, 0.12)
+        ) border-box;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.24),
+        0 0 16px rgba(147, 51, 234, 0.08),
+        0 0 22px rgba(59, 130, 246, 0.06);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    transition:
+        transform 1s ease,
+        box-shadow 1s ease;
+}
+
+/* Animated Purple-Blue Glow */
+
+.catalog-summary-card::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    z-index: -1;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        120deg,
+        #9333ea,
+        #2563eb
+    );
+
+    filter: blur(18px);
+    opacity: 0.16;
+
+    pointer-events: none;
+
+    transition:
+        opacity 1s ease,
+        filter 1s ease;
+}
+
+/* Hover Animation */
+
+.catalog-summary-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(147, 51, 234, 0.28),
+        0 0 40px rgba(59, 130, 246, 0.20);
+
+    transition-duration: 200ms;
+}
+
+.catalog-summary-card:hover::before {
+    opacity: 0.85;
+    filter: blur(22px);
+    transition-duration: 200ms;
+}
+
+/* Keep Summary Card Content Above Glow */
+
+.catalog-summary-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Summary Card Text */
+
+.catalog-summary-card .summary-label {
+    color: #b8c3d8;
+    transition: color 0.2s ease;
+}
+
+.catalog-summary-card:hover .summary-label {
+    color: #ffffff;
+}
+
+.catalog-summary-card .summary-value {
+    color: #f5f3ff;
+}
+
+/* Summary Card Icons */
+
+.catalog-summary-icon {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    background: rgba(139, 146, 255, 0.14);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.catalog-summary-card:hover .catalog-summary-icon {
+    transform: scale(1.08);
+
+    box-shadow:
+        0 0 14px rgba(147, 51, 234, 0.22),
+        0 0 20px rgba(59, 130, 246, 0.12);
+}
+
+/* Active Icon */
+
+.catalog-summary-icon.active-summary-icon {
+    border-color: rgba(72, 214, 160, 0.25);
+    background: rgba(72, 214, 160, 0.14);
+    color: #64e7b5;
+}
+
+/* Inactive Icon */
+
+.catalog-summary-icon.inactive-summary-icon {
+    border-color: rgba(245, 199, 107, 0.25);
+    background: rgba(245, 199, 107, 0.14);
+    color: #f5c76b;
+}
+
+/* Main Laboratory Records Card */
+
+.content-section > .card {
+    position: relative;
+    isolation: isolate;
+
+    border: 1px solid transparent;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 67, 0.88),
+            rgba(12, 18, 35, 0.92)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            rgba(168, 85, 247, 0.30),
+            rgba(59, 130, 246, 0.24),
+            rgba(255, 255, 255, 0.10)
+        ) border-box;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.24),
+        0 0 18px rgba(147, 51, 234, 0.06);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.content-section > .card:hover {
+    box-shadow:
+        0 14px 36px rgba(0, 0, 0, 0.30),
+        0 0 24px rgba(147, 51, 234, 0.12),
+        0 0 30px rgba(59, 130, 246, 0.09);
+}
+
+/* Main Card Heading */
+
+.content-section > .card .card-title {
+    color: #f1f5ff;
+}
+
+.content-section > .card .card-description {
+    color: #a5b1c7;
+}
+
+/* Search and Filter Toolbar */
+
+.catalog-toolbar {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(35, 43, 70, 0.72),
+            rgba(13, 21, 41, 0.76)
+        );
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.catalog-toolbar:hover {
+    border-color: rgba(139, 146, 255, 0.28);
+
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.22),
+        0 0 18px rgba(147, 51, 234, 0.08);
+}
+
+/* Search and Filter Labels */
+
+.catalog-search label,
+.catalog-filter label {
+    color: #e7ecf7;
+}
+
+/* Table Container */
+
+.catalog-table-container {
+    border-radius: 14px;
+    overflow-x: auto;
+}
+
+/* Table Header */
+
+.catalog-table-container .data-table th {
+    background: rgba(255, 255, 255, 0.055);
+    color: #aebbd0;
+}
+
+/* Table Rows */
+
+.catalog-table-container .data-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.catalog-table-container .data-table tbody tr:hover {
+    background: rgba(139, 146, 255, 0.075);
+}
+
+/* Table Actions */
+
+.table-action {
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.table-action:hover {
+    transform: translateY(-1px);
+}
+
+.table-action-edit:hover {
+    box-shadow: 0 0 12px rgba(139, 146, 255, 0.15);
+}
+
+/* Table Footer */
+
+.catalog-table-footer {
+    color: #a5b1c7;
+}
+
+/* Responsive Adjustments */
+
+@media (max-width: 768px) {
+    .catalog-summary-card {
+        border-radius: 20px;
+    }
+
+    .catalog-summary-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .content-section > .card {
+        border-radius: 20px;
+    }
+
+    .catalog-toolbar {
+        border-radius: 16px;
+    }
+}
+
+/* Accessibility: Reduced Motion */
+
+@media (prefers-reduced-motion: reduce) {
+    .catalog-summary-card,
+    .catalog-summary-card::before,
+    .catalog-summary-icon,
+    .catalog-toolbar,
+    .content-section > .card,
+    .table-action {
+        transition: none !important;
+    }
+
+    .catalog-summary-card:hover,
+    .table-action:hover {
+        transform: none;
+    }
+}
+
+/* ==========================================
+   13. TEST CATALOG - UPGRADED UILORA GLOW
+========================================== */
+
+/* Summary Cards */
+
+.catalog-summary-card {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+}
+
+/* Correct the Glow Layer Position */
+
+.catalog-summary-card::before {
+    z-index: 0;
+    opacity: 0.18;
+    pointer-events: none;
+    transition:
+        opacity 1s ease,
+        filter 1s ease;
+}
+
+/* Keep Card Content Above the Glow */
+
+.catalog-summary-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Summary Card Hover */
+
+.catalog-summary-card:hover::before {
+    opacity: 0.90;
+    filter: blur(23px);
+    transition-duration: 200ms;
+}
+
+/* Main Laboratory Test Records Card */
+
+.content-section > .card {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+}
+
+/* Add the Missing Outer Glow */
+
+.content-section > .card::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    z-index: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        90deg,
+        #9333ea,
+        #2563eb
+    );
+
+    filter: blur(18px);
+    opacity: 0.16;
+
+    pointer-events: none;
+
+    transition:
+        opacity 1s ease,
+        filter 1s ease;
+}
+
+/* Keep Main Card Contents Above the Glow */
+
+.content-section > .card > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Main Card Hover */
+
+.content-section > .card:hover::after {
+    opacity: 0.75;
+    filter: blur(23px);
+    transition-duration: 200ms;
+}
+
+.content-section > .card:hover {
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(147, 51, 234, 0.30),
+        0 0 40px rgba(59, 130, 246, 0.22);
+
+    transform: translateY(-3px);
+    transition-duration: 200ms;
+}
+
+/* Reduced Motion */
+
+@media (prefers-reduced-motion: reduce) {
+    .catalog-summary-card::before,
+    .content-section > .card::after {
+        transition: none !important;
+    }
+
+    .content-section > .card:hover {
+        transform: none;
+    }
+}
+

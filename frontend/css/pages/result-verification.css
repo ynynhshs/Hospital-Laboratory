@@ -421,3 +421,432 @@
         transition: none;
     }
 }
+
+/* ==========================================
+   20. UILORA-INSPIRED GLASS CARD REDESIGN
+========================================== */
+
+/* Verification Summary Cards */
+
+.verification-summary-card {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+
+    border: 1px solid transparent;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 67, 0.88),
+            rgba(12, 18, 35, 0.92)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            rgba(168, 85, 247, 0.42),
+            rgba(59, 130, 246, 0.32),
+            rgba(255, 255, 255, 0.12)
+        ) border-box;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.24),
+        0 0 16px rgba(147, 51, 234, 0.08),
+        0 0 22px rgba(59, 130, 246, 0.06);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    transition:
+        transform 1s ease,
+        box-shadow 1s ease;
+}
+
+/* Summary Card Outer Glow */
+
+.verification-summary-card::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    z-index: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        90deg,
+        #9333ea,
+        #2563eb
+    );
+
+    filter: blur(18px);
+    opacity: 0.18;
+
+    pointer-events: none;
+
+    transition:
+        opacity 1s ease,
+        filter 1s ease;
+}
+
+/* Summary Card Hover */
+
+.verification-summary-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(147, 51, 234, 0.30),
+        0 0 40px rgba(59, 130, 246, 0.22);
+
+    transition-duration: 200ms;
+}
+
+.verification-summary-card:hover::after {
+    opacity: 0.90;
+    filter: blur(23px);
+    transition-duration: 200ms;
+}
+
+/* Keep Summary Content Above Glow */
+
+.verification-summary-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Summary Card Text */
+
+.verification-summary-card .summary-label {
+    color: #b8c3d8;
+    transition: color 0.2s ease;
+}
+
+.verification-summary-card:hover .summary-label {
+    color: #ffffff;
+}
+
+.verification-summary-card .summary-value {
+    color: #f5f3ff;
+}
+
+/* Summary Card Icons */
+
+.verification-summary-icon {
+    border-radius: 15px;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.verification-summary-card:hover .verification-summary-icon {
+    transform: scale(1.08);
+
+    box-shadow:
+        0 0 14px rgba(147, 51, 234, 0.22),
+        0 0 20px rgba(59, 130, 246, 0.12);
+}
+
+/* Main Verification Cards */
+
+.content-section > .card {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+
+    border: 1px solid transparent;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 67, 0.88),
+            rgba(12, 18, 35, 0.92)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            rgba(168, 85, 247, 0.30),
+            rgba(59, 130, 246, 0.24),
+            rgba(255, 255, 255, 0.10)
+        ) border-box;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.24),
+        0 0 18px rgba(147, 51, 234, 0.06);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    transition:
+        transform 1s ease,
+        box-shadow 1s ease;
+}
+
+/* Main Card Outer Glow */
+
+.content-section > .card::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    z-index: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        90deg,
+        #9333ea,
+        #2563eb
+    );
+
+    filter: blur(18px);
+    opacity: 0.16;
+
+    pointer-events: none;
+
+    transition:
+        opacity 1s ease,
+        filter 1s ease;
+}
+
+/* Keep Main Card Content Above Glow */
+
+.content-section > .card > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Main Card Hover */
+
+.content-section > .card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(147, 51, 234, 0.30),
+        0 0 40px rgba(59, 130, 246, 0.22);
+
+    transition-duration: 200ms;
+}
+
+.content-section > .card:hover::after {
+    opacity: 0.75;
+    filter: blur(23px);
+    transition-duration: 200ms;
+}
+
+/* Main Card Headings */
+
+.content-section > .card .card-title {
+    color: #f1f5ff;
+}
+
+.content-section > .card .card-description {
+    color: #a5b1c7;
+}
+
+/* Verification Toolbar */
+
+.verification-toolbar {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(35, 43, 70, 0.72),
+            rgba(13, 21, 41, 0.76)
+        );
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.verification-toolbar:hover {
+    border-color: rgba(139, 146, 255, 0.28);
+
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.22),
+        0 0 18px rgba(147, 51, 234, 0.08);
+}
+
+.verification-search label,
+.verification-filter label {
+    color: #e7ecf7;
+}
+
+/* Verification Table */
+
+.verification-table-container {
+    border-radius: 14px;
+    overflow-x: auto;
+}
+
+.verification-table-container .data-table th,
+.verification-form-section .data-table th {
+    background: rgba(255, 255, 255, 0.055);
+    color: #aebbd0;
+}
+
+.verification-table-container .data-table tbody tr,
+.verification-form-section .data-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.verification-table-container .data-table tbody tr:hover,
+.verification-form-section .data-table tbody tr:hover {
+    background: rgba(139, 146, 255, 0.075);
+}
+
+/* Verification Review Card */
+
+.verification-review-card {
+    overflow: visible;
+}
+
+/* Internal Review Sections */
+
+.verification-form-section {
+    padding: 20px;
+    margin-top: 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(35, 43, 70, 0.48),
+            rgba(13, 21, 41, 0.42)
+        );
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.verification-form-section-title {
+    color: #e7ecf7;
+}
+
+/* Information Fields */
+
+.verification-information-grid .form-control {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.verification-information-grid .form-control:focus {
+    border-color: var(--color-primary, #8b92ff);
+    box-shadow: 0 0 0 3px rgba(139, 146, 255, 0.14);
+}
+
+.verification-information-grid .form-control[readonly] {
+    background: rgba(9, 16, 32, 0.42);
+}
+
+/* Reference Range Notice */
+
+.verification-range-notice {
+    border-radius: 12px;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Submitted Results Table */
+
+.verification-form-section .table-container {
+    margin-top: 5px;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.verification-form-section .data-table td {
+    color: #e7ecf7;
+}
+
+/* Verification Remarks */
+
+#verificationRemarks {
+    background: rgba(9, 16, 32, 0.58);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+#verificationRemarks:focus {
+    border-color: var(--color-primary, #8b92ff);
+    box-shadow: 0 0 0 3px rgba(139, 146, 255, 0.14);
+}
+
+/* Verification Actions */
+
+.verification-actions {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.verification-form-footnote {
+    color: #a5b1c7;
+}
+
+/* Review Table Action */
+
+.verification-action-view {
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.verification-action-view:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 12px rgba(139, 146, 255, 0.15);
+}
+
+/* Responsive Adjustments */
+
+@media (max-width: 768px) {
+    .verification-summary-card {
+        border-radius: 20px;
+    }
+
+    .verification-summary-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .content-section > .card {
+        border-radius: 20px;
+    }
+
+    .verification-toolbar {
+        border-radius: 16px;
+    }
+
+    .verification-form-section {
+        padding: 15px;
+    }
+}
+
+/* Reduced Motion Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    .verification-summary-card,
+    .verification-summary-card::after,
+    .content-section > .card,
+    .content-section > .card::after,
+    .verification-toolbar,
+    .verification-summary-icon,
+    .verification-action-view {
+        transition: none !important;
+    }
+
+    .verification-summary-card:hover,
+    .content-section > .card:hover,
+    .verification-action-view:hover {
+        transform: none;
+    }
+}

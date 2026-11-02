@@ -1,7 +1,7 @@
 
 /* ==========================================
    MEDILINK LABORATORY
-   SPECIMEN MANAGEMENT PAGE STYLESHEET
+   GLASSMORPHISM SPECIMEN MANAGEMENT
 ========================================== */
 
 /* 1. Development Notice */
@@ -19,6 +19,7 @@
 
 .specimen-section-title {
     margin-bottom: 16px;
+    color: var(--color-text);
     font-size: 18px;
 }
 
@@ -37,42 +38,69 @@
     min-width: 0;
     min-height: 105px;
     padding: 16px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.specimen-summary-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--glass-highlight);
 }
 
 .specimen-summary-icon {
     width: 44px;
     height: 44px;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+
+    border: 1px solid rgba(139, 146, 255, 0.20);
     border-radius: var(--radius-medium);
-    background-color: var(--color-primary-light);
+
+    background: rgba(139, 146, 255, 0.13);
     color: var(--color-primary);
+
     font-size: 21px;
 }
 
+/* Specimen Status Colors */
+
 .summary-pending {
-    background-color: #fff3d6;
-    color: #946200;
+    border-color: rgba(245, 199, 107, 0.20);
+    background: rgba(245, 199, 107, 0.13);
+    color: #f5c76b;
 }
 
 .summary-received {
-    background-color: #e4f1ff;
-    color: #1b5c99;
+    border-color: rgba(116, 189, 255, 0.20);
+    background: rgba(116, 189, 255, 0.13);
+    color: #83c5ff;
 }
 
 .summary-accepted {
-    background-color: #def5e8;
-    color: #176c49;
+    border-color: rgba(72, 214, 160, 0.20);
+    background: rgba(72, 214, 160, 0.13);
+    color: #64e7b5;
 }
 
 .summary-rejected {
-    background-color: #fde8e7;
-    color: #a52e23;
+    border-color: rgba(255, 123, 134, 0.20);
+    background: rgba(255, 123, 134, 0.13);
+    color: #ff8993;
 }
 
 .specimen-summary-card .summary-value {
+    color: var(--color-text);
     font-size: 25px;
 }
 
@@ -80,19 +108,32 @@
 
 .specimen-toolbar {
     display: grid;
+
     grid-template-columns:
         minmax(220px, 1.7fr)
         minmax(165px, 1fr)
         minmax(145px, 0.9fr)
         auto;
+
     align-items: end;
     gap: 14px;
     margin-bottom: 22px;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .specimen-search,
 .specimen-filter {
     min-width: 0;
+
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -130,6 +171,7 @@
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
+
     color: var(--color-text-secondary);
     font-size: 12px;
 }
@@ -145,21 +187,36 @@
 .specimen-action-button {
     min-height: 30px;
     padding: 5px 9px;
-    border: 1px solid var(--color-border);
+
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-small);
-    background-color: white;
+
+    background: var(--glass-background);
     color: var(--color-text);
+
     font-size: 11px;
     cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .specimen-action-button:hover {
-    background-color: var(--color-background);
+    border-color: var(--color-primary);
+    background: var(--glass-background-strong);
 }
 
 .specimen-action-view {
-    border-color: #b8d9e6;
-    color: var(--color-primary);
+    border-color: rgba(139, 146, 255, 0.30);
+    background: rgba(139, 146, 255, 0.10);
+    color: #b5bbff;
+}
+
+.specimen-action-view:hover {
+    border-color: var(--color-primary);
+    background: rgba(139, 146, 255, 0.20);
 }
 
 /* 8. Specimen Page Footer */
@@ -167,7 +224,9 @@
 .specimen-page-footer {
     margin-top: 28px;
     padding: 16px 0;
+
     border-top: 1px solid var(--color-border);
+
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
@@ -193,7 +252,7 @@
     }
 
     .specimen-toolbar {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -207,11 +266,13 @@
 
     .specimen-summary-card {
         min-height: 90px;
+        padding: 16px;
     }
 
     .specimen-toolbar {
         grid-template-columns: 1fr;
         gap: 14px;
+        padding: 16px;
     }
 
     .specimen-toolbar .btn {
@@ -242,5 +303,14 @@
 
     .specimen-notice {
         font-size: 12px;
+    }
+}
+
+/* 13. Reduced Motion Support */
+
+@media (prefers-reduced-motion: reduce) {
+    .specimen-summary-card,
+    .specimen-action-button {
+        transition: none;
     }
 }
