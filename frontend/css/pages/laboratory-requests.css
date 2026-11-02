@@ -1,0 +1,240 @@
+
+/* ==========================================
+   MEDILINK LABORATORY
+   LABORATORY REQUESTS PAGE STYLESHEET
+========================================== */
+
+/* 1. Development Notice */
+
+.request-notice {
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.request-notice p {
+    margin-top: 3px;
+}
+
+/* 2. Section Heading */
+
+.request-section-title {
+    margin-bottom: 16px;
+    font-size: 18px;
+}
+
+/* 3. Request Summary Grid */
+
+.request-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.request-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+    min-height: 105px;
+}
+
+.request-summary-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: var(--radius-medium);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: 22px;
+}
+
+.summary-pending {
+    background-color: #fff3d6;
+    color: #946200;
+}
+
+.summary-progress {
+    background-color: #e4f1ff;
+    color: #1b5c99;
+}
+
+.summary-completed {
+    background-color: #def5e8;
+    color: #176c49;
+}
+
+/* 4. Request Toolbar */
+
+.request-toolbar {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 1.7fr)
+        minmax(160px, 1fr)
+        minmax(140px, 0.85fr)
+        auto;
+    align-items: end;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.request-search,
+.request-filter {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.request-search label,
+.request-filter label {
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 5. Request Table */
+
+.request-table-container {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.request-table-container .data-table {
+    min-width: 1100px;
+}
+
+.request-table-container .data-table th,
+.request-table-container .data-table td {
+    padding: 14px 13px;
+}
+
+/* 6. Request Table Footer */
+
+.request-table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+/* 7. Table Action Buttons */
+
+.request-action-group {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.request-action-button {
+    min-height: 30px;
+    padding: 5px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background-color: white;
+    color: var(--color-text);
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.request-action-button:hover {
+    background-color: var(--color-background);
+}
+
+.request-action-view {
+    border-color: #b8d9e6;
+    color: var(--color-primary);
+}
+
+/* 8. Priority Indicators */
+
+.priority-routine {
+    color: var(--color-text-secondary);
+}
+
+.priority-urgent {
+    color: #946200;
+    font-weight: 700;
+}
+
+.priority-stat {
+    color: var(--color-danger);
+    font-weight: 700;
+}
+
+/* 9. Page Footer */
+
+.request-page-footer {
+    margin-top: 28px;
+    padding: 16px 0;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* 10. Large Screens */
+
+@media (max-width: 1200px) {
+    .request-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .request-toolbar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* 11. Tablet Screens */
+
+@media (max-width: 768px) {
+    .request-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .request-summary-card {
+        min-height: 90px;
+    }
+
+    .request-toolbar {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .request-toolbar .btn {
+        width: 100%;
+    }
+
+    .request-table-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* 12. Small Mobile Screens */
+
+@media (max-width: 480px) {
+    .request-summary-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .request-notice {
+        font-size: 12px;
+    }
+
+    .request-summary-card {
+        padding: 14px;
+    }
+
+    .summary-value {
+        font-size: 24px;
+    }
+}

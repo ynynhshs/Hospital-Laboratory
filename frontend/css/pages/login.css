@@ -1,0 +1,251 @@
+
+/* ==========================================
+   MEDILINK LABORATORY
+   LOGIN PAGE STYLESHEET
+========================================== */
+
+.login-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    background-color: var(--color-surface);
+}
+
+/* Branding Section */
+
+.login-intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px 9%;
+    background-color: var(--color-sidebar);
+    color: white;
+}
+
+.login-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.login-brand h1 {
+    color: white;
+    font-size: 24px;
+}
+
+.login-brand p {
+    color: #c1d4df;
+    font-size: 12px;
+}
+
+.login-intro-content {
+    max-width: 520px;
+    padding: 40px 0;
+}
+
+.intro-label {
+    color: #7dd8c8;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.login-intro-content h2 {
+    margin: 22px 0;
+    color: white;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.2;
+}
+
+.login-intro-content > p {
+    max-width: 450px;
+    color: #c1d4df;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.login-features {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    margin-top: 35px;
+}
+
+.login-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #e2edf3;
+    font-size: 14px;
+}
+
+.feature-check {
+    width: 23px;
+    height: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(42, 157, 143, 0.25);
+    color: #7dd8c8;
+    font-weight: bold;
+}
+
+.login-intro-footer {
+    color: #a8c0cf;
+    font-size: 12px;
+}
+
+/* Login Panel */
+
+.login-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px 20px;
+    background-color: #f7f9fb;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 410px;
+    padding: 36px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+    background-color: white;
+    box-shadow: var(--shadow-medium);
+}
+
+.mobile-brand {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.mobile-brand h1 {
+    font-size: 22px;
+}
+
+/* Login Heading */
+
+.login-heading {
+    margin-bottom: 30px;
+}
+
+.login-welcome {
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.login-heading h2 {
+    margin: 12px 0 8px;
+    font-size: 26px;
+}
+
+.login-heading p {
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* Login Form */
+
+.login-card .form-group {
+    margin-bottom: 22px;
+}
+
+.login-card .form-control {
+    min-height: 48px;
+    background-color: #fbfcfd;
+}
+
+.login-button {
+    min-height: 48px;
+    margin-top: 8px;
+    font-size: 15px;
+}
+
+/* Login Message */
+
+.login-message {
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: var(--radius-small);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    font-size: 13px;
+}
+
+.login-message[hidden] {
+    display: none;
+}
+
+/* Security Information */
+
+.login-security {
+    margin-top: 25px;
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    text-align: center;
+}
+
+.login-security span {
+    margin-right: 5px;
+}
+
+/* Footer */
+
+.login-footer {
+    margin-top: 30px;
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* Responsive Design */
+
+@media (max-width: 900px) {
+    .login-page {
+        grid-template-columns: 0.9fr 1.1fr;
+    }
+
+    .login-intro {
+        padding: 35px 7%;
+    }
+
+    .login-card {
+        padding: 28px;
+    }
+}
+
+@media (max-width: 650px) {
+    .login-page {
+        display: block;
+    }
+
+    .login-intro {
+        display: none;
+    }
+
+    .login-panel {
+        min-height: 100vh;
+        padding: 24px 16px;
+    }
+
+    .login-card {
+        max-width: 450px;
+        padding: 28px 22px;
+    }
+
+    .mobile-brand {
+        display: flex;
+    }
+
+    .login-heading h2 {
+        font-size: 23px;
+    }
+}

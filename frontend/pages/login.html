@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | MediLink Laboratory</title>
+
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/pages/login.css">
+</head>
+
+<body>
+    <main class="login-page">
+
+        <!-- Branding Section -->
+        <section class="login-intro">
+
+            <div class="login-brand">
+                <div class="brand-logo">M</div>
+                <div>
+                    <h1>MediLink</h1>
+                    <p>Laboratory Services</p>
+                </div>
+            </div>
+
+            <div class="login-intro-content">
+                <span class="intro-label">
+                    LABORATORY INFORMATION SYSTEM
+                </span>
+
+                <h2>Smarter Laboratory Workflow Management</h2>
+
+                <p>
+                    Manage laboratory requests, specimens,
+                    processing activities, and verified results
+                    through one organized system.
+                </p>
+
+                <div class="login-features">
+                    <div class="login-feature">
+                        <span class="feature-check">✓</span>
+                        <span>Laboratory Request Tracking</span>
+                    </div>
+
+                    <div class="login-feature">
+                        <span class="feature-check">✓</span>
+                        <span>Specimen and Processing Monitoring</span>
+                    </div>
+
+                    <div class="login-feature">
+                        <span class="feature-check">✓</span>
+                        <span>Result Verification and Reporting</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-intro-footer">
+                Laboratory Request and Results Management System
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section class="login-panel">
+
+            <div class="login-card">
+
+                <div class="mobile-brand">
+                    <div class="brand-logo">M</div>
+                    <h1>MediLink</h1>
+                </div>
+
+                <div class="login-heading">
+                    <span class="login-welcome">WELCOME BACK</span>
+
+                    <h2>Sign in to your account</h2>
+
+                    <p>
+                        Enter your account credentials to access
+                        the laboratory workspace.
+                    </p>
+                </div>
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Enter your email address"
+                            autocomplete="username"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+                    </div>
+
+                    <div
+                        id="loginMessage"
+                        class="login-message"
+                        role="status"
+                        aria-live="polite"
+                        hidden>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-block login-button">
+                        Sign In
+                    </button>
+
+                </form>
+
+                <div class="login-security">
+                    <span>🔒</span>
+                    Authorized laboratory personnel only.
+                </div>
+
+            </div>
+
+            <footer class="login-footer">
+                © 2026 MediLink Laboratory. All rights reserved.
+            </footer>
+
+        </section>
+
+    </main>
+
+    <script src="../js/pages/login.js"></script>
+</body>
+</html>

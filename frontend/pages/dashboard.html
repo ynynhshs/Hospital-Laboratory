@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | MediLink Laboratory</title>
+
+    <!-- Global Stylesheets -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <!-- Dashboard Stylesheet -->
+    <link rel="stylesheet" href="../css/pages/dashboard.css">
+</head>
+
+<body>
+
+    <div class="app-layout" id="appLayout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-logo">M</div>
+
+                <div>
+                    <h2>MediLink</h2>
+                    <p>Laboratory Services</p>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar-nav" aria-label="Main navigation">
+
+                <p class="nav-section-title">Workspace</p>
+
+                <a href="dashboard.html" class="nav-link active"
+                   aria-current="page">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <p class="nav-section-title">Laboratory Operations</p>
+
+                <a href="test-catalog.html" class="nav-link">
+                    <span class="nav-icon">☷</span>
+                    <span>Test Catalog</span>
+                </a>
+
+                <a href="laboratory-requests.html" class="nav-link">
+                    <span class="nav-icon">▤</span>
+                    <span>Laboratory Requests</span>
+                </a>
+
+                <a href="specimen-management.html" class="nav-link">
+                    <span class="nav-icon">◉</span>
+                    <span>Specimen Management</span>
+                </a>
+
+                <a href="processing-worklist.html" class="nav-link">
+                    <span class="nav-icon">⚙</span>
+                    <span>Processing Worklist</span>
+                </a>
+
+                <p class="nav-section-title">Results</p>
+
+                <a href="result-entry.html" class="nav-link">
+                    <span class="nav-icon">✎</span>
+                    <span>Result Entry</span>
+                </a>
+
+                <a href="result-verification.html" class="nav-link">
+                    <span class="nav-icon">✓</span>
+                    <span>Result Verification</span>
+                </a>
+
+                <a href="laboratory-history.html" class="nav-link">
+                    <span class="nav-icon">◷</span>
+                    <span>Laboratory History</span>
+                </a>
+
+                <p class="nav-section-title">Administration</p>
+
+                <a href="reports.html" class="nav-link">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports & Analytics</span>
+                </a>
+
+                <a href="audit-logs.html" class="nav-link">
+                    <span class="nav-icon">▧</span>
+                    <span>Audit Trail</span>
+                </a>
+
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <p>MediLink Laboratory</p>
+                <p>Development Version 1.0</p>
+            </div>
+
+        </aside>
+
+        <!-- Mobile Sidebar Overlay -->
+        <button
+            type="button"
+            class="sidebar-overlay"
+            id="sidebarOverlay"
+            aria-label="Close navigation"
+            hidden>
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Top Header -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button
+                        type="button"
+                        class="sidebar-toggle"
+                        id="sidebarToggle"
+                        aria-label="Open navigation"
+                        aria-controls="sidebar"
+                        aria-expanded="false">
+                        ☰
+                    </button>
+
+                    <div>
+                        <p class="topbar-title">
+                            Laboratory Workspace
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="topbar-user">
+
+                        <div class="user-avatar">U</div>
+
+                        <div class="user-details">
+                            <p class="user-name">System User</p>
+                            <p class="user-role">Laboratory Personnel</p>
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline btn-small"
+                        id="logoutButton">
+                        Logout
+                    </button>
+
+                </div>
+
+            </header>
+
+            <!-- Dashboard Page Content -->
+            <section class="page-content">
+
+                <!-- Page Heading -->
+                <div class="page-header">
+
+                    <div>
+                        <h1 class="page-title">
+                            Laboratory Dashboard
+                        </h1>
+
+                        <p class="page-description">
+                            Overview of laboratory activities and request progress.
+                        </p>
+                    </div>
+
+                    <div class="dashboard-date" id="dashboardDate">
+                        Laboratory Operations
+                    </div>
+
+                </div>
+
+                <!-- Dashboard Notice -->
+                <div class="alert alert-info dashboard-notice">
+                    <span>ⓘ</span>
+
+                    <div>
+                        <strong>Development Preview</strong>
+                        <p>
+                            Dashboard figures and laboratory records will
+                            be displayed here once the API and database
+                            features are implemented.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <section class="content-section">
+
+                    <h2 class="dashboard-section-title">
+                        Request Overview
+                    </h2>
+
+                    <div class="stats-grid">
+
+                        <article class="stat-card">
+                            <div class="stat-icon">▤</div>
+
+                            <div>
+                                <p class="stat-label">Total Requests</p>
+                                <h3 class="stat-value">—</h3>
+                            </div>
+                        </article>
+
+                        <article class="stat-card">
+                            <div class="stat-icon stat-icon-warning">◷</div>
+
+                            <div>
+                                <p class="stat-label">Pending Requests</p>
+                                <h3 class="stat-value">—</h3>
+                            </div>
+                        </article>
+
+                        <article class="stat-card">
+                            <div class="stat-icon stat-icon-info">⚙</div>
+
+                            <div>
+                                <p class="stat-label">In Progress</p>
+                                <h3 class="stat-value">—</h3>
+                            </div>
+                        </article>
+
+                        <article class="stat-card">
+                            <div class="stat-icon stat-icon-danger">✓</div>
+
+                            <div>
+                                <p class="stat-label">Awaiting Verification</p>
+                                <h3 class="stat-value">—</h3>
+                            </div>
+                        </article>
+
+                        <article class="stat-card">
+                            <div class="stat-icon stat-icon-success">✔</div>
+
+                            <div>
+                                <p class="stat-label">Completed Requests</p>
+                                <h3 class="stat-value">—</h3>
+                            </div>
+                        </article>
+
+                    </div>
+
+                </section>
+
+                <!-- Charts and Request Activity -->
+                <section class="content-section dashboard-grid">
+
+                    <!-- Request Status Chart -->
+                    <article class="card dashboard-chart-card">
+
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">
+                                    Request Status Distribution
+                                </h2>
+
+                                <p class="card-description">
+                                    Distribution of laboratory requests by status.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="chart-placeholder" id="requestStatusChartArea">
+
+                            <div class="chart-placeholder-icon">◔</div>
+
+                            <h3>Request Status Chart</h3>
+
+                            <p>
+                                The doughnut chart will display actual
+                                request data when the analytics API is ready.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                    <!-- Laboratory Activity -->
+                    <article class="card activity-card">
+
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">
+                                    Laboratory Activities
+                                </h2>
+
+                                <p class="card-description">
+                                    Important workflow areas.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="activity-list">
+
+                            <div class="activity-item">
+                                <span class="activity-icon">▤</span>
+
+                                <div>
+                                    <h3>Laboratory Requests</h3>
+                                    <p>Manage incoming test requests.</p>
+                                </div>
+                            </div>
+
+                            <div class="activity-item">
+                                <span class="activity-icon">◉</span>
+
+                                <div>
+                                    <h3>Specimen Management</h3>
+                                    <p>Track specimen collection and reception.</p>
+                                </div>
+                            </div>
+
+                            <div class="activity-item">
+                                <span class="activity-icon">⚙</span>
+
+                                <div>
+                                    <h3>Laboratory Processing</h3>
+                                    <p>Monitor laboratory testing activities.</p>
+                                </div>
+                            </div>
+
+                            <div class="activity-item">
+                                <span class="activity-icon">✓</span>
+
+                                <div>
+                                    <h3>Result Verification</h3>
+                                    <p>Review results before release.</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+                <!-- Recent Laboratory Requests -->
+                <section class="content-section">
+
+                    <article class="card">
+
+                        <div class="card-header">
+
+                            <div>
+                                <h2 class="card-title">
+                                    Recent Laboratory Requests
+                                </h2>
+
+                                <p class="card-description">
+                                    Latest laboratory requests recorded in the system.
+                                </p>
+                            </div>
+
+                            <a
+                                href="laboratory-requests.html"
+                                class="btn btn-outline btn-small">
+                                View All Requests
+                            </a>
+
+                        </div>
+
+                        <div class="table-container">
+
+                            <table class="data-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>Request Number</th>
+                                        <th>Patient</th>
+                                        <th>Requested Date</th>
+                                        <th>Tests</th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="empty-state">
+                                                <div class="empty-state-icon">
+                                                    ▤
+                                                </div>
+
+                                                <h3 class="empty-state-title">
+                                                    No laboratory requests yet
+                                                </h3>
+
+                                                <p class="empty-state-description">
+                                                    Laboratory request records will
+                                                    appear here when available.
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+                <!-- Footer -->
+                <footer class="dashboard-footer">
+                    MediLink Laboratory Request and Results Management System
+                </footer>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Dashboard JavaScript -->
+    <script src="../js/pages/dashboard.js"></script>
+
+</body>
+</html>
