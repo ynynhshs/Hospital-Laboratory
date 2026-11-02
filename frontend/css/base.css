@@ -1,47 +1,54 @@
-
 /* ==========================================
    MEDILINK LABORATORY
-   BASE STYLESHEET
+   DARK GLASSMORPHISM DESIGN SYSTEM
 ========================================== */
 
 /* 1. Global Design Variables */
 :root {
     /* Primary Colors */
-    --color-primary: #176b87;
-    --color-primary-dark: #12566d;
-    --color-primary-light: #e8f4f7;
+    --color-primary: #8b92ff;
+    --color-primary-dark: #7279e8;
+    --color-primary-light: rgba(139, 146, 255, 0.16);
 
     /* Accent Colors */
-    --color-accent: #2a9d8f;
-    --color-success: #21865b;
-    --color-warning: #d89522;
-    --color-danger: #c0392b;
-    --color-info: #2878b5;
+    --color-accent: #64e7d1;
+    --color-success: #48d6a0;
+    --color-warning: #f5c76b;
+    --color-danger: #ff7b86;
+    --color-info: #74bdff;
 
     /* Background Colors */
-    --color-background: #f4f7fa;
-    --color-surface: #ffffff;
-    --color-sidebar: #163b50;
+    --color-background: #0b1020;
+    --color-surface: rgba(24, 35, 58, 0.72);
+    --color-sidebar: rgba(10, 15, 30, 0.90);
 
     /* Text Colors */
-    --color-text: #243746;
-    --color-text-secondary: #647789;
+    --color-text: #f1f5ff;
+    --color-text-secondary: #a5b1c7;
     --color-text-light: #ffffff;
 
     /* Border Colors */
-    --color-border: #dce5eb;
+    --color-border: rgba(255, 255, 255, 0.12);
+
+    /* Glassmorphism */
+    --glass-background: rgba(255, 255, 255, 0.07);
+    --glass-background-strong: rgba(255, 255, 255, 0.11);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-highlight: rgba(255, 255, 255, 0.18);
+    --glass-blur: 18px;
+    --glass-shadow: 0 12px 35px rgba(0, 0, 0, 0.24);
 
     /* Typography */
     --font-family: Arial, Helvetica, sans-serif;
 
     /* Border Radius */
-    --radius-small: 6px;
-    --radius-medium: 10px;
-    --radius-large: 16px;
+    --radius-small: 10px;
+    --radius-medium: 16px;
+    --radius-large: 22px;
 
     /* Shadows */
-    --shadow-small: 0 2px 6px rgba(20, 45, 65, 0.06);
-    --shadow-medium: 0 5px 15px rgba(20, 45, 65, 0.08);
+    --shadow-small: 0 5px 18px rgba(0, 0, 0, 0.16);
+    --shadow-medium: 0 10px 28px rgba(0, 0, 0, 0.22);
 
     /* Spacing */
     --spacing-xs: 4px;
@@ -67,7 +74,34 @@ html {
 body {
     min-height: 100vh;
     font-family: var(--font-family);
+
     background-color: var(--color-background);
+
+    background-image:
+        radial-gradient(
+            ellipse at 15% 10%,
+            rgba(91, 91, 190, 0.22),
+            transparent 38%
+        ),
+        radial-gradient(
+            ellipse at 85% 20%,
+            rgba(43, 151, 155, 0.12),
+            transparent 35%
+        ),
+        radial-gradient(
+            ellipse at 50% 100%,
+            rgba(91, 71, 150, 0.16),
+            transparent 45%
+        ),
+        linear-gradient(
+            135deg,
+            #0b1020 0%,
+            #11182c 50%,
+            #0c1423 100%
+        );
+
+    background-attachment: fixed;
+
     color: var(--color-text);
     line-height: 1.6;
 }
@@ -103,7 +137,8 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
+    color: var(--color-accent);
+    text-decoration: none;
 }
 
 /* 6. Form Elements */
@@ -127,8 +162,8 @@ button {
 
 /* 7. Accessible Focus Indicators */
 :focus-visible {
-    outline: 3px solid rgba(42, 157, 143, 0.5);
-    outline-offset: 2px;
+    outline: 3px solid rgba(139, 146, 255, 0.65);
+    outline-offset: 3px;
 }
 
 /* 8. Images */
@@ -162,5 +197,17 @@ img {
 
     h3 {
         font-size: 18px;
+    }
+}
+
+/* 11. Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

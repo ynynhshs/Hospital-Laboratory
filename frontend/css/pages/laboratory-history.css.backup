@@ -1,0 +1,342 @@
+
+/* ==========================================
+   MEDILINK LABORATORY
+   LABORATORY HISTORY PAGE STYLESHEET
+========================================== */
+
+/* 1. Development Notice */
+
+.history-notice {
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.history-notice p {
+    margin-top: 3px;
+}
+
+/* 2. Section Heading */
+
+.history-section-title {
+    margin-bottom: 16px;
+    font-size: 18px;
+}
+
+/* 3. History Summary Grid */
+
+.history-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.history-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+    min-height: 105px;
+}
+
+.history-summary-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: var(--radius-medium);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: 21px;
+}
+
+.history-released {
+    background-color: #def5e8;
+    color: #176c49;
+}
+
+.history-amended {
+    background-color: #fff3d6;
+    color: #946200;
+}
+
+.history-patients {
+    background-color: #e4f1ff;
+    color: #1b5c99;
+}
+
+.history-summary-card .summary-value {
+    font-size: 25px;
+}
+
+/* 4. History Search Toolbar */
+
+.history-toolbar {
+    display: grid;
+    grid-template-columns:
+        minmax(230px, 1.7fr)
+        minmax(160px, 1fr)
+        minmax(160px, 1fr);
+    align-items: end;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.history-search,
+.history-filter,
+.history-date-field {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.history-search label,
+.history-filter label,
+.history-date-field label {
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 5. Date Range Toolbar */
+
+.history-date-toolbar {
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr) auto;
+    align-items: end;
+    gap: 14px;
+    margin-bottom: 22px;
+    padding: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background-color: #fafcfd;
+}
+
+.history-filter-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+/* 6. Historical Records Table */
+
+.history-table-container {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.history-table-container .data-table {
+    min-width: 1150px;
+}
+
+.history-table-container .data-table th,
+.history-table-container .data-table td {
+    padding: 14px 13px;
+}
+
+/* 7. History Table Footer */
+
+.history-table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+/* 8. Historical Details Card */
+
+.history-details-card {
+    margin-top: 8px;
+}
+
+.history-details-card .card-header {
+    align-items: center;
+}
+
+.history-details-section {
+    padding: 22px 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.history-details-section:first-of-type {
+    border-top: none;
+}
+
+.history-details-title {
+    margin-bottom: 18px;
+    font-size: 16px;
+}
+
+/* 9. Historical Information Grid */
+
+.history-information-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+}
+
+.history-information-grid .form-group {
+    min-width: 0;
+}
+
+.history-information-grid .form-control[readonly] {
+    background-color: #f3f6f8;
+    color: var(--color-text-secondary);
+}
+
+/* 10. Historical Result Table */
+
+.history-details-section .table-container {
+    margin-top: 5px;
+}
+
+.history-details-section .data-table th,
+.history-details-section .data-table td {
+    padding: 14px;
+}
+
+#historyResultComponentsBody td {
+    white-space: normal;
+}
+
+/* 11. Historical Details Actions */
+
+.history-details-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 22px;
+    border-top: 1px solid var(--color-border);
+}
+
+.history-details-actions button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.history-details-footnote {
+    margin-top: 14px;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    text-align: right;
+}
+
+/* 12. History Page Footer */
+
+.history-page-footer {
+    margin-top: 28px;
+    padding: 16px 0;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* 13. Large Screens */
+
+@media (max-width: 1200px) {
+    .history-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .history-date-toolbar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .history-filter-actions {
+        grid-column: 1 / -1;
+    }
+}
+
+/* 14. Tablet Screens */
+
+@media (max-width: 900px) {
+    .history-information-grid {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+    }
+}
+
+/* 15. Mobile Screens */
+
+@media (max-width: 768px) {
+    .history-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .history-summary-card {
+        min-height: 90px;
+    }
+
+    .history-toolbar {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .history-date-toolbar {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .history-filter-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .history-filter-actions .btn {
+        width: 100%;
+    }
+
+    .history-table-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .history-details-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .history-details-actions .btn {
+        width: 100%;
+    }
+
+    .history-details-footnote {
+        text-align: left;
+    }
+}
+
+/* 16. Small Mobile Screens */
+
+@media (max-width: 480px) {
+    .history-summary-card {
+        padding: 14px;
+    }
+
+    .history-summary-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .history-summary-card .summary-value {
+        font-size: 23px;
+    }
+
+    .history-notice {
+        font-size: 12px;
+    }
+
+    .history-details-section {
+        padding: 18px 0;
+    }
+}

@@ -1,18 +1,28 @@
 
 /* ==========================================
    MEDILINK LABORATORY
-   DASHBOARD PAGE STYLESHEET
+   GLASSMORPHISM DASHBOARD STYLESHEET
 ========================================== */
 
 /* 1. Dashboard Page Heading */
 
 .dashboard-date {
-    padding: 9px 14px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-small);
-    background-color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 15px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+
+    background: var(--glass-background);
     color: var(--color-text-secondary);
+
     font-size: 12px;
+    font-weight: 600;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 /* 2. Dashboard Notice */
@@ -20,17 +30,23 @@
 .dashboard-notice {
     align-items: flex-start;
     margin-bottom: 28px;
+
+    border-color: rgba(116, 189, 255, 0.22);
+    background: rgba(116, 189, 255, 0.08);
 }
 
 .dashboard-notice p {
     margin-top: 3px;
+    color: #b9d9ff;
 }
 
 /* 3. Dashboard Section Titles */
 
 .dashboard-section-title {
     margin-bottom: 16px;
+    color: var(--color-text);
     font-size: 18px;
+    font-weight: 600;
 }
 
 /* 4. Statistics Grid */
@@ -42,34 +58,53 @@
 }
 
 .stats-grid .stat-card {
+    position: relative;
     min-width: 0;
-    min-height: 110px;
-    padding: 16px;
+    min-height: 115px;
+    padding: 18px;
+
+    overflow: hidden;
+}
+
+.stats-grid .stat-card::before {
+    content: "";
+    position: absolute;
+    top: -35px;
+    right: -35px;
+
+    width: 100px;
+    height: 100px;
+
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.035);
+
+    pointer-events: none;
 }
 
 .stat-value {
+    position: relative;
     font-size: 26px;
     line-height: 1.4;
 }
 
 .stat-icon-warning {
-    background-color: #fff3d6;
-    color: #946200;
+    background: rgba(245, 199, 107, 0.13);
+    color: #f5c76b;
 }
 
 .stat-icon-info {
-    background-color: #e4f1ff;
-    color: #1b5c99;
+    background: rgba(116, 189, 255, 0.13);
+    color: #83c5ff;
 }
 
 .stat-icon-danger {
-    background-color: #fde8e7;
-    color: #a52e23;
+    background: rgba(255, 123, 134, 0.13);
+    color: #ff8993;
 }
 
 .stat-icon-success {
-    background-color: #def5e8;
-    color: #176c49;
+    background: rgba(72, 214, 160, 0.13);
+    color: #64e7b5;
 }
 
 /* 5. Dashboard Main Grid */
@@ -81,7 +116,7 @@
     align-items: stretch;
 }
 
-/* 6. Chart Section */
+/* 6. Request Status Chart */
 
 .dashboard-chart-card {
     min-width: 0;
@@ -89,32 +124,50 @@
 
 .chart-placeholder {
     min-height: 300px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     padding: 25px;
-    border: 1px dashed var(--color-border);
+
+    border: 1px dashed rgba(255, 255, 255, 0.17);
     border-radius: var(--radius-medium);
-    background-color: #fafcfd;
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(139, 146, 255, 0.10),
+            transparent 65%
+        ),
+        rgba(8, 15, 30, 0.30);
+
     text-align: center;
 }
 
 .chart-placeholder-icon {
     width: 64px;
     height: 64px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     margin-bottom: 14px;
-    border-radius: 50%;
-    background-color: var(--color-primary-light);
+
+    border: 1px solid rgba(139, 146, 255, 0.25);
+    border-radius: 20px;
+
+    background: rgba(139, 146, 255, 0.14);
     color: var(--color-primary);
+
     font-size: 36px;
 }
 
 .chart-placeholder h3 {
     margin-bottom: 7px;
+    color: var(--color-text);
     font-size: 16px;
 }
 
@@ -140,8 +193,12 @@
     display: flex;
     align-items: center;
     gap: 13px;
+
     padding: 15px 0;
+
     border-bottom: 1px solid var(--color-border);
+
+    transition: background 0.2s ease;
 }
 
 .activity-item:first-child {
@@ -153,20 +210,26 @@
 }
 
 .activity-icon {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    border-radius: var(--radius-small);
-    background-color: var(--color-primary-light);
+
+    border: 1px solid rgba(139, 146, 255, 0.18);
+    border-radius: 13px;
+
+    background: rgba(139, 146, 255, 0.12);
     color: var(--color-primary);
+
     font-size: 19px;
 }
 
 .activity-item h3 {
     margin-bottom: 3px;
+    color: var(--color-text);
     font-size: 13px;
 }
 
@@ -199,7 +262,9 @@
 .dashboard-footer {
     margin-top: 28px;
     padding: 16px 0;
+
     border-top: 1px solid var(--color-border);
+
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
@@ -280,5 +345,244 @@
     .dashboard-grid + .content-section .card-header {
         align-items: flex-start;
         flex-direction: column;
+    }
+}
+
+/* 14. Reduced Motion Support */
+
+@media (prefers-reduced-motion: reduce) {
+    .activity-item {
+        transition: none;
+    }
+}
+
+/* ==========================================
+   15. UILORA-INSPIRED GLASS CARD REDESIGN
+========================================== */
+
+/* Shared Glass Card Appearance */
+
+.stats-grid .stat-card,
+.dashboard-grid > .card,
+.dashboard-grid + .content-section > .card {
+    position: relative;
+    isolation: isolate;
+
+    border: 1px solid transparent;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 67, 0.88),
+            rgba(12, 18, 35, 0.92)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            rgba(168, 85, 247, 0.42),
+            rgba(59, 130, 246, 0.32),
+            rgba(255, 255, 255, 0.12)
+        ) border-box;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.24),
+        0 0 16px rgba(147, 51, 234, 0.08),
+        0 0 22px rgba(59, 130, 246, 0.06);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    transition:
+        transform 1s ease,
+        box-shadow 1s ease,
+        background 1s ease;
+}
+
+/* Hover Glow Animation */
+
+.stats-grid .stat-card:hover,
+.dashboard-grid > .card:hover,
+.dashboard-grid + .content-section > .card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(147, 51, 234, 0.28),
+        0 0 40px rgba(59, 130, 246, 0.20);
+
+    transition-duration: 200ms;
+}
+
+/* Summary Card Decorative Glow */
+
+.stats-grid .stat-card::before {
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+.stats-grid .stat-card:hover::before {
+    background: rgba(168, 85, 247, 0.13);
+    transform: scale(1.35);
+}
+
+/* Summary Card Content */
+
+.stats-grid .stat-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.stats-grid .stat-card .stat-label {
+    color: #b8c3d8;
+    transition: color 0.2s ease;
+}
+
+.stats-grid .stat-card:hover .stat-label {
+    color: #ffffff;
+}
+
+.stats-grid .stat-card .stat-value {
+    color: #f5f3ff;
+    transition: color 0.2s ease;
+}
+
+/* Summary Card Icons */
+
+.stats-grid .stat-card .stat-icon {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 15px;
+
+    background-color: rgba(255, 255, 255, 0.07);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.stats-grid .stat-card:hover .stat-icon {
+    transform: scale(1.07);
+    box-shadow: 0 0 16px rgba(168, 85, 247, 0.18);
+}
+
+/* Dashboard Main Cards */
+
+.dashboard-grid > .card,
+.dashboard-grid + .content-section > .card {
+    overflow: visible;
+}
+
+/* Card Headings */
+
+.dashboard-grid .card-title,
+.dashboard-grid + .content-section .card-title {
+    color: #f1f5ff;
+}
+
+.dashboard-grid .card-description,
+.dashboard-grid + .content-section .card-description {
+    color: #a5b1c7;
+}
+
+/* Chart Placeholder */
+
+.dashboard-chart-card .chart-placeholder {
+    border-color: rgba(168, 85, 247, 0.22);
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(168, 85, 247, 0.12),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(59, 130, 246, 0.10),
+            transparent 50%
+        ),
+        rgba(8, 15, 30, 0.45);
+}
+
+/* Activity Items */
+
+.activity-item {
+    border-radius: 12px;
+
+    transition:
+        background 0.2s ease,
+        padding 0.2s ease;
+}
+
+.activity-item:hover {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    background: rgba(139, 146, 255, 0.09);
+}
+
+.activity-icon {
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+.activity-item:hover .activity-icon {
+    transform: scale(1.08);
+
+    background: rgba(139, 146, 255, 0.20);
+
+    box-shadow:
+        0 0 14px rgba(147, 51, 234, 0.20),
+        0 0 20px rgba(59, 130, 246, 0.10);
+}
+
+/* Recent Requests Table Card */
+
+.dashboard-grid + .content-section > .card {
+    border-radius: 24px;
+}
+
+.dashboard-grid + .content-section .table-container {
+    border-radius: 14px;
+    overflow-x: auto;
+}
+
+/* Responsive Card Adjustments */
+
+@media (max-width: 768px) {
+    .stats-grid .stat-card,
+    .dashboard-grid > .card,
+    .dashboard-grid + .content-section > .card {
+        border-radius: 20px;
+    }
+
+    .stats-grid .stat-card:hover,
+    .dashboard-grid > .card:hover,
+    .dashboard-grid + .content-section > .card:hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* Accessibility: Reduced Motion */
+
+@media (prefers-reduced-motion: reduce) {
+    .stats-grid .stat-card,
+    .dashboard-grid > .card,
+    .dashboard-grid + .content-section > .card,
+    .stats-grid .stat-card::before,
+    .stats-grid .stat-card .stat-icon,
+    .activity-item,
+    .activity-icon {
+        transition: none !important;
+    }
+
+    .stats-grid .stat-card:hover,
+    .dashboard-grid > .card:hover,
+    .dashboard-grid + .content-section > .card:hover {
+        transform: none;
     }
 }

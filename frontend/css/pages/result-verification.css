@@ -1,7 +1,7 @@
 
 /* ==========================================
    MEDILINK LABORATORY
-   RESULT VERIFICATION PAGE STYLESHEET
+   GLASSMORPHISM RESULT VERIFICATION
 ========================================== */
 
 /* 1. Development Notice */
@@ -19,6 +19,7 @@
 
 .verification-section-title {
     margin-bottom: 16px;
+    color: var(--color-text);
     font-size: 18px;
 }
 
@@ -36,40 +37,70 @@
     gap: 15px;
     min-width: 0;
     min-height: 105px;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.verification-summary-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--glass-highlight);
 }
 
 .verification-summary-icon {
     width: 46px;
     height: 46px;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+
+    border: 1px solid rgba(139, 146, 255, 0.20);
     border-radius: var(--radius-medium);
+
+    background: rgba(139, 146, 255, 0.13);
+    color: var(--color-primary);
+
     font-size: 21px;
 }
 
+/* Verification Status Colors */
+
 .verification-pending {
-    background-color: #fff3d6;
-    color: #946200;
+    border-color: rgba(245, 199, 107, 0.20);
+    background: rgba(245, 199, 107, 0.13);
+    color: #f5c76b;
 }
 
 .verification-approved {
-    background-color: #e4f1ff;
-    color: #1b5c99;
+    border-color: rgba(116, 189, 255, 0.20);
+    background: rgba(116, 189, 255, 0.13);
+    color: #83c5ff;
 }
 
 .verification-released {
-    background-color: #def5e8;
-    color: #176c49;
+    border-color: rgba(72, 214, 160, 0.20);
+    background: rgba(72, 214, 160, 0.13);
+    color: #64e7b5;
 }
 
 .verification-returned {
-    background-color: #fde8e7;
-    color: #a52e23;
+    border-color: rgba(255, 123, 134, 0.20);
+    background: rgba(255, 123, 134, 0.13);
+    color: #ff8993;
 }
 
 .verification-summary-card .summary-value {
+    color: var(--color-text);
     font-size: 25px;
 }
 
@@ -77,18 +108,31 @@
 
 .verification-toolbar {
     display: grid;
+
     grid-template-columns:
         minmax(230px, 1.7fr)
         minmax(180px, 1fr)
         auto;
+
     align-items: end;
     gap: 14px;
     margin-bottom: 22px;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .verification-search,
 .verification-filter {
     min-width: 0;
+
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -126,6 +170,7 @@
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
+
     color: var(--color-text-secondary);
     font-size: 12px;
 }
@@ -134,6 +179,7 @@
 
 .verification-review-card {
     margin-top: 8px;
+    overflow: hidden;
 }
 
 .verification-review-card .card-header {
@@ -149,7 +195,9 @@
 
 .verification-form-section-title {
     margin-bottom: 18px;
+    color: var(--color-text);
     font-size: 16px;
+    font-weight: 600;
 }
 
 .verification-information-grid {
@@ -163,8 +211,10 @@
 }
 
 .verification-information-grid .form-control[readonly] {
-    background-color: #f3f6f8;
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.045);
     color: var(--color-text-secondary);
+    cursor: default;
 }
 
 /* 9. Reference Range Notice */
@@ -204,6 +254,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 15px;
+
     padding-top: 22px;
     border-top: 1px solid var(--color-border);
 }
@@ -217,7 +268,7 @@
 }
 
 .verification-actions button:disabled {
-    opacity: 0.55;
+    opacity: 0.50;
     cursor: not-allowed;
 }
 
@@ -233,16 +284,25 @@
 .verification-action-view {
     min-height: 30px;
     padding: 5px 10px;
-    border: 1px solid #b8d9e6;
+
+    border: 1px solid rgba(139, 146, 255, 0.30);
     border-radius: var(--radius-small);
-    background-color: white;
-    color: var(--color-primary);
+
+    background: rgba(139, 146, 255, 0.10);
+    color: #b5bbff;
+
     font-size: 11px;
     cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .verification-action-view:hover {
-    background-color: var(--color-primary-light);
+    border-color: var(--color-primary);
+    background: rgba(139, 146, 255, 0.20);
 }
 
 /* 14. Verification Page Footer */
@@ -250,7 +310,9 @@
 .verification-page-footer {
     margin-top: 28px;
     padding: 16px 0;
+
     border-top: 1px solid var(--color-border);
+
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
@@ -287,11 +349,13 @@
 
     .verification-summary-card {
         min-height: 90px;
+        padding: 16px;
     }
 
     .verification-toolbar {
         grid-template-columns: 1fr;
         gap: 14px;
+        padding: 16px;
     }
 
     .verification-toolbar .btn {
@@ -346,5 +410,14 @@
 
     .verification-action-group .btn {
         width: 100%;
+    }
+}
+
+/* 19. Reduced Motion Support */
+
+@media (prefers-reduced-motion: reduce) {
+    .verification-summary-card,
+    .verification-action-view {
+        transition: none;
     }
 }

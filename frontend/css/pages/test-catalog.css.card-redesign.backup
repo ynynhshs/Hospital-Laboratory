@@ -1,0 +1,288 @@
+
+/* ==========================================
+   MEDILINK LABORATORY
+   GLASSMORPHISM TEST CATALOG STYLESHEET
+========================================== */
+
+/* 1. Page Notice */
+
+.catalog-notice {
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.catalog-notice p {
+    margin-top: 3px;
+}
+
+/* 2. Catalog Summary Cards */
+
+.catalog-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.catalog-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 110px;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.catalog-summary-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--glass-highlight);
+}
+
+.catalog-summary-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    border: 1px solid rgba(139, 146, 255, 0.20);
+    border-radius: var(--radius-medium);
+
+    background: rgba(139, 146, 255, 0.13);
+    color: var(--color-primary);
+
+    font-size: 22px;
+}
+
+.active-summary-icon {
+    border-color: rgba(72, 214, 160, 0.20);
+    background: rgba(72, 214, 160, 0.13);
+    color: #64e7b5;
+}
+
+.inactive-summary-icon {
+    border-color: rgba(245, 199, 107, 0.20);
+    background: rgba(245, 199, 107, 0.13);
+    color: #f5c76b;
+}
+
+.summary-label {
+    color: var(--color-text-secondary);
+    font-size: 13px;
+}
+
+.summary-value {
+    margin-top: 3px;
+    color: var(--color-text);
+    font-size: 27px;
+    font-weight: 700;
+}
+
+/* 3. Catalog Toolbar */
+
+.catalog-toolbar {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 1.8fr)
+        minmax(145px, 1fr)
+        minmax(130px, 0.9fr)
+        auto;
+
+    align-items: end;
+    gap: 14px;
+    margin-bottom: 22px;
+
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.catalog-search,
+.catalog-filter {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.catalog-search label,
+.catalog-filter label {
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 4. Catalog Table */
+
+.catalog-table-container {
+    margin-top: 5px;
+}
+
+.catalog-table-container .data-table {
+    min-width: 1050px;
+}
+
+.catalog-table-container .data-table th,
+.catalog-table-container .data-table td {
+    padding: 14px 13px;
+}
+
+.catalog-table-container .empty-state {
+    min-width: 300px;
+    padding: 45px 20px;
+}
+
+/* 5. Catalog Table Footer */
+
+.catalog-table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-top: 16px;
+
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+/* 6. Action Buttons Inside Table */
+
+.table-action-group {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.table-action {
+    min-height: 30px;
+    padding: 5px 9px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-small);
+
+    background: var(--glass-background);
+    color: var(--color-text);
+
+    font-size: 11px;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.table-action:hover {
+    background: var(--glass-background-strong);
+    border-color: var(--color-primary);
+}
+
+.table-action-edit {
+    border-color: rgba(139, 146, 255, 0.30);
+    background: rgba(139, 146, 255, 0.10);
+    color: #b5bbff;
+}
+
+.table-action-edit:hover {
+    border-color: var(--color-primary);
+    background: rgba(139, 146, 255, 0.20);
+}
+
+/* 7. Catalog Footer */
+
+.catalog-footer {
+    margin-top: 28px;
+    padding: 16px 0;
+
+    border-top: 1px solid var(--color-border);
+
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* 8. Tablet Layout */
+
+@media (max-width: 1100px) {
+    .catalog-toolbar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .catalog-toolbar .btn {
+        width: fit-content;
+    }
+}
+
+/* 9. Mobile Layout */
+
+@media (max-width: 768px) {
+    .catalog-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .catalog-summary-card {
+        min-height: 90px;
+        padding: 16px;
+    }
+
+    .catalog-toolbar {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 16px;
+    }
+
+    .catalog-toolbar .btn {
+        width: 100%;
+    }
+
+    .catalog-table-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* 10. Small Mobile Screens */
+
+@media (max-width: 480px) {
+    .summary-value {
+        font-size: 24px;
+    }
+
+    .catalog-summary-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .catalog-notice {
+        font-size: 12px;
+    }
+}
+
+/* 11. Reduced Motion Support */
+
+@media (prefers-reduced-motion: reduce) {
+    .catalog-summary-card,
+    .table-action {
+        transition: none;
+    }
+}

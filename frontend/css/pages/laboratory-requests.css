@@ -1,7 +1,7 @@
 
 /* ==========================================
    MEDILINK LABORATORY
-   LABORATORY REQUESTS PAGE STYLESHEET
+   GLASSMORPHISM LABORATORY REQUESTS STYLESHEET
 ========================================== */
 
 /* 1. Development Notice */
@@ -19,6 +19,7 @@
 
 .request-section-title {
     margin-bottom: 16px;
+    color: var(--color-text);
     font-size: 18px;
 }
 
@@ -36,34 +37,58 @@
     gap: 15px;
     min-width: 0;
     min-height: 105px;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.request-summary-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--glass-highlight);
 }
 
 .request-summary-icon {
     width: 48px;
     height: 48px;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+
+    border: 1px solid rgba(139, 146, 255, 0.20);
     border-radius: var(--radius-medium);
-    background-color: var(--color-primary-light);
+
+    background: rgba(139, 146, 255, 0.13);
     color: var(--color-primary);
+
     font-size: 22px;
 }
 
 .summary-pending {
-    background-color: #fff3d6;
-    color: #946200;
+    border-color: rgba(245, 199, 107, 0.20);
+    background: rgba(245, 199, 107, 0.13);
+    color: #f5c76b;
 }
 
 .summary-progress {
-    background-color: #e4f1ff;
-    color: #1b5c99;
+    border-color: rgba(116, 189, 255, 0.20);
+    background: rgba(116, 189, 255, 0.13);
+    color: #83c5ff;
 }
 
 .summary-completed {
-    background-color: #def5e8;
-    color: #176c49;
+    border-color: rgba(72, 214, 160, 0.20);
+    background: rgba(72, 214, 160, 0.13);
+    color: #64e7b5;
 }
 
 /* 4. Request Toolbar */
@@ -75,14 +100,26 @@
         minmax(160px, 1fr)
         minmax(140px, 0.85fr)
         auto;
+
     align-items: end;
     gap: 14px;
     margin-bottom: 22px;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .request-search,
 .request-filter {
     min-width: 0;
+
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -120,6 +157,7 @@
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
+
     color: var(--color-text-secondary);
     font-size: 12px;
 }
@@ -135,21 +173,36 @@
 .request-action-button {
     min-height: 30px;
     padding: 5px 10px;
-    border: 1px solid var(--color-border);
+
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-small);
-    background-color: white;
+
+    background: var(--glass-background);
     color: var(--color-text);
+
     font-size: 11px;
     cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .request-action-button:hover {
-    background-color: var(--color-background);
+    border-color: var(--color-primary);
+    background: var(--glass-background-strong);
 }
 
 .request-action-view {
-    border-color: #b8d9e6;
-    color: var(--color-primary);
+    border-color: rgba(139, 146, 255, 0.30);
+    background: rgba(139, 146, 255, 0.10);
+    color: #b5bbff;
+}
+
+.request-action-view:hover {
+    border-color: var(--color-primary);
+    background: rgba(139, 146, 255, 0.20);
 }
 
 /* 8. Priority Indicators */
@@ -159,12 +212,12 @@
 }
 
 .priority-urgent {
-    color: #946200;
+    color: #f5c76b;
     font-weight: 700;
 }
 
 .priority-stat {
-    color: var(--color-danger);
+    color: #ff8993;
     font-weight: 700;
 }
 
@@ -173,7 +226,9 @@
 .request-page-footer {
     margin-top: 28px;
     padding: 16px 0;
+
     border-top: 1px solid var(--color-border);
+
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
@@ -201,11 +256,13 @@
 
     .request-summary-card {
         min-height: 90px;
+        padding: 16px;
     }
 
     .request-toolbar {
         grid-template-columns: 1fr;
         gap: 14px;
+        padding: 16px;
     }
 
     .request-toolbar .btn {
@@ -236,5 +293,14 @@
 
     .summary-value {
         font-size: 24px;
+    }
+}
+
+/* 13. Reduced Motion Support */
+
+@media (prefers-reduced-motion: reduce) {
+    .request-summary-card,
+    .request-action-button {
+        transition: none;
     }
 }

@@ -1,7 +1,7 @@
 
 /* ==========================================
    MEDILINK LABORATORY
-   REUSABLE COMPONENTS STYLESHEET
+   GLASSMORPHISM COMPONENTS STYLESHEET
 ========================================== */
 
 /* 1. Buttons */
@@ -19,58 +19,68 @@
     font-weight: 600;
     text-align: center;
     cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition: all 0.25s ease;
 }
 
 .btn:disabled {
-    opacity: 0.55;
+    opacity: 0.45;
     cursor: not-allowed;
 }
 
 .btn-primary {
-    background-color: var(--color-primary);
-    color: white;
+    background: linear-gradient(135deg, #8b92ff, #7279e8);
+    color: #ffffff;
+    box-shadow: 0 5px 16px rgba(139, 146, 255, 0.22);
 }
 
 .btn-primary:hover:not(:disabled) {
-    background-color: var(--color-primary-dark);
+    background: linear-gradient(135deg, #a0a5ff, #838aff);
+    box-shadow: 0 7px 20px rgba(139, 146, 255, 0.32);
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background-color: #e9eef2;
+    border-color: var(--glass-border);
+    background: var(--glass-background-strong);
     color: var(--color-text);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .btn-secondary:hover:not(:disabled) {
-    background-color: #dce5eb;
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.25);
 }
 
 .btn-success {
-    background-color: var(--color-success);
-    color: white;
+    background: linear-gradient(135deg, #48d6a0, #279b7c);
+    color: #071a18;
 }
 
 .btn-success:hover:not(:disabled) {
-    background-color: #176c49;
+    filter: brightness(1.12);
+    transform: translateY(-2px);
 }
 
 .btn-danger {
-    background-color: var(--color-danger);
-    color: white;
+    background: linear-gradient(135deg, #ff7b86, #db5369);
+    color: #ffffff;
 }
 
 .btn-danger:hover:not(:disabled) {
-    background-color: #a52e23;
+    filter: brightness(1.12);
+    transform: translateY(-2px);
 }
 
 .btn-outline {
-    border-color: var(--color-border);
-    background-color: transparent;
+    border-color: var(--glass-border);
+    background: transparent;
     color: var(--color-text);
 }
 
 .btn-outline:hover:not(:disabled) {
-    background-color: var(--color-background);
+    background: var(--glass-background-strong);
+    border-color: var(--color-primary);
 }
 
 .btn-small {
@@ -89,14 +99,23 @@
     width: 100%;
 }
 
-/* 2. Cards */
+/* 2. Glass Cards */
 
 .card {
+    position: relative;
     padding: 22px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-medium);
-    background-color: var(--color-surface);
-    box-shadow: var(--shadow-small);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+    background: var(--glass-background);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.card:hover {
+    border-color: rgba(255, 255, 255, 0.20);
+    background: var(--glass-background-strong);
 }
 
 .card-header {
@@ -109,6 +128,7 @@
 }
 
 .card-title {
+    color: var(--color-text);
     font-size: 17px;
     font-weight: 600;
 }
@@ -141,10 +161,18 @@
     align-items: center;
     gap: 16px;
     padding: 20px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-medium);
-    background-color: var(--color-surface);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+    background: var(--glass-background);
     box-shadow: var(--shadow-small);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--glass-highlight);
 }
 
 .stat-icon {
@@ -155,7 +183,7 @@
     justify-content: center;
     flex-shrink: 0;
     border-radius: var(--radius-medium);
-    background-color: var(--color-primary-light);
+    background: var(--color-primary-light);
     color: var(--color-primary);
     font-size: 21px;
 }
@@ -167,6 +195,7 @@
 
 .stat-value {
     margin-top: 3px;
+    color: var(--color-text);
     font-size: 25px;
     font-weight: 700;
 }
@@ -194,22 +223,34 @@
     width: 100%;
     min-height: 42px;
     padding: 10px 12px;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-small);
-    background-color: white;
+    background: rgba(7, 13, 28, 0.48);
     color: var(--color-text);
     font-size: 14px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.form-control::placeholder {
+    color: rgba(165, 177, 199, 0.65);
 }
 
 .form-control:focus {
     border-color: var(--color-primary);
-    outline: 2px solid rgba(23, 107, 135, 0.12);
+    outline: 2px solid rgba(139, 146, 255, 0.18);
+    background: rgba(7, 13, 28, 0.70);
 }
 
 .form-control:disabled,
 .form-control[readonly] {
-    background-color: #f0f3f5;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-text-secondary);
     cursor: not-allowed;
+}
+
+.form-control option {
+    background: #18233a;
+    color: #f1f5ff;
 }
 
 textarea.form-control {
@@ -233,14 +274,16 @@ textarea.form-control {
     gap: 16px;
 }
 
-/* 5. Tables */
+/* 5. Glass Tables */
 
 .table-container {
     width: 100%;
     overflow-x: auto;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-medium);
-    background-color: var(--color-surface);
+    background: rgba(10, 17, 34, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .data-table {
@@ -258,13 +301,21 @@ textarea.form-control {
 }
 
 .data-table th {
-    background-color: #f5f8fa;
+    background: rgba(255, 255, 255, 0.055);
     color: var(--color-text-secondary);
     font-weight: 700;
 }
 
+.data-table td {
+    color: var(--color-text);
+}
+
+.data-table tbody tr {
+    transition: background 0.2s ease;
+}
+
 .data-table tbody tr:hover {
-    background-color: #f8fbfc;
+    background: rgba(139, 146, 255, 0.08);
 }
 
 .data-table tbody tr:last-child td {
@@ -278,45 +329,55 @@ textarea.form-control {
     align-items: center;
     justify-content: center;
     padding: 4px 10px;
+    border: 1px solid transparent;
     border-radius: 20px;
     font-size: 11px;
     font-weight: 700;
     white-space: nowrap;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .badge-pending {
-    background-color: #fff3d6;
-    color: #946200;
+    border-color: rgba(245, 199, 107, 0.25);
+    background: rgba(245, 199, 107, 0.13);
+    color: #f5c76b;
 }
 
 .badge-progress {
-    background-color: #e4f1ff;
-    color: #1b5c99;
+    border-color: rgba(116, 189, 255, 0.25);
+    background: rgba(116, 189, 255, 0.13);
+    color: #83c5ff;
 }
 
 .badge-completed {
-    background-color: #def5e8;
-    color: #176c49;
+    border-color: rgba(72, 214, 160, 0.25);
+    background: rgba(72, 214, 160, 0.13);
+    color: #64e7b5;
 }
 
 .badge-cancelled {
-    background-color: #fde8e7;
-    color: #a52e23;
+    border-color: rgba(255, 123, 134, 0.25);
+    background: rgba(255, 123, 134, 0.13);
+    color: #ff8993;
 }
 
 .badge-warning {
-    background-color: #fff0dc;
-    color: #995600;
+    border-color: rgba(245, 199, 107, 0.25);
+    background: rgba(245, 199, 107, 0.13);
+    color: #f5c76b;
 }
 
 .badge-info {
-    background-color: #e1f1f7;
-    color: #176b87;
+    border-color: rgba(116, 189, 255, 0.25);
+    background: rgba(116, 189, 255, 0.13);
+    color: #83c5ff;
 }
 
 .badge-neutral {
-    background-color: #edf0f2;
-    color: #52616b;
+    border-color: rgba(165, 177, 199, 0.20);
+    background: rgba(165, 177, 199, 0.10);
+    color: #b9c5d9;
 }
 
 /* 7. Alerts and Notifications */
@@ -330,30 +391,32 @@ textarea.form-control {
     border: 1px solid transparent;
     border-radius: var(--radius-small);
     font-size: 13px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .alert-success {
-    border-color: #bce5cc;
-    background-color: #eaf7ef;
-    color: #176c49;
+    border-color: rgba(72, 214, 160, 0.25);
+    background: rgba(72, 214, 160, 0.10);
+    color: #73e8bd;
 }
 
 .alert-warning {
-    border-color: #f1d9a9;
-    background-color: #fff6e5;
-    color: #875b08;
+    border-color: rgba(245, 199, 107, 0.25);
+    background: rgba(245, 199, 107, 0.10);
+    color: #f5d18a;
 }
 
 .alert-danger {
-    border-color: #efc1bd;
-    background-color: #fff0ef;
-    color: #a52e23;
+    border-color: rgba(255, 123, 134, 0.25);
+    background: rgba(255, 123, 134, 0.10);
+    color: #ff9ba4;
 }
 
 .alert-info {
-    border-color: #c5e2ed;
-    background-color: #edf7fb;
-    color: #176b87;
+    border-color: rgba(116, 189, 255, 0.25);
+    background: rgba(116, 189, 255, 0.10);
+    color: #91caff;
 }
 
 /* 8. Search and Toolbar */
@@ -381,12 +444,13 @@ textarea.form-control {
 
 .empty-state-icon {
     margin-bottom: 12px;
-    color: var(--color-text-secondary);
+    color: var(--color-primary);
     font-size: 36px;
 }
 
 .empty-state-title {
     margin-bottom: 6px;
+    color: var(--color-text);
     font-size: 17px;
 }
 
@@ -422,20 +486,27 @@ textarea.form-control {
     min-width: 34px;
     min-height: 34px;
     padding: 6px 10px;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-small);
-    background-color: white;
+    background: var(--glass-background);
     color: var(--color-text);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.pagination button:hover:not(:disabled) {
+    background: var(--glass-background-strong);
+    border-color: var(--color-primary);
 }
 
 .pagination button.active {
     border-color: var(--color-primary);
-    background-color: var(--color-primary);
-    color: white;
+    background: var(--color-primary);
+    color: #ffffff;
 }
 
 .pagination button:disabled {
-    opacity: 0.5;
+    opacity: 0.45;
     cursor: not-allowed;
 }
 
@@ -466,5 +537,20 @@ textarea.form-control {
 
     .card-footer {
         justify-content: flex-start;
+    }
+
+    .table-container {
+        border-radius: var(--radius-small);
+    }
+}
+
+/* 13. Reduced Motion Support */
+
+@media (prefers-reduced-motion: reduce) {
+    .btn,
+    .card,
+    .stat-card,
+    .data-table tbody tr {
+        transition: none;
     }
 }

@@ -5,6 +5,7 @@ const { rateLimit } = require('express-rate-limit');
 
 // Import MongoDB-backed session middleware.
 const sessionMiddleware = require('./config/session');
+const authRoutes = require('./modules/auth/auth.routes');
 
 const app = express();
 
@@ -38,6 +39,8 @@ app.use('/api/', apiLimiter);
 // This must run before routes that use authentication.
 app.use(sessionMiddleware);
 
+// Register authentication API routes.
+app.use('/api/v1/auth', authRoutes);
 
 
 // Initial API health-check endpoint.

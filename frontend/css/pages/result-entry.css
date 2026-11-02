@@ -1,7 +1,7 @@
 
 /* ==========================================
    MEDILINK LABORATORY
-   RESULT ENTRY PAGE STYLESHEET
+   GLASSMORPHISM RESULT ENTRY STYLESHEET
 ========================================== */
 
 /* 1. Development Notice */
@@ -19,6 +19,7 @@
 
 .result-section-title {
     margin-bottom: 16px;
+    color: var(--color-text);
     font-size: 18px;
 }
 
@@ -36,52 +37,91 @@
     gap: 15px;
     min-width: 0;
     min-height: 105px;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.result-summary-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--glass-highlight);
 }
 
 .result-summary-icon {
     width: 46px;
     height: 46px;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+
+    border: 1px solid rgba(139, 146, 255, 0.20);
     border-radius: var(--radius-medium);
-    background-color: var(--color-primary-light);
+
+    background: rgba(139, 146, 255, 0.13);
     color: var(--color-primary);
+
     font-size: 21px;
 }
 
+/* Result Status Colors */
+
 .result-draft {
-    background-color: #edf0f2;
-    color: #52616b;
+    border-color: rgba(165, 177, 199, 0.20);
+    background: rgba(165, 177, 199, 0.12);
+    color: #b9c5d9;
 }
 
 .result-pending {
-    background-color: #fff3d6;
-    color: #946200;
+    border-color: rgba(245, 199, 107, 0.20);
+    background: rgba(245, 199, 107, 0.13);
+    color: #f5c76b;
 }
 
 .result-released {
-    background-color: #def5e8;
-    color: #176c49;
+    border-color: rgba(72, 214, 160, 0.20);
+    background: rgba(72, 214, 160, 0.13);
+    color: #64e7b5;
 }
 
 /* 4. Result Worklist Toolbar */
 
 .result-worklist-toolbar {
     display: grid;
+
     grid-template-columns:
         minmax(230px, 1.7fr)
         minmax(170px, 1fr)
         auto;
+
     align-items: end;
     gap: 14px;
     margin-bottom: 22px;
+    padding: 20px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-large);
+
+    background: var(--glass-background);
+    box-shadow: var(--shadow-small);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .result-search,
 .result-worklist-filter {
     min-width: 0;
+
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -119,6 +159,7 @@
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
+
     color: var(--color-text-secondary);
     font-size: 12px;
 }
@@ -127,10 +168,17 @@
 
 .result-entry-card {
     margin-top: 8px;
+    overflow: hidden;
 }
 
 .result-entry-card .card-header {
     align-items: center;
+}
+
+.result-entry-card .card-header,
+.result-form-section,
+.result-form-actions {
+    min-width: 0;
 }
 
 .result-form-section {
@@ -144,7 +192,9 @@
 
 .result-form-section-title {
     margin-bottom: 18px;
+    color: var(--color-text);
     font-size: 16px;
+    font-weight: 600;
 }
 
 /* 8. Patient and Specimen Information */
@@ -160,8 +210,10 @@
 }
 
 .result-information-grid .form-control[readonly] {
-    background-color: #f3f6f8;
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.045);
     color: var(--color-text-secondary);
+    cursor: default;
 }
 
 /* 9. Reference Range Notice */
@@ -176,6 +228,7 @@
 
 .result-component-title {
     margin-bottom: 14px;
+    color: var(--color-text);
     font-size: 14px;
 }
 
@@ -195,6 +248,11 @@
     padding: 14px;
 }
 
+#resultComponentsBody input,
+#resultComponentsBody select {
+    min-width: 100px;
+}
+
 /* 11. Result Entry Actions */
 
 .result-form-actions {
@@ -203,6 +261,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 15px;
+
     padding-top: 22px;
     border-top: 1px solid var(--color-border);
 }
@@ -226,7 +285,7 @@
 #resultEntryForm button:disabled,
 #resultEntryForm input:disabled,
 #resultEntryForm textarea:disabled {
-    opacity: 0.65;
+    opacity: 0.50;
     cursor: not-allowed;
 }
 
@@ -235,7 +294,9 @@
 .result-page-footer {
     margin-top: 28px;
     padding: 16px 0;
+
     border-top: 1px solid var(--color-border);
+
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
@@ -272,11 +333,13 @@
 
     .result-summary-card {
         min-height: 90px;
+        padding: 16px;
     }
 
     .result-worklist-toolbar {
         grid-template-columns: 1fr;
         gap: 14px;
+        padding: 16px;
     }
 
     .result-worklist-toolbar .btn {
@@ -327,5 +390,13 @@
 
     .result-form-section {
         padding: 18px 0;
+    }
+}
+
+/* 18. Reduced Motion Support */
+
+@media (prefers-reduced-motion: reduce) {
+    .result-summary-card {
+        transition: none;
     }
 }

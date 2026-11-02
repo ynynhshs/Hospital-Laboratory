@@ -1,0 +1,166 @@
+
+/* ==========================================
+   MEDILINK LABORATORY
+   BASE STYLESHEET
+========================================== */
+
+/* 1. Global Design Variables */
+:root {
+    /* Primary Colors */
+    --color-primary: #176b87;
+    --color-primary-dark: #12566d;
+    --color-primary-light: #e8f4f7;
+
+    /* Accent Colors */
+    --color-accent: #2a9d8f;
+    --color-success: #21865b;
+    --color-warning: #d89522;
+    --color-danger: #c0392b;
+    --color-info: #2878b5;
+
+    /* Background Colors */
+    --color-background: #f4f7fa;
+    --color-surface: #ffffff;
+    --color-sidebar: #163b50;
+
+    /* Text Colors */
+    --color-text: #243746;
+    --color-text-secondary: #647789;
+    --color-text-light: #ffffff;
+
+    /* Border Colors */
+    --color-border: #dce5eb;
+
+    /* Typography */
+    --font-family: Arial, Helvetica, sans-serif;
+
+    /* Border Radius */
+    --radius-small: 6px;
+    --radius-medium: 10px;
+    --radius-large: 16px;
+
+    /* Shadows */
+    --shadow-small: 0 2px 6px rgba(20, 45, 65, 0.06);
+    --shadow-medium: 0 5px 15px rgba(20, 45, 65, 0.08);
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+}
+
+/* 2. Universal Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 3. HTML and Body */
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family: var(--font-family);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+/* 4. Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--color-text);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+h2 {
+    font-size: 23px;
+}
+
+h3 {
+    font-size: 19px;
+}
+
+/* 5. Links */
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 6. Form Elements */
+input,
+select,
+textarea,
+button {
+    font: inherit;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    color: var(--color-text);
+}
+
+button {
+    cursor: pointer;
+}
+
+/* 7. Accessible Focus Indicators */
+:focus-visible {
+    outline: 3px solid rgba(42, 157, 143, 0.5);
+    outline-offset: 2px;
+}
+
+/* 8. Images */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* 9. Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.text-secondary {
+    color: var(--color-text-secondary);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 10. Responsive Typography */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 21px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+}

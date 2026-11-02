@@ -1,11 +1,18 @@
-/* 1. Layout Structure */
+
+/* ==========================================
+   MEDILINK LABORATORY
+   GLASSMORPHISM LAYOUT STYLESHEET
+========================================== */
+
+/* 1. Main Layout Structure */
+
 .app-layout {
     display: flex;
     min-height: 100vh;
     width: 100%;
 }
 
-/* 2. Sidebar */
+/* 2. Glass Sidebar */
 
 .sidebar {
     position: sticky;
@@ -15,48 +22,81 @@
     min-width: 260px;
     height: 100vh;
     min-height: 100vh;
+
     display: flex;
     flex-direction: column;
-    background-color: var(--color-sidebar);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(19, 27, 49, 0.97),
+            rgba(9, 15, 30, 0.94)
+        );
+
     color: var(--color-text-light);
+
+    border-right: 1px solid rgba(255, 255, 255, 0.10);
+
+    box-shadow: 8px 0 30px rgba(0, 0, 0, 0.20);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
     transition: transform 0.3s ease;
     z-index: 1000;
 }
+
+/* 3. Sidebar Branding */
 
 .sidebar-brand {
     display: flex;
     align-items: center;
     gap: 12px;
+
     min-height: 80px;
     padding: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
 }
 
 .sidebar-brand h2 {
-    color: var(--color-text-light);
+    color: #ffffff;
     font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
 }
 
 .sidebar-brand p {
-    color: #c1d4df;
+    color: #a5b1c7;
     font-size: 12px;
 }
 
 .brand-logo {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    border-radius: var(--radius-medium);
-    background-color: var(--color-accent);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    border-radius: 13px;
+
+    background: linear-gradient(
+        135deg,
+        #8b92ff,
+        #646bd4
+    );
+
     color: white;
     font-size: 20px;
     font-weight: bold;
+
+    box-shadow: 0 5px 18px rgba(139, 146, 255, 0.28);
 }
 
-/* 3. Sidebar Navigation */
+/* 4. Sidebar Navigation */
 
 .sidebar-nav {
     flex: 1;
@@ -64,38 +104,74 @@
     overflow-y: auto;
 }
 
+.sidebar-nav::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.16);
+}
+
 .nav-section-title {
-    margin: 18px 12px 8px;
-    color: #a8c0cf;
-    font-size: 11px;
+    margin: 18px 12px 9px;
+
+    color: #8997b2;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 1.3px;
     text-transform: uppercase;
 }
 
 .nav-link {
+    position: relative;
+
     display: flex;
     align-items: center;
     gap: 12px;
+
     min-height: 44px;
     margin-bottom: 5px;
     padding: 10px 13px;
-    border-radius: var(--radius-small);
-    color: #e1edf3;
-    font-size: 14px;
-    transition: background-color 0.2s ease, color 0.2s ease;
+
+    border: 1px solid transparent;
+    border-radius: 11px;
+
+    color: #b9c5d9;
+    font-size: 13px;
+    font-weight: 500;
+
+    transition: all 0.22s ease;
 }
 
 .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.10);
-    color: white;
+    border-color: rgba(255, 255, 255, 0.10);
+
+    background: rgba(255, 255, 255, 0.075);
+
+    color: #ffffff;
     text-decoration: none;
+
+    transform: translateX(3px);
 }
 
 .nav-link.active {
-    background-color: var(--color-primary);
-    color: white;
+    border-color: rgba(139, 146, 255, 0.30);
+
+    background: linear-gradient(
+        100deg,
+        rgba(139, 146, 255, 0.24),
+        rgba(139, 146, 255, 0.09)
+    );
+
+    color: #ffffff;
     font-weight: 600;
+
+    box-shadow: inset 3px 0 0 #8b92ff;
 }
 
 .nav-icon {
@@ -104,37 +180,52 @@
     font-size: 17px;
 }
 
-/* 4. Sidebar Footer */
+/* 5. Sidebar Footer */
 
 .sidebar-footer {
     padding: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    color: #c1d4df;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+
+    color: #a5b1c7;
     font-size: 12px;
 }
 
-/* 5. Main Content Area */
+/* 6. Main Content Area */
 
 .main-content {
     flex: 1;
     min-width: 0;
     min-height: 100vh;
+
     display: flex;
     flex-direction: column;
 }
 
-/* 6. Top Header */
+/* 7. Glass Top Header */
 
 .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 90;
+
     min-height: 70px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+
     padding: 12px 28px;
-    background-color: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-    box-shadow: var(--shadow-small);
+
+    background: rgba(16, 24, 44, 0.76);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }
 
 .topbar-left,
@@ -145,6 +236,7 @@
 }
 
 .topbar-title {
+    color: var(--color-text);
     font-size: 18px;
     font-weight: 600;
 }
@@ -153,21 +245,28 @@
     display: flex;
     align-items: center;
     gap: 10px;
+
+    color: var(--color-text);
 }
 
 .user-avatar {
     width: 38px;
     height: 38px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    border: 1px solid rgba(139, 146, 255, 0.30);
     border-radius: 50%;
-    background-color: var(--color-primary-light);
-    color: var(--color-primary);
+
+    background: rgba(139, 146, 255, 0.17);
+
+    color: #b6bbff;
     font-weight: 700;
 }
 
-/* 7. Page Content */
+/* 8. Page Content */
 
 .page-content {
     flex: 1;
@@ -186,6 +285,7 @@
 
 .page-title {
     margin-bottom: 4px;
+    color: var(--color-text);
 }
 
 .page-description {
@@ -193,7 +293,7 @@
     font-size: 14px;
 }
 
-/* 8. Content Sections */
+/* 9. Content Sections */
 
 .content-section {
     margin-bottom: 24px;
@@ -201,31 +301,44 @@
 
 .content-section-title {
     margin-bottom: 16px;
+    color: var(--color-text);
     font-size: 18px;
 }
 
-/* 9. Mobile Menu Button */
+/* 10. Mobile Menu Button */
 
 .sidebar-toggle {
     display: none;
     align-items: center;
     justify-content: center;
+
     width: 40px;
     height: 40px;
-    border: 1px solid var(--color-border);
+
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-small);
-    background-color: var(--color-surface);
+
+    background: var(--glass-background);
     color: var(--color-text);
+
     font-size: 20px;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-/* 10. Sidebar Overlay */
+.sidebar-toggle:hover {
+    background: var(--glass-background-strong);
+    border-color: var(--color-primary);
+}
+
+/* 11. Sidebar Overlay */
 
 .sidebar-overlay {
     display: none;
 }
 
-/* 11. Tablet Layout */
+/* 12. Tablet Layout */
 
 @media (max-width: 1024px) {
     .sidebar {
@@ -242,16 +355,18 @@
     }
 }
 
-/* 12. Mobile Layout */
+/* 13. Mobile Layout */
 
 @media (max-width: 768px) {
     .sidebar {
         position: fixed;
         top: 0;
         left: 0;
+
         width: 260px;
         min-width: 260px;
         height: 100vh;
+
         transform: translateX(-100%);
     }
 
@@ -265,10 +380,16 @@
 
     .sidebar-open .sidebar-overlay {
         display: block;
+
         position: fixed;
         inset: 0;
+
         z-index: 999;
-        background-color: rgba(0, 0, 0, 0.45);
+
+        background: rgba(0, 0, 0, 0.65);
+
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
     }
 
     .topbar {
@@ -290,18 +411,29 @@
     }
 }
 
-/* 13. Small Mobile Screens */
+/* 14. Small Mobile Screens */
 
 @media (max-width: 480px) {
     .topbar {
         gap: 8px;
     }
 
+    .topbar-left,
     .topbar-right {
         gap: 8px;
     }
 
     .page-content {
         padding: 14px 10px;
+    }
+}
+
+/* 15. Reduced Motion Support */
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    .nav-link,
+    .sidebar-toggle {
+        transition: none;
     }
 }
