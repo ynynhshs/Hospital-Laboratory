@@ -1,0 +1,52 @@
+
+const express = require('express');
+const { rateLimit } = require('express-rate-limit');
+
+const {
+    login,
+    logout,
+    getCurrentUser
+} = require('./auth.controller');
+
+const {
+    requireAuth,
+    authorizeRoles
+} = require('../../middleware/auth.middleware');
+
+const router = express.Router();
+
+// Limit failed login attempts by IP address.
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 10,
+    standardHeaders: true,
+    legacyHeaders: false,
+    skipSuccessfulRequests: true,
+    message: {
+        success: false,
+        message: 'Too many login attempts. Please try again later.'
+    }
+});
+
+// Authentication endpoints.
+router.post('/login', loginLimiter, login);
+router.post('/logout', logout);
+
+// Return the currently authenticated user.
+router.get('/me', requireAuth, getCurrentUser);
+
+// TEMPORARY ROLE AUTHORIZATION TEST.
+// Only laboratory administrators can access this endpoint.
+router.get(
+    '/admin-test',
+    requireAuth,
+    authorizeRoles('lab_admin'),
+    (req, res) => {
+        return res.status(200).json({
+            success: true,
+            message: 'Laboratory administrator access granted.'
+        });
+    }
+);
+
+module.exports = router;

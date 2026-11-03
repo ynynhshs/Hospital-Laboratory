@@ -94,7 +94,19 @@ function logout(req, res, next) {
     });
 }
 
+// Return the currently authenticated user's information.
+function getCurrentUser(req, res) {
+    return res.status(200).json({
+        success: true,
+        message: 'Authenticated user retrieved successfully.',
+        data: {
+            user: req.user
+        }
+    });
+}
+
 module.exports = {
     login,
-    logout
+    logout,
+    getCurrentUser
 };

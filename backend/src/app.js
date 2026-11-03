@@ -6,6 +6,7 @@ const { rateLimit } = require('express-rate-limit');
 // Import MongoDB-backed session middleware.
 const sessionMiddleware = require('./config/session');
 const authRoutes = require('./modules/auth/auth.routes');
+const patientRoutes = require('./modules/patients/patient.routes');
 
 const app = express();
 
@@ -41,6 +42,10 @@ app.use(sessionMiddleware);
 
 // Register authentication API routes.
 app.use('/api/v1/auth', authRoutes);
+
+
+// Register patient API routes.
+app.use('/api/v1/patients', patientRoutes);
 
 
 // Initial API health-check endpoint.
