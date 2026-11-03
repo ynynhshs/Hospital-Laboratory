@@ -249,3 +249,58 @@
         font-size: 23px;
     }
 }
+
+/* ==========================================
+   LOGIN PAGE LIGHT THEME COLOR CORRECTIONS
+========================================== */
+
+/* Main login card text */
+.login-card {
+    color: #202a3b;
+}
+
+.login-heading h2 {
+    color: #172033;
+}
+
+.login-welcome {
+    color: #6269d8;
+}
+
+.login-heading p {
+    color: #596579;
+}
+
+/* Form labels */
+.login-card .form-label {
+    color: #263248;
+}
+
+/* Input fields */
+.login-card .form-control {
+    color: #202a3b;
+    background-color: #ffffff;
+    border: 1px solid #d6dce6;
+}
+
+.login-card .form-control::placeholder {
+    color: #7b8798;
+    opacity: 1;
+}
+
+.login-card .form-control:focus {
+    color: #202a3b;
+    background-color: #ffffff;
+    border-color: #7279e8;
+}
+
+/* Security notice and footer */
+.login-security,
+.login-footer {
+    color: #657287;
+}
+
+/* Login feedback message */
+.login-message {
+    color: #36409a;
+}

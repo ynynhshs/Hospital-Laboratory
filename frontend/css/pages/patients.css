@@ -1,0 +1,324 @@
+/* ==========================================
+   MEDILINK LABORATORY
+   PATIENT RECORDS STYLESHEET
+========================================== */
+
+/* 1. Patient Records Main Card */
+
+.patient-records-card {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+
+    border: 1px solid transparent;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 67, 0.88),
+            rgba(12, 18, 35, 0.92)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            rgba(168, 85, 247, 0.30),
+            rgba(59, 130, 246, 0.24),
+            rgba(255, 255, 255, 0.10)
+        ) border-box;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+/* 2. Patient Toolbar */
+
+.patients-toolbar {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) auto auto;
+    align-items: end;
+    gap: 14px;
+
+    margin-bottom: 22px;
+    padding: 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+
+    background: linear-gradient(
+        145deg,
+        rgba(35, 43, 70, 0.72),
+        rgba(13, 21, 41, 0.76)
+    );
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.patients-search {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.patients-search label {
+    color: #e7ecf7;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.patients-search .form-control {
+    min-height: 44px;
+}
+
+/* 3. Registration Form */
+
+.patient-registration-card {
+    margin-bottom: 22px;
+}
+
+.patient-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.patient-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.patient-form-message {
+    margin-top: 15px;
+}
+
+.patient-registration-card .card-description {
+    margin-bottom: 20px;
+}
+
+/* 4. Patient Records Table */
+
+.patients-table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 5px;
+    border-radius: 14px;
+}
+
+.patients-table-container .data-table {
+    min-width: 1050px;
+}
+
+.patients-table-container .data-table th,
+.patients-table-container .data-table td {
+    padding: 14px 13px;
+}
+
+.patients-table-container .data-table th {
+    color: #aebbd0;
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.patients-table-container .data-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.patients-table-container .data-table tbody tr:hover {
+    background: rgba(139, 146, 255, 0.075);
+}
+
+/* 5. Patient Table Actions */
+
+.patient-action-group {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.patient-action {
+    min-height: 30px;
+    padding: 5px 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.07);
+    color: #e7ecf7;
+
+    font-size: 11px;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.patient-action:hover {
+    border-color: var(--color-primary);
+    background: rgba(139, 146, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+/* 6. Patient Table Footer */
+
+.patients-table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-top: 16px;
+
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+/* 7. Patient Pagination */
+
+.patients-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.patients-pagination button {
+    min-width: 34px;
+    min-height: 34px;
+    padding: 6px 10px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-small);
+
+    background: var(--glass-background);
+    color: var(--color-text);
+
+    cursor: pointer;
+}
+
+.patients-pagination button:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    background: var(--glass-background-strong);
+}
+
+.patients-pagination button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.patients-pagination button.active {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+/* 8. Patient Details */
+
+.patient-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.patient-detail-item {
+    padding: 12px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-small);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.patient-detail-label {
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+.patient-detail-value {
+    margin-top: 4px;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* 9. Page Footer */
+
+.patients-footer {
+    margin-top: 28px;
+    padding: 16px 0;
+
+    border-top: 1px solid var(--color-border);
+
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* 10. Tablet and Mobile Layout */
+
+@media (max-width: 900px) {
+    .patients-toolbar {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .patients-search {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .patients-toolbar {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+
+    .patients-search {
+        grid-column: auto;
+    }
+
+    .patients-toolbar .btn {
+        width: 100%;
+    }
+
+    .patient-form-grid,
+    .patient-details-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .patient-form-actions {
+        flex-direction: column;
+    }
+
+    .patient-form-actions .btn {
+        width: 100%;
+    }
+
+    .patients-table-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* 11. Reduced Motion Support */
+
+@media (prefers-reduced-motion: reduce) {
+    .patient-action,
+    .patients-table-container .data-table tbody tr {
+        transition: none !important;
+    }
+
+    .patient-action:hover {
+        transform: none;
+    }
+}
+
+/* Ensure hidden elements remain hidden */
+[hidden] {
+    display: none !important;
+}

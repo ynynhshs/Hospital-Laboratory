@@ -38,10 +38,17 @@
                 <p class="nav-section-title">Workspace</p>
 
                 <a href="dashboard.html" class="nav-link active"
-                   aria-current="page">
+                    aria-current="page">
                     <span class="nav-icon">▦</span>
                     <span>Dashboard</span>
                 </a>
+
+                <p class="nav-section-title">Patient Services</p>
+
+                    <a href="patients.html" class="nav-link">
+                        <span class="nav-icon">P</span>
+                        <span>Patient Records</span>
+                    </a>
 
                 <p class="nav-section-title">Laboratory Operations</p>
 
@@ -143,14 +150,12 @@
 
                     <div class="topbar-user">
 
-                        <div class="user-avatar">U</div>
+                        <div class="user-avatar" id="userAvatar">U</div>
 
                         <div class="user-details">
-                            <p class="user-name">System User</p>
-                            <p class="user-role">Laboratory Personnel</p>
+                            <p class="user-name" id="userName">Loading user...</p>
+                            <p class="user-role" id="userRole">Checking account...</p>
                         </div>
-
-                    </div>
 
                     <button
                         type="button"
@@ -430,7 +435,9 @@
     </div>
 
     <!-- Dashboard JavaScript -->
-    <script src="../js/pages/dashboard.js"></script>
+    <script src="../js/api/api.js"></script>
+<script src="../js/auth/auth.js"></script>
+<script src="../js/pages/dashboard.js"></script>
 
 </body>
 </html>
