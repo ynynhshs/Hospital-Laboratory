@@ -10,11 +10,18 @@ async function requireAuth(req, res, next) {
     try {
         // Check whether the session contains an authenticated user ID.
         if (!req.session || !req.session.userId) {
-            return res.status(401).json({
-                success: false,
-                message: 'Authentication required. Please log in.'
-            });
-        }
+
+    // Redirect protected frontend pages to the login page.
+    if (req.authRedirect) {
+        return res.redirect(req.authRedirect);
+    }
+
+    // Keep the existing JSON response for API requests.
+    return res.status(401).json({
+        success: false,
+        message: 'Authentication required. Please log in.'
+    });
+}
 
         // Retrieve the user from MongoDB using the session user ID.
         const user = await LabUser.findById(req.session.userId)
@@ -24,11 +31,18 @@ async function requireAuth(req, res, next) {
 
         // Reject missing or inactive accounts.
         if (!user || user.accountStatus !== 'active') {
-            return res.status(401).json({
-                success: false,
-                message: 'Your session is no longer valid. Please log in again.'
-            });
-        }
+
+    // Redirect protected frontend pages to the login page.
+    if (req.authRedirect) {
+        return res.redirect(req.authRedirect);
+    }
+
+    // Keep the existing JSON response for API requests.
+    return res.status(401).json({
+        success: false,
+        message: 'Your session is no longer valid. Please log in again.'
+    });
+}
 
         // Attach safe user information to the request.
         req.user = {

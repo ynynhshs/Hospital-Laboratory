@@ -1,5 +1,5 @@
-
 const Patient = require('./patient.model');
+const AppError = require('../../shared/utils/app-error');
 
 // =========================================
 // 1. CREATE PATIENT
@@ -12,7 +12,10 @@ async function createPatient(patientData) {
         typeof patientData !== 'object' ||
         Array.isArray(patientData)
     ) {
-        throw new Error('Patient information is required.');
+        throw new AppError(
+            'Patient information is required.',
+            400
+        );
     }
 
     const {
@@ -36,7 +39,10 @@ async function createPatient(patientData) {
         !dateOfBirth ||
         !sex
     ) {
-        throw new Error('All required patient fields must be provided.');
+        throw new AppError(
+            'All required patient fields must be provided.',
+            400
+        );
     }
 
     const normalizedPatientCode = String(patientCode)
@@ -48,7 +54,10 @@ async function createPatient(patientData) {
     });
 
     if (existingPatient) {
-        throw new Error('Patient code is already registered.');
+        throw new AppError(
+            'Patient code is already registered.',
+            409
+        );
     }
 
     const newPatient = new Patient({
@@ -71,7 +80,10 @@ async function createPatient(patientData) {
             error.code === 11000 &&
             error.keyPattern?.patientCode
         ) {
-            throw new Error('Patient code is already registered.');
+            throw new AppError(
+                'Patient code is already registered.',
+                409
+            );
         }
 
         throw error;
@@ -88,7 +100,10 @@ async function getPatientByCode(patientCode) {
         typeof patientCode !== 'string' ||
         !patientCode.trim()
     ) {
-        throw new Error('A valid patient code is required.');
+        throw new AppError(
+            'A valid patient code is required.',
+            400
+        );
     }
 
     const normalizedPatientCode = patientCode
@@ -110,7 +125,10 @@ async function getPatientById(patientId) {
         typeof patientId !== 'string' ||
         !/^[0-9a-fA-F]{24}$/.test(patientId)
     ) {
-        throw new Error('A valid patient ID is required.');
+        throw new AppError(
+            'A valid patient ID is required.',
+            400
+        );
     }
 
     return await Patient.findById(patientId);
@@ -126,7 +144,10 @@ async function searchPatients(searchTerm, options = {}) {
         typeof searchTerm !== 'string' ||
         !searchTerm.trim()
     ) {
-        throw new Error('A search term is required.');
+        throw new AppError(
+            'A search term is required.',
+            400
+        );
     }
 
     if (
@@ -134,7 +155,10 @@ async function searchPatients(searchTerm, options = {}) {
         typeof options !== 'object' ||
         Array.isArray(options)
     ) {
-        throw new Error('Invalid search options.');
+        throw new AppError(
+            'Invalid search options.',
+            400
+        );
     }
 
     const page = Number(options.page ?? 1);
@@ -147,7 +171,10 @@ async function searchPatients(searchTerm, options = {}) {
         limit < 1 ||
         limit > 100
     ) {
-        throw new Error('Invalid pagination settings.');
+        throw new AppError(
+            'Invalid pagination settings.',
+            400
+        );
     }
 
     // Escape special regular-expression characters.
