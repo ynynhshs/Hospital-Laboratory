@@ -1,8 +1,7 @@
 
-const DEVELOPMENT_DATABASE_NAME = 'medilink_lab_dev';
-const PRODUCTION_DATABASE_NAME = 'medilink_lab_prod';
+const SHARED_DATABASE_NAME = 'medilink_lab_dev';
 
-// Return the database name for the current environment.
+// Return the shared database name used by all MediLink subsystems.
 function getDatabaseName() {
     const environment = process.env.NODE_ENV || 'development';
 
@@ -10,26 +9,27 @@ function getDatabaseName() {
         process.env.MONGODB_DB_NAME || ''
     ).trim();
 
-    // Production must explicitly use the production database.
-    if (environment === 'production') {
-        if (configuredName !== PRODUCTION_DATABASE_NAME) {
-            throw new Error(
-                'MONGODB_DB_NAME must be set to medilink_lab_prod in production.'
-            );
-        }
-
-        return PRODUCTION_DATABASE_NAME;
-    }
-
-    // Prevent accidental production database usage locally.
-    if (configuredName === PRODUCTION_DATABASE_NAME) {
+    // Reject any database name that differs from the shared MediLink database.
+    if (
+        configuredName &&
+        configuredName !== SHARED_DATABASE_NAME
+    ) {
         throw new Error(
-            'The production database cannot be used outside production.'
+            `MONGODB_DB_NAME must be ${SHARED_DATABASE_NAME} to use the shared MediLink database.`
         );
     }
 
-    // Development defaults to the existing development database.
-    return configuredName || DEVELOPMENT_DATABASE_NAME;
+    // Production must explicitly configure the shared database.
+    if (
+        environment === 'production' &&
+        configuredName !== SHARED_DATABASE_NAME
+    ) {
+        throw new Error(
+            `MONGODB_DB_NAME must be explicitly set to ${SHARED_DATABASE_NAME} in production.`
+        );
+    }
+
+    return SHARED_DATABASE_NAME;
 }
 
 module.exports = getDatabaseName;
