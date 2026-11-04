@@ -12,6 +12,12 @@ const testCatalogRoutes = require('./modules/test-catalog/test-catalog.routes');
 const { requireAuth } = require('./middleware/auth.middleware');
 const app = express();
 
+// Trust Render's reverse proxy in production.
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
+}
+
+
 // Hide the Express technology header.
 app.disable('x-powered-by');
 

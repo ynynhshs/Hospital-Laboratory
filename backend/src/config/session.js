@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo').default;
+const getDatabaseName = require('./database-name');
 
 // =========================================
 // 1. SESSION SECRET VALIDATION
@@ -11,9 +12,12 @@ const sessionSecret = process.env.SESSION_SECRET;
 
 if (!sessionSecret || sessionSecret.trim().length < 32) {
     throw new Error(
-        'SESSION_SECRET is missing or too short. Configure a strong secret in backend/.env.'
+        'SESSION_SECRET is missing or too short. Configure a strong secret in the environment.'
     );
 }
+
+// Get the database name for the current environment.
+const databaseName = getDatabaseName();
 
 // =========================================
 // 2. REUSE THE EXISTING MONGOOSE CONNECTION
@@ -29,7 +33,7 @@ const clientPromise = mongoose.connection
 
 const sessionStore = MongoStore.create({
     clientPromise,
-    dbName: 'medilink_lab_dev',
+    dbName: databaseName,
     collectionName: 'lab_sessions',
 
     // Eight-hour session lifetime.
