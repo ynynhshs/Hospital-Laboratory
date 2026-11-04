@@ -139,11 +139,11 @@
 
                     <div class="topbar-user">
 
-                        <div class="user-avatar">U</div>
+                        <div class="user-avatar" id="userAvatar">U</div>
 
                         <div class="user-details">
-                            <p class="user-name">System User</p>
-                            <p class="user-role">Laboratory Personnel</p>
+                            <p class="user-name" id="userName">System User</p>
+                            <p class="user-role" id="userRole">Laboratory Personnel</p>
                         </div>
 
                     </div>
@@ -184,6 +184,228 @@
                     </button>
 
                 </div>
+
+                                <!-- Laboratory Test Registration Form -->
+                <section
+                    class="content-section"
+                    id="testRegistrationSection"
+                    hidden>
+
+                    <article class="card catalog-registration-card">
+
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">
+                                    Register New Laboratory Test
+                                </h2>
+
+                                <p class="card-description">
+                                    Enter the laboratory test information.
+                                    Fields marked with * are required.
+                                </p>
+                            </div>
+                        </div>
+
+                        <form id="testRegistrationForm">
+
+                            <div class="catalog-form-grid">
+
+                                <!-- Test Code -->
+                                <div class="form-group">
+                                    <label
+                                        class="form-label"
+                                        for="testCode">
+                                        Test Code *
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="testCode"
+                                        name="testCode"
+                                        class="form-control"
+                                        maxlength="30"
+                                        placeholder="e.g. HEM-CBC-001"
+                                        autocomplete="off"
+                                        required>
+                                </div>
+
+                                <!-- Test Name -->
+                                <div class="form-group">
+                                    <label
+                                        class="form-label"
+                                        for="testName">
+                                        Test Name *
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="testName"
+                                        name="testName"
+                                        class="form-control"
+                                        maxlength="120"
+                                        placeholder="Enter laboratory test name"
+                                        required>
+                                </div>
+
+                                <!-- Category -->
+                                <div class="form-group">
+                                    <label
+                                        class="form-label"
+                                        for="testCategory">
+                                        Category *
+                                    </label>
+
+                                    <select
+                                        id="testCategory"
+                                        name="category"
+                                        class="form-control"
+                                        required>
+
+                                        <option value="">
+                                            Select category
+                                        </option>
+
+                                        <option value="Hematology">
+                                            Hematology
+                                        </option>
+
+                                        <option value="Clinical Chemistry">
+                                            Clinical Chemistry
+                                        </option>
+
+                                        <option value="Microbiology">
+                                            Microbiology
+                                        </option>
+
+                                        <option value="Immunology">
+                                            Immunology
+                                        </option>
+
+                                        <option value="Urinalysis">
+                                            Urinalysis
+                                        </option>
+
+                                        <option value="Other">
+                                            Other
+                                        </option>
+
+                                    </select>
+                                </div>
+
+                                <!-- Specimen Type -->
+                                <div class="form-group">
+                                    <label
+                                        class="form-label"
+                                        for="specimenType">
+                                        Specimen Type *
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="specimenType"
+                                        name="specimenType"
+                                        class="form-control"
+                                        maxlength="80"
+                                        placeholder="e.g. EDTA Whole Blood"
+                                        required>
+                                </div>
+
+                                <!-- Testing Method -->
+                                <div class="form-group">
+                                    <label
+                                        class="form-label"
+                                        for="testingMethod">
+                                        Testing Method *
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="testingMethod"
+                                        name="testingMethod"
+                                        class="form-control"
+                                        maxlength="100"
+                                        placeholder="Enter testing method"
+                                        required>
+                                </div>
+
+                                <!-- Turnaround Time -->
+                                <div class="form-group">
+                                    <label
+                                        class="form-label"
+                                        for="turnaroundTime">
+                                        Turnaround Time *
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="turnaroundTime"
+                                        name="turnaroundTime"
+                                        class="form-control"
+                                        maxlength="50"
+                                        placeholder="e.g. Same day"
+                                        required>
+                                </div>
+
+                                <!-- Status -->
+                                <div class="form-group">
+                                    <label
+                                        class="form-label"
+                                        for="testStatus">
+                                        Status *
+                                    </label>
+
+                                    <select
+                                        id="testStatus"
+                                        name="status"
+                                        class="form-control"
+                                        required>
+
+                                        <option value="active" selected>
+                                            Active
+                                        </option>
+
+                                        <option value="inactive">
+                                            Inactive
+                                        </option>
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <!-- Registration Feedback -->
+                            <div
+                                class="alert catalog-form-message"
+                                id="testFormMessage"
+                                role="status"
+                                aria-live="polite"
+                                hidden>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="catalog-form-actions">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    id="cancelTestButton">
+                                    Cancel
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                    id="saveTestButton">
+                                    Save Laboratory Test
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </article>
+
+                </section>
 
                 <!-- Development Notice -->
                 <div class="alert alert-info catalog-notice" id="catalogNotice">
@@ -421,8 +643,14 @@
 
     </div>
 
-    <!-- Test Catalog JavaScript -->
-    <script src="../js/pages/test-catalog.js"></script>
+<!-- Shared API Utility -->
+<script src="../js/api/api.js"></script>
+
+<!-- Shared Authentication Utility -->
+<script src="../js/auth/auth.js"></script>
+
+<!-- Test Catalog JavaScript -->
+<script src="../js/pages/test-catalog.js"></script>
 
 </body>
 </html>

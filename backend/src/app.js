@@ -9,6 +9,7 @@ const sessionMiddleware = require('./config/session');
 const authRoutes = require('./modules/auth/auth.routes');
 const patientRoutes = require('./modules/patients/patient.routes');
 const testCatalogRoutes = require('./modules/test-catalog/test-catalog.routes');
+const labRequestRoutes = require('./modules/lab-requests/laboratory-request.routes');
 const { requireAuth } = require('./middleware/auth.middleware');
 const app = express();
 
@@ -59,6 +60,11 @@ app.use('/api/v1/patients', patientRoutes);
 
 // Register laboratory test catalog API routes.
 app.use('/api/v1/test-catalog', testCatalogRoutes);
+
+
+// Register laboratory request API routes.
+app.use('/api/v1/lab-requests', labRequestRoutes);
+
 
 // Initial API health-check endpoint.
 app.get('/api/v1/health', (req, res) => {

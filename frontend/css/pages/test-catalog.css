@@ -719,3 +719,149 @@
     }
 }
 
+/* ==========================================
+   14. LABORATORY TEST REGISTRATION FORM
+========================================== */
+
+/* Registration Card */
+
+.catalog-registration-card {
+    margin-bottom: 24px;
+}
+
+.catalog-registration-card .card-description {
+    margin-bottom: 20px;
+}
+
+/* Registration Form Grid */
+
+.catalog-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+/* Form Groups */
+
+.catalog-form-grid .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.catalog-form-grid .form-label {
+    color: #e7ecf7;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Form Feedback */
+
+.catalog-form-message {
+    margin-top: 18px;
+}
+
+/* Form Action Buttons */
+
+.catalog-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Responsive Registration Form */
+
+@media (max-width: 768px) {
+    .catalog-form-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .catalog-form-actions {
+        flex-direction: column;
+    }
+
+    .catalog-form-actions .btn {
+        width: 100%;
+    }
+}
+
+/* ==========================================
+   15. TEST STATUS BADGES
+========================================== */
+
+.catalog-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 68px;
+    padding: 5px 10px;
+
+    border: 1px solid transparent;
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.catalog-status.status-active {
+    color: #64e7b5;
+    background: rgba(72, 214, 160, 0.12);
+    border-color: rgba(72, 214, 160, 0.25);
+}
+
+.catalog-status.status-inactive {
+    color: #f5c76b;
+    background: rgba(245, 199, 107, 0.12);
+    border-color: rgba(245, 199, 107, 0.25);
+}
+
+/* ==========================================
+   16. TEST CATALOG PAGINATION
+========================================== */
+
+.catalog-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-top: 16px;
+}
+
+.catalog-pagination .btn {
+    min-width: 36px;
+}
+
+.catalog-pagination .btn.active {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+.catalog-pagination .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   17. RESPONSIVE PAGINATION
+========================================== */
+
+@media (max-width: 480px) {
+    .catalog-pagination {
+        gap: 5px;
+    }
+
+    .catalog-pagination .btn {
+        min-width: 32px;
+        padding: 6px 9px;
+    }
+}
+

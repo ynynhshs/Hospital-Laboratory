@@ -3,7 +3,7 @@
 require('dotenv').config();
 
 // Import the Express application.
-const app = require('./app');
+
 
 // Import the MongoDB connection function.
 const connectDB = require('./config/database');
@@ -13,8 +13,11 @@ const PORT = Number.parseInt(process.env.PORT, 10) || 3000;
 
 // Start the application only after MongoDB connects.
 const startServer = async () => {
-    try {
+        try {
         await connectDB();
+
+        // Import Express only after MongoDB connects.
+        const app = require('./app');
 
         const server = app.listen(PORT, '0.0.0.0', () => {
             console.log('==========================================');
