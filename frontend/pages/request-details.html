@@ -157,17 +157,28 @@
                 </div>
 
                 <div class="request-header-actions">
+
                     <a href="laboratory-requests.html" class="btn btn-outline">
-                        ← Back to Requests
+                        Back to Requests
                     </a>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="editDraftButton"
+                        hidden
+                    >
+                        Edit Draft
+                    </button>
 
                     <button
                         type="button"
                         class="btn btn-outline"
                         id="refreshRequestButton"
                     >
-                        ↻ Refresh
+                        Refresh
                     </button>
+
                 </div>
             </section>
 
@@ -182,6 +193,211 @@
                     </p>
                 </div>
             </div>
+
+            
+<!-- ==========================================
+     EDIT LABORATORY REQUEST DRAFT
+     ========================================== -->
+
+<section
+    class="content-section request-edit-section"
+    id="requestEditSection"
+    hidden
+    aria-labelledby="editRequestHeading"
+>
+
+    <div class="section-heading">
+        <div>
+            <h2 id="editRequestHeading">
+                Edit Laboratory Request Draft
+            </h2>
+
+            <p>
+                Update the patient, requested tests,
+                priority, and clinical notes.
+            </p>
+        </div>
+    </div>
+
+    <form
+        class="details-card request-edit-form"
+        id="requestEditForm"
+        novalidate
+    >
+
+        <!-- Patient Selection -->
+
+        <div class="request-edit-field">
+
+            <label for="editPatientSearch">
+                Search Patient
+            </label>
+
+            <div class="request-edit-search">
+
+                <input
+                    type="search"
+                    id="editPatientSearch"
+                    placeholder="Search by patient code, name, or contact number"
+                    autocomplete="off"
+                    maxlength="100"
+                >
+
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="searchPatientsButton"
+                >
+                    Search
+                </button>
+
+            </div>
+
+            <div
+                class="request-edit-results"
+                id="patientSearchResults"
+                role="listbox"
+                aria-label="Patient search results"
+                hidden
+            ></div>
+
+            <div
+                class="request-edit-selected-patient"
+                id="selectedPatientSummary"
+                aria-live="polite"
+            >
+                No patient selected.
+            </div>
+
+        </div>
+
+        <!-- Laboratory Test Selection -->
+
+        <div class="request-edit-field">
+
+            <label>
+                Requested Laboratory Tests
+            </label>
+
+            <p class="request-edit-help">
+                Select the active laboratory tests required
+                for this request. You may select up to 50 tests.
+            </p>
+
+            <input
+                type="search"
+                id="editTestSearch"
+                placeholder="Search laboratory tests by code or name..."
+                autocomplete="off"
+                maxlength="100"
+            >
+
+            <div
+                class="request-edit-test-list"
+                id="editTestList"
+                role="group"
+                aria-label="Available laboratory tests"
+                aria-live="polite"
+            >
+                <p class="request-edit-loading">
+                    Active laboratory tests will appear here.
+                </p>
+            </div>
+
+            <p
+                class="request-edit-selection-count"
+                id="editTestSelectionCount"
+            >
+                0 of 50 tests selected
+            </p>
+
+        </div>
+
+        <!-- Priority -->
+
+        <div class="request-edit-field">
+
+            <label for="editRequestPriority">
+                Request Priority
+            </label>
+
+            <select id="editRequestPriority" required>
+
+                <option value="routine">
+                    Routine
+                </option>
+
+                <option value="urgent">
+                    Urgent
+                </option>
+
+                <option value="stat">
+                    STAT
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- Clinical Notes -->
+
+        <div class="request-edit-field">
+
+            <label for="editClinicalNotes">
+                Clinical Notes
+            </label>
+
+            <textarea
+                id="editClinicalNotes"
+                rows="4"
+                maxlength="2000"
+                placeholder="Enter additional clinical information..."
+            ></textarea>
+
+            <p class="request-edit-help">
+                Maximum 2,000 characters.
+            </p>
+
+        </div>
+
+        <!-- Feedback -->
+
+        <div
+            class="request-edit-feedback"
+            id="editDraftFeedback"
+            role="status"
+            aria-live="polite"
+            hidden
+        ></div>
+
+        <!-- Form Actions -->
+
+        <div class="request-edit-actions">
+
+            <button
+                type="button"
+                class="btn btn-outline"
+                id="cancelEditDraftButton"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+                id="saveEditDraftButton"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+<!-- END EDIT LABORATORY REQUEST DRAFT -->
+
 
             <!-- Request Overview -->
             <section class="content-section">
@@ -483,6 +699,13 @@
 
 </div>
 
+<!-- Shared API Utility -->
+<script src="../js/api/api.js"></script>
+
+<!-- Shared Authentication Utility -->
+<script src="../js/auth/auth.js"></script>
+
+<!-- Request Details JavaScript -->
 <script src="../js/pages/request-details.js"></script>
 
 </body>

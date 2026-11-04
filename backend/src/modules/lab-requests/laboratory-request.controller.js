@@ -2,7 +2,8 @@
 const {
     createDraftRequest,
     searchLaboratoryRequests,
-    getLaboratoryRequestById
+    getLaboratoryRequestById,
+    updateDraftRequest
 } = require('./laboratory-request.service');
 
 // ==========================================
@@ -84,11 +85,37 @@ async function getLaboratoryRequestByIdController(req, res, next) {
 }
 
 // ==========================================
-// 4. EXPORT CONTROLLER FUNCTIONS
+// 4. UPDATE LABORATORY REQUEST DRAFT
+// ==========================================
+
+async function updateDraftRequestController(req, res, next) {
+    try {
+        const laboratoryRequest = await updateDraftRequest(
+            req.params.requestId,
+            req.body,
+            req.user
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: 'Laboratory request draft updated successfully.',
+            data: {
+                laboratoryRequest
+            }
+        });
+
+    } catch (error) {
+        return next(error);
+    }
+}
+
+// ==========================================
+// 5. EXPORT CONTROLLER FUNCTIONS
 // ==========================================
 
 module.exports = {
     createDraftRequestController,
     getLaboratoryRequestsController,
-    getLaboratoryRequestByIdController
+    getLaboratoryRequestByIdController,
+    updateDraftRequestController
 };

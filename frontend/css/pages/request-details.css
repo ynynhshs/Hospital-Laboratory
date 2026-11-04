@@ -570,3 +570,304 @@
         padding: 15px;
     }
 }
+
+
+/* =========================================
+   15. EDIT LABORATORY REQUEST DRAFT
+   ========================================= */
+
+.request-edit-section[hidden],
+.request-edit-results[hidden],
+.request-edit-feedback[hidden] {
+    display: none !important;
+}
+
+.request-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.request-edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+}
+
+.request-edit-field > label {
+    color: var(--color-text, #243746);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.request-edit-help {
+    color: var(--color-text-secondary, #718096);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.request-edit-form input,
+.request-edit-form select,
+.request-edit-form textarea {
+    width: 100%;
+    min-height: 43px;
+    padding: 11px 13px;
+    border: 1px solid var(--color-border, #dce4eb);
+    border-radius: 7px;
+    background-color: #ffffff;
+    color: #243746;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.request-edit-form input::placeholder,
+.request-edit-form textarea::placeholder {
+    color: #94a3b1;
+}
+
+.request-edit-form input:focus,
+.request-edit-form select:focus,
+.request-edit-form textarea:focus {
+    border-color: #28618a;
+    outline: 2px solid rgba(40, 97, 138, 0.12);
+}
+
+.request-edit-form select option {
+    background-color: #ffffff;
+    color: #243746;
+}
+
+.request-edit-form textarea {
+    min-height: 110px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* Patient Search */
+
+.request-edit-search {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.request-edit-search input {
+    flex: 1;
+    min-width: 0;
+}
+
+.request-edit-search button {
+    flex-shrink: 0;
+}
+
+.request-edit-results {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: 8px;
+    background-color: #f8fafc;
+}
+
+.request-edit-result {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    background-color: #ffffff;
+    color: #243746;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.request-edit-result:hover,
+.request-edit-result:focus {
+    border-color: #28618a;
+    background-color: #edf5fa;
+    outline: none;
+}
+
+.request-edit-result strong {
+    font-size: 12px;
+}
+
+.request-edit-result span {
+    color: #718096;
+    font-size: 11px;
+}
+
+.request-edit-selected-patient {
+    padding: 12px 14px;
+    border: 1px solid #cbdde8;
+    border-radius: 7px;
+    background-color: #f0f7fb;
+    color: #244b63;
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+/* Laboratory Test Selection */
+
+.request-edit-test-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 12px;
+    border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: 8px;
+    background-color: #f8fafc;
+}
+
+.request-edit-test-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.request-edit-test-option:hover {
+    border-color: #9bbbd1;
+    background-color: #f0f7fb;
+}
+
+.request-edit-test-option input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 17px;
+    min-height: 17px;
+    height: 17px;
+    margin-top: 2px;
+    accent-color: #28618a;
+    cursor: pointer;
+}
+
+.request-edit-test-option > span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.request-edit-test-option strong {
+    color: #243746;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.request-edit-test-option small {
+    color: #718096;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.request-edit-selection-count {
+    color: #28618a;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.request-edit-loading {
+    padding: 20px;
+    color: #718096;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Edit Form Feedback */
+
+.request-edit-feedback {
+    padding: 13px 15px;
+    border: 1px solid #cbdde8;
+    border-radius: 7px;
+    background-color: #f0f7fb;
+    color: #244b63;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.request-edit-feedback.is-success {
+    border-color: #b9dfca;
+    background-color: #edf8f1;
+    color: #26734d;
+}
+
+.request-edit-feedback.is-error {
+    border-color: #efc3c3;
+    background-color: #fff0f0;
+    color: #a83232;
+}
+
+/* Edit Form Buttons */
+
+.request-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-border, #e2e8f0);
+}
+
+.request-edit-actions button:disabled,
+.request-edit-search button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Mobile Responsiveness */
+
+@media (max-width: 768px) {
+    .request-edit-search {
+        flex-direction: column;
+    }
+
+    .request-edit-search button {
+        width: 100%;
+    }
+
+    .request-edit-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .request-edit-actions button {
+        width: 100%;
+    }
+
+    .request-edit-form {
+        gap: 18px;
+    }
+}
+
+/* Previously selected tests that are now inactive */
+
+.request-edit-test-unavailable {
+    border-color: #e7caca;
+    background-color: #fff8f8;
+}
+
+.request-edit-test-unavailable strong {
+    color: #8b3636;
+}
+
+.request-edit-test-unavailable small {
+    color: #a35b5b;
+}

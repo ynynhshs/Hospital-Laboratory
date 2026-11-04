@@ -515,6 +515,341 @@ async function getLaboratoryRequestById(
 
 
 
+  
+// ==========================================
+// 7. UPDATE LABORATORY REQUEST DRAFT
+// ==========================================
+
+async function updateDraftRequest(
+    requestId,
+    updateData,
+    authenticatedUser
+) {
+
+    // --------------------------------------
+    // 1. Validate request ID.
+    // --------------------------------------
+
+    if (!isValidObjectId(requestId)) {
+        throw new AppError(
+            'A valid laboratory request ID is required.',
+            400
+        );
+    }
+
+    // --------------------------------------
+    // 2. Validate authenticated user.
+    // --------------------------------------
+
+    const accessFilter = getRequestAccessFilter(
+        authenticatedUser
+    );
+
+    const allowedRoles = [
+        'lab_admin',
+        'lab_receptionist',
+        'requesting_clinician'
+    ];
+
+    if (!allowedRoles.includes(authenticatedUser.role)) {
+        throw new AppError(
+            'You do not have permission to update laboratory requests.',
+            403
+        );
+    }
+
+    // --------------------------------------
+    // 3. Validate update information.
+    // --------------------------------------
+
+    if (
+        !updateData ||
+        typeof updateData !== 'object' ||
+        Array.isArray(updateData)
+    ) {
+        throw new AppError(
+            'Laboratory request update information is required.',
+            400
+        );
+    }
+
+    const hasPatientId =
+        Object.prototype.hasOwnProperty.call(
+            updateData,
+            'patientId'
+        );
+
+    const hasTestIds =
+        Object.prototype.hasOwnProperty.call(
+            updateData,
+            'testIds'
+        );
+
+    const hasPriority =
+        Object.prototype.hasOwnProperty.call(
+            updateData,
+            'priority'
+        );
+
+    const hasClinicalNotes =
+        Object.prototype.hasOwnProperty.call(
+            updateData,
+            'clinicalNotes'
+        );
+
+    if (
+        !hasPatientId &&
+        !hasTestIds &&
+        !hasPriority &&
+        !hasClinicalNotes
+    ) {
+        throw new AppError(
+            'At least one valid laboratory request field must be provided for updating.',
+            400
+        );
+    }
+
+    // --------------------------------------
+    // 4. Find the authorized request.
+    // --------------------------------------
+
+    const laboratoryRequest = await LaboratoryRequest.findOne({
+        _id: requestId,
+        ...accessFilter
+    });
+
+    if (!laboratoryRequest) {
+        throw new AppError(
+            'Laboratory request not found.',
+            404
+        );
+    }
+
+    // --------------------------------------
+    // 5. Only drafts may be updated.
+    // --------------------------------------
+
+    if (laboratoryRequest.status !== 'draft') {
+        throw new AppError(
+            'Only draft laboratory requests can be updated.',
+            409
+        );
+    }
+
+    // --------------------------------------
+    // 6. Update patient information.
+    // --------------------------------------
+
+    if (hasPatientId) {
+
+        if (!isValidObjectId(updateData.patientId)) {
+            throw new AppError(
+                'A valid patient ID is required.',
+                400
+            );
+        }
+
+        const patient = await Patient.findById(
+            updateData.patientId
+        ).select('_id');
+
+        if (!patient) {
+            throw new AppError(
+                'Patient not found.',
+                404
+            );
+        }
+
+        laboratoryRequest.patient = patient._id;
+    }
+
+    // --------------------------------------
+    // 7. Update selected laboratory tests.
+    // --------------------------------------
+
+    if (hasTestIds) {
+
+        const testIds = updateData.testIds;
+
+        if (
+            !Array.isArray(testIds) ||
+            testIds.length > 50
+        ) {
+            throw new AppError(
+                'Invalid laboratory test selection.',
+                400
+            );
+        }
+
+        const normalizedTestIds = testIds.map((testId) => {
+
+            if (!isValidObjectId(testId)) {
+                throw new AppError(
+                    'One or more laboratory test IDs are invalid.',
+                    400
+                );
+            }
+
+            return testId.toLowerCase();
+        });
+
+        // Prevent duplicate test selections.
+        if (
+            new Set(normalizedTestIds).size !==
+            normalizedTestIds.length
+        ) {
+            throw new AppError(
+                'Duplicate laboratory tests are not allowed.',
+                400
+            );
+        }
+
+        let updatedTests = [];
+
+        if (normalizedTestIds.length > 0) {
+
+            const selectedTests = await TestCatalog.find({
+                _id: {
+                    $in: normalizedTestIds
+                },
+                status: 'active'
+            }).select(
+                'testCode testName category specimenType testingMethod turnaroundTime'
+            );
+
+            if (
+                selectedTests.length !==
+                normalizedTestIds.length
+            ) {
+                throw new AppError(
+                    'One or more selected laboratory tests do not exist or are inactive.',
+                    400
+                );
+            }
+
+            // Preserve the original selection order.
+            const testMap = new Map(
+                selectedTests.map((test) => [
+                    test._id.toString(),
+                    test
+                ])
+            );
+
+            updatedTests = normalizedTestIds.map((testId) => {
+
+                const test = testMap.get(testId);
+
+                return {
+                    test: test._id,
+
+                    testSnapshot: {
+                        testCode: test.testCode,
+                        testName: test.testName,
+                        category: test.category,
+                        specimenType: test.specimenType,
+                        testingMethod: test.testingMethod,
+                        turnaroundTime: test.turnaroundTime
+                    },
+
+                    status: 'pending'
+                };
+            });
+        }
+
+        laboratoryRequest.tests = updatedTests;
+    }
+
+    // --------------------------------------
+    // 8. Update request priority.
+    // --------------------------------------
+
+    if (hasPriority) {
+
+        if (
+            typeof updateData.priority !== 'string' ||
+            !updateData.priority.trim()
+        ) {
+            throw new AppError(
+                'Invalid laboratory request priority.',
+                400
+            );
+        }
+
+        const priority = updateData.priority
+            .trim()
+            .toLowerCase();
+
+        if (
+            !LaboratoryRequest.REQUEST_PRIORITIES.includes(
+                priority
+            )
+        ) {
+            throw new AppError(
+                'Invalid laboratory request priority.',
+                400
+            );
+        }
+
+        laboratoryRequest.priority = priority;
+    }
+
+    // --------------------------------------
+    // 9. Update clinical notes.
+    // --------------------------------------
+
+    if (hasClinicalNotes) {
+
+        if (
+            typeof updateData.clinicalNotes !== 'string' ||
+            updateData.clinicalNotes.trim().length > 2000
+        ) {
+            throw new AppError(
+                'Clinical notes must not exceed 2000 characters.',
+                400
+            );
+        }
+
+        laboratoryRequest.clinicalNotes =
+            updateData.clinicalNotes.trim();
+    }
+
+    // --------------------------------------
+    // 10. Record the authenticated updater.
+    // --------------------------------------
+
+    const authenticatedUserId =
+        new mongoose.Types.ObjectId(
+            authenticatedUser.id
+        );
+
+    laboratoryRequest.updatedBy =
+        authenticatedUserId;
+
+    // --------------------------------------
+    // 11. Add activity history.
+    // --------------------------------------
+
+    laboratoryRequest.activities.push({
+        action: 'updated',
+        message: 'Laboratory request draft updated.',
+        performedBy: authenticatedUserId,
+        performedAt: new Date()
+    });
+
+    // --------------------------------------
+    // 12. Save updated request.
+    // --------------------------------------
+
+    await laboratoryRequest.save();
+
+    // Return populated request information.
+    return getLaboratoryRequestById(
+        laboratoryRequest._id.toString(),
+        authenticatedUser
+    );
+}
+
+
 
 // ==========================================
 // 3. CREATE LABORATORY REQUEST DRAFT
@@ -800,5 +1135,6 @@ module.exports = {
     createDraftRequest,
     generateRequestNumber,
     searchLaboratoryRequests,
-    getLaboratoryRequestById
+    getLaboratoryRequestById,
+    updateDraftRequest
 };

@@ -13,7 +13,8 @@ const {
     createDraftRequest: createDraftRequestService,
     generateRequestNumber,
     searchLaboratoryRequests,
-    getLaboratoryRequestById
+    getLaboratoryRequestById,
+    updateDraftRequest
 } = require('../src/modules/lab-requests/laboratory-request.service');
 
 let mongoServer;
@@ -1547,6 +1548,568 @@ test('rejects laboratory request searches from unsupported roles', async () => {
             }
         ),
         403
+    );
+});
+
+
+
+// ==========================================
+// 36. UPDATE LABORATORY REQUEST DRAFT
+// ==========================================
+
+test('allows a receptionist to update a laboratory request draft', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const originalCreatedAt = request.createdAt;
+
+    const result = await updateDraftRequest(
+        request._id.toString(),
+        {
+            priority: 'urgent',
+            clinicalNotes: 'Updated clinical examination notes.'
+        },
+        authenticatedUser
+    );
+
+    assert.equal(result.priority, 'urgent');
+
+    assert.equal(
+        result.clinicalNotes,
+        'Updated clinical examination notes.'
+    );
+
+    assert.equal(result.status, 'draft');
+
+    assert.equal(
+        String(result.updatedBy._id || result.updatedBy),
+        receptionistUser._id.toString()
+    );
+
+    assert.equal(result.createdAt.getTime(), originalCreatedAt.getTime());
+
+    assert.equal(result.activities.length, 2);
+
+    assert.equal(
+        result.activities[1].action,
+        'updated'
+    );
+
+    assert.equal(
+        result.activities[1].message,
+        'Laboratory request draft updated.'
+    );
+});
+
+// ==========================================
+// 37. CLINICIAN DRAFT UPDATE PERMISSIONS
+// ==========================================
+
+test('allows a requesting clinician to update their own draft', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const clinicianAuth = {
+        id: clinicianUser._id.toString(),
+        role: 'requesting_clinician'
+    };
+
+    const result = await updateDraftRequest(
+        request._id.toString(),
+        {
+            clinicalNotes: 'Updated by the requesting clinician.'
+        },
+        clinicianAuth
+    );
+
+    assert.equal(
+        result.clinicalNotes,
+        'Updated by the requesting clinician.'
+    );
+
+    assert.equal(result.status, 'draft');
+});
+
+test('prevents a clinician from updating another clinician draft', async () => {
+
+    const anotherClinician = await LabUser.create({
+        username: 'another_clinician_update',
+        email: 'another_clinician_update@example.com',
+        passwordHash: 'test-password-hash',
+        firstName: 'Pedro',
+        lastName: 'Santos',
+        role: 'requesting_clinician',
+        accountStatus: 'active'
+    });
+
+    const request = await createRetrievalRequest({
+        requestedClinician: anotherClinician
+    });
+
+    const clinicianAuth = {
+        id: clinicianUser._id.toString(),
+        role: 'requesting_clinician'
+    };
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                clinicalNotes: 'Unauthorized modification.'
+            },
+            clinicianAuth
+        ),
+        404
+    );
+
+    const unchangedRequest = await LaboratoryRequest.findById(
+        request._id
+    );
+
+    assert.equal(
+        unchangedRequest.clinicalNotes,
+        ''
+    );
+});
+
+// ==========================================
+// 38. ADMINISTRATOR DRAFT UPDATE PERMISSION
+// ==========================================
+
+test('allows a laboratory administrator to update a draft', async () => {
+
+    const admin = await LabUser.create({
+        username: 'admin_update_test',
+        email: 'admin_update_test@example.com',
+        passwordHash: 'test-password-hash',
+        firstName: 'Admin',
+        lastName: 'User',
+        role: 'lab_admin',
+        accountStatus: 'active'
+    });
+
+    const request = await createRetrievalRequest();
+
+    const adminAuth = {
+        id: admin._id.toString(),
+        role: 'lab_admin'
+    };
+
+    const result = await updateDraftRequest(
+        request._id.toString(),
+        {
+            priority: 'stat'
+        },
+        adminAuth
+    );
+
+    assert.equal(result.priority, 'stat');
+
+    assert.equal(result.status, 'draft');
+});
+
+// ==========================================
+// 39. RESTRICT LABORATORY STAFF ROLES
+// ==========================================
+
+test('prevents laboratory technologists and result verifiers from updating drafts', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const restrictedRoles = [
+        'lab_technologist',
+        'result_verifier'
+    ];
+
+    for (const role of restrictedRoles) {
+
+        const staffAuth = {
+            id: receptionistUser._id.toString(),
+            role
+        };
+
+        await expectAppError(
+            updateDraftRequest(
+                request._id.toString(),
+                {
+                    priority: 'urgent'
+                },
+                staffAuth
+            ),
+            403
+        );
+    }
+});
+
+// ==========================================
+// 40. RESTRICT UPDATES TO DRAFT STATUS
+// ==========================================
+
+test('prevents updating requests that are no longer drafts', async () => {
+
+    const request = await createRetrievalRequest({
+        status: 'submitted'
+    });
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                priority: 'urgent'
+            },
+            authenticatedUser
+        ),
+        409
+    );
+});
+
+// ==========================================
+// 41. VALIDATE UPDATE REQUEST ID
+// ==========================================
+
+test('rejects an invalid request ID during draft update', async () => {
+
+    await expectAppError(
+        updateDraftRequest(
+            'invalid-id',
+            {
+                priority: 'urgent'
+            },
+            authenticatedUser
+        ),
+        400
+    );
+});
+
+test('rejects updating a nonexistent laboratory request', async () => {
+
+    const nonexistentId =
+        new mongoose.Types.ObjectId().toString();
+
+    await expectAppError(
+        updateDraftRequest(
+            nonexistentId,
+            {
+                priority: 'urgent'
+            },
+            authenticatedUser
+        ),
+        404
+    );
+});
+
+// ==========================================
+// 42. VALIDATE UPDATE INFORMATION
+// ==========================================
+
+test('rejects missing or invalid update information', async () => {
+
+    const request = await createRetrievalRequest();
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            null,
+            authenticatedUser
+        ),
+        400
+    );
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            [],
+            authenticatedUser
+        ),
+        400
+    );
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {},
+            authenticatedUser
+        ),
+        400
+    );
+});
+
+// ==========================================
+// 43. VALIDATE UPDATED PATIENT
+// ==========================================
+
+test('rejects an invalid patient ID during draft update', async () => {
+
+    const request = await createRetrievalRequest();
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                patientId: 'invalid-id'
+            },
+            authenticatedUser
+        ),
+        400
+    );
+});
+
+test('rejects a nonexistent patient during draft update', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const nonexistentPatientId =
+        new mongoose.Types.ObjectId().toString();
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                patientId: nonexistentPatientId
+            },
+            authenticatedUser
+        ),
+        404
+    );
+});
+
+// ==========================================
+// 44. VALIDATE UPDATED LABORATORY TESTS
+// ==========================================
+
+test('rejects an invalid test selection during draft update', async () => {
+
+    const request = await createRetrievalRequest();
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                testIds: 'invalid'
+            },
+            authenticatedUser
+        ),
+        400
+    );
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                testIds: ['invalid-id']
+            },
+            authenticatedUser
+        ),
+        400
+    );
+});
+
+test('rejects duplicate laboratory tests during draft update', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const testId = activeTest._id.toString();
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                testIds: [testId, testId]
+            },
+            authenticatedUser
+        ),
+        400
+    );
+});
+
+test('rejects inactive laboratory tests during draft update', async () => {
+
+    const request = await createRetrievalRequest();
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                testIds: [inactiveTest._id.toString()]
+            },
+            authenticatedUser
+        ),
+        400
+    );
+});
+
+// ==========================================
+// 45. VALIDATE UPDATED PRIORITY
+// ==========================================
+
+test('rejects an unsupported priority during draft update', async () => {
+
+    const request = await createRetrievalRequest();
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                priority: 'normal'
+            },
+            authenticatedUser
+        ),
+        400
+    );
+});
+
+// ==========================================
+// 46. VALIDATE UPDATED CLINICAL NOTES
+// ==========================================
+
+test('rejects invalid clinical notes during draft update', async () => {
+
+    const request = await createRetrievalRequest();
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                clinicalNotes: 'A'.repeat(2001)
+            },
+            authenticatedUser
+        ),
+        400
+    );
+
+    await expectAppError(
+        updateDraftRequest(
+            request._id.toString(),
+            {
+                clinicalNotes: 12345
+            },
+            authenticatedUser
+        ),
+        400
+    );
+});
+
+// ==========================================
+// 47. PRESERVE PROTECTED REQUEST INFORMATION
+// ==========================================
+
+test('does not allow client updates to protected request fields', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const anotherUserId =
+        new mongoose.Types.ObjectId().toString();
+
+    const originalRequestNumber = request.requestNumber;
+
+    const originalRequester =
+        request.requestedBy.toString();
+
+    const originalCreator =
+        request.createdBy.toString();
+
+    const result = await updateDraftRequest(
+        request._id.toString(),
+        {
+            clinicalNotes: 'Authorized clinical notes.',
+            status: 'completed',
+            requestNumber: 'CLIENT-SUPPLIED-001',
+            requestedBy: anotherUserId,
+            createdBy: anotherUserId
+        },
+        authenticatedUser
+    );
+
+    assert.equal(result.status, 'draft');
+
+    assert.equal(
+        result.requestNumber,
+        originalRequestNumber
+    );
+
+    assert.equal(
+        String(result.requestedBy._id || result.requestedBy),
+        originalRequester
+    );
+
+    assert.equal(
+        String(result.createdBy._id || result.createdBy),
+        originalCreator
+    );
+});
+
+// ==========================================
+// 48. REPLACE REQUESTED LABORATORY TESTS
+// ==========================================
+
+test('updates laboratory tests and creates new test snapshots', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const glucoseTest = await TestCatalog.create({
+        testCode: 'CHEM-GLU-UPDATE',
+        testName: 'Updated Glucose Test',
+        category: 'Clinical Chemistry',
+        specimenType: 'Serum',
+        testingMethod: 'Enzymatic Method',
+        turnaroundTime: '1 day',
+        status: 'active'
+    });
+
+    const result = await updateDraftRequest(
+        request._id.toString(),
+        {
+            testIds: [glucoseTest._id.toString()]
+        },
+        authenticatedUser
+    );
+
+    assert.equal(result.tests.length, 1);
+
+    assert.equal(
+        result.tests[0].testSnapshot.testCode,
+        'CHEM-GLU-UPDATE'
+    );
+
+    assert.equal(
+        result.tests[0].testSnapshot.testName,
+        'Updated Glucose Test'
+    );
+
+    assert.equal(result.tests[0].status, 'pending');
+});
+
+// ==========================================
+// 49. PRESERVE UNCHANGED REQUEST INFORMATION
+// ==========================================
+
+test('preserves existing request tests when only clinical notes are updated', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const originalTestCount = request.tests.length;
+
+    const result = await updateDraftRequest(
+        request._id.toString(),
+        {
+            clinicalNotes: 'Notes updated without changing tests.'
+        },
+        authenticatedUser
+    );
+
+    assert.equal(
+        result.tests.length,
+        originalTestCount
+    );
+
+    assert.equal(
+        result.tests[0].testSnapshot.testCode,
+        'HEM-CBC-001'
+    );
+
+    assert.equal(
+        result.clinicalNotes,
+        'Notes updated without changing tests.'
     );
 });
 

@@ -4,7 +4,8 @@ const express = require('express');
 const {
     createDraftRequestController,
     getLaboratoryRequestsController,
-    getLaboratoryRequestByIdController
+    getLaboratoryRequestByIdController,
+    updateDraftRequestController
 } = require('./laboratory-request.controller');
 
 const {
@@ -70,6 +71,21 @@ router.post(
         'requesting_clinician'
     ),
     createDraftRequestController
+);
+
+// ==========================================
+// 4. UPDATE LABORATORY REQUEST DRAFT
+// ==========================================
+
+router.patch(
+    '/:requestId',
+    requireAuth,
+    authorizeRoles(
+        'lab_admin',
+        'lab_receptionist',
+        'requesting_clinician'
+    ),
+    updateDraftRequestController
 );
 
 module.exports = router;
