@@ -5,7 +5,8 @@ const {
     createDraftRequestController,
     getLaboratoryRequestsController,
     getLaboratoryRequestByIdController,
-    updateDraftRequestController
+    updateDraftRequestController,
+    submitLaboratoryRequestController
 } = require('./laboratory-request.controller');
 
 const {
@@ -86,6 +87,21 @@ router.patch(
         'requesting_clinician'
     ),
     updateDraftRequestController
+);
+
+// ==========================================
+// 5. SUBMIT LABORATORY REQUEST
+// ==========================================
+
+router.post(
+    '/:requestId/submit',
+    requireAuth,
+    authorizeRoles(
+        'lab_admin',
+        'lab_receptionist',
+        'requesting_clinician'
+    ),
+    submitLaboratoryRequestController
 );
 
 module.exports = router;

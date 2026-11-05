@@ -73,27 +73,24 @@
 
                 <div class="login-heading">
                     <span class="login-welcome">WELCOME BACK</span>
-
                     <h2>Sign in to your account</h2>
-
                     <p>
                         Enter your account credentials to access
                         the laboratory workspace.
                     </p>
                 </div>
 
-                <form id="loginForm">
-
+                <form id="loginForm" class="form">
+                    
                     <div class="form-group">
                         <label class="form-label" for="identifier">
                             Username or Email Address
                         </label>
-
                         <input
                             type="text"
                             id="identifier"
                             name="identifier"
-                            class="form-control"
+                            class="input"
                             placeholder="Enter your username or email address"
                             autocomplete="username"
                             required
@@ -104,29 +101,20 @@
                         <label class="form-label" for="password">
                             Password
                         </label>
-
                         <input
                             type="password"
                             id="password"
                             name="password"
-                            class="form-control"
+                            class="input"
                             placeholder="Enter your password"
                             autocomplete="current-password"
                             required
                         >
                     </div>
 
-                    <div
-                        id="loginMessage"
-                        class="login-message"
-                        role="status"
-                        aria-live="polite"
-                        hidden>
-                    </div>
+                    <div id="loginMessage" class="login-message" role="status" aria-live="polite" hidden></div>
 
-                    <button
-                        type="submit"
-                        class="btn btn-primary btn-block login-button">
+                    <button type="submit" class="btn">
                         Sign In
                     </button>
 

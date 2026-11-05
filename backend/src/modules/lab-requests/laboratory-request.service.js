@@ -1127,6 +1127,109 @@ async function createDraftRequest(requestData, authenticatedUser) {
     );
 }
 
+
+
+// ==========================================
+// 6. SUBMIT LABORATORY REQUEST
+// ==========================================
+
+async function submitLaboratoryRequest(
+    requestId,
+    authenticatedUser
+) {
+
+    // 1. Validate request ID.
+    if (!isValidObjectId(requestId)) {
+        throw new AppError(
+            'A valid laboratory request ID is required.',
+            400
+        );
+    }
+
+    // 2. Validate authentication and request access.
+    const accessFilter = getRequestAccessFilter(
+        authenticatedUser
+    );
+
+    // Only authorized request creators may submit.
+    const allowedRoles = [
+        'lab_admin',
+        'lab_receptionist',
+        'requesting_clinician'
+    ];
+
+    if (!allowedRoles.includes(authenticatedUser.role)) {
+        throw new AppError(
+            'You do not have permission to submit laboratory requests.',
+            403
+        );
+    }
+
+    // 3. Retrieve the authorized request.
+    const laboratoryRequest = await LaboratoryRequest.findOne({
+        _id: requestId,
+        ...accessFilter
+    });
+
+    if (!laboratoryRequest) {
+        throw new AppError(
+            'Laboratory request not found.',
+            404
+        );
+    }
+
+    // 4. Only drafts may be submitted.
+    if (laboratoryRequest.status !== 'draft') {
+        throw new AppError(
+            'Only draft laboratory requests can be submitted.',
+            409
+        );
+    }
+
+    // 5. Require at least one laboratory test.
+    if (
+        !Array.isArray(laboratoryRequest.tests) ||
+        laboratoryRequest.tests.length === 0
+    ) {
+        throw new AppError(
+            'At least one laboratory test must be selected before submitting the request.',
+            400
+        );
+    }
+
+    // 6. Record the authenticated submitter.
+    const authenticatedUserId =
+        new mongoose.Types.ObjectId(
+            authenticatedUser.id
+        );
+
+    const submittedAt = new Date();
+
+    // 7. Update request information.
+    laboratoryRequest.status = 'submitted';
+    laboratoryRequest.submittedAt = submittedAt;
+    laboratoryRequest.updatedBy = authenticatedUserId;
+
+    // 8. Record submission activity.
+    laboratoryRequest.activities.push({
+        action: 'submitted',
+        message: 'Laboratory request submitted.',
+        performedBy: authenticatedUserId,
+        performedAt: submittedAt
+    });
+
+    // 9. Save the submitted request.
+    await laboratoryRequest.save();
+
+    // 10. Return populated request details.
+    return getLaboratoryRequestById(
+        laboratoryRequest._id.toString(),
+        authenticatedUser
+    );
+}
+
+
+
 // ==========================================
 // 7. EXPORT SERVICE FUNCTIONS
 // ==========================================
@@ -1136,5 +1239,6 @@ module.exports = {
     generateRequestNumber,
     searchLaboratoryRequests,
     getLaboratoryRequestById,
-    updateDraftRequest
+    updateDraftRequest,
+    submitLaboratoryRequest
 };

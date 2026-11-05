@@ -14,8 +14,11 @@ const {
     generateRequestNumber,
     searchLaboratoryRequests,
     getLaboratoryRequestById,
-    updateDraftRequest
+    updateDraftRequest,
+    submitLaboratoryRequest
 } = require('../src/modules/lab-requests/laboratory-request.service');
+
+
 
 let mongoServer;
 let patient;
@@ -2112,6 +2115,237 @@ test('preserves existing request tests when only clinical notes are updated', as
         'Notes updated without changing tests.'
     );
 });
+
+
+
+// ==========================================
+// 50. SUBMIT LABORATORY REQUEST
+// ==========================================
+
+test('allows a receptionist to submit a laboratory request draft', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const result = await submitLaboratoryRequest(
+        request._id.toString(),
+        authenticatedUser
+    );
+
+    assert.equal(result.status, 'submitted');
+
+    assert.ok(result.submittedAt instanceof Date);
+
+    assert.equal(
+        String(result.updatedBy._id || result.updatedBy),
+        receptionistUser._id.toString()
+    );
+
+    const lastActivity =
+        result.activities[result.activities.length - 1];
+
+    assert.equal(lastActivity.action, 'submitted');
+
+    assert.equal(
+        lastActivity.message,
+        'Laboratory request submitted.'
+    );
+
+    const savedRequest = await LaboratoryRequest.findById(
+        request._id
+    );
+
+    assert.equal(savedRequest.status, 'submitted');
+    assert.ok(savedRequest.submittedAt instanceof Date);
+});
+
+// ==========================================
+// 51. CLINICIAN SUBMISSION PERMISSION
+// ==========================================
+
+test('allows a requesting clinician to submit their own draft', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const clinicianAuth = {
+        id: clinicianUser._id.toString(),
+        role: 'requesting_clinician'
+    };
+
+    const result = await submitLaboratoryRequest(
+        request._id.toString(),
+        clinicianAuth
+    );
+
+    assert.equal(result.status, 'submitted');
+
+    assert.equal(
+        String(result.updatedBy._id || result.updatedBy),
+        clinicianUser._id.toString()
+    );
+});
+
+// ==========================================
+// 52. REJECT EMPTY REQUEST SUBMISSION
+// ==========================================
+
+test('rejects submission when no laboratory tests are selected', async () => {
+
+    const request = await createRetrievalRequest({
+        testIds: []
+    });
+
+    await expectAppError(
+        submitLaboratoryRequest(
+            request._id.toString(),
+            authenticatedUser
+        ),
+        400
+    );
+
+    const unchangedRequest = await LaboratoryRequest.findById(
+        request._id
+    );
+
+    assert.equal(unchangedRequest.status, 'draft');
+    assert.equal(unchangedRequest.submittedAt, null);
+});
+
+// ==========================================
+// 53. PREVENT REPEATED SUBMISSION
+// ==========================================
+
+test('prevents submitting a request more than once', async () => {
+
+    const request = await createRetrievalRequest();
+
+    await submitLaboratoryRequest(
+        request._id.toString(),
+        authenticatedUser
+    );
+
+    await expectAppError(
+        submitLaboratoryRequest(
+            request._id.toString(),
+            authenticatedUser
+        ),
+        409
+    );
+});
+
+// ==========================================
+// 54. RESTRICT SUBMISSION BY ROLE
+// ==========================================
+
+test('prevents laboratory technologists and result verifiers from submitting requests', async () => {
+
+    const request = await createRetrievalRequest();
+
+    const restrictedRoles = [
+        'lab_technologist',
+        'result_verifier'
+    ];
+
+    for (const role of restrictedRoles) {
+
+        const staffAuth = {
+            id: receptionistUser._id.toString(),
+            role
+        };
+
+        await expectAppError(
+            submitLaboratoryRequest(
+                request._id.toString(),
+                staffAuth
+            ),
+            403
+        );
+    }
+});
+
+// ==========================================
+// 55. RESTRICT CLINICIAN REQUEST OWNERSHIP
+// ==========================================
+
+test('prevents a clinician from submitting another clinician request', async () => {
+
+    const anotherClinician = await LabUser.create({
+        username: 'another_clinician_submit',
+        email: 'another_clinician_submit@example.com',
+        passwordHash: 'test-password-hash',
+        firstName: 'Pedro',
+        lastName: 'Santos',
+        role: 'requesting_clinician',
+        accountStatus: 'active'
+    });
+
+    const request = await createRetrievalRequest({
+        requestedClinician: anotherClinician
+    });
+
+    const clinicianAuth = {
+        id: clinicianUser._id.toString(),
+        role: 'requesting_clinician'
+    };
+
+    await expectAppError(
+        submitLaboratoryRequest(
+            request._id.toString(),
+            clinicianAuth
+        ),
+        404
+    );
+});
+
+// ==========================================
+// 56. VALIDATE SUBMISSION REQUEST ID
+// ==========================================
+
+test('rejects an invalid laboratory request ID during submission', async () => {
+
+    await expectAppError(
+        submitLaboratoryRequest(
+            'invalid-id',
+            authenticatedUser
+        ),
+        400
+    );
+});
+
+// ==========================================
+// 57. REJECT NONEXISTENT SUBMISSION REQUEST
+// ==========================================
+
+test('rejects submission of a nonexistent laboratory request', async () => {
+
+    const nonexistentId =
+        new mongoose.Types.ObjectId().toString();
+
+    await expectAppError(
+        submitLaboratoryRequest(
+            nonexistentId,
+            authenticatedUser
+        ),
+        404
+    );
+});
+
+// ==========================================
+// 58. REQUIRE AUTHENTICATION FOR SUBMISSION
+// ==========================================
+
+test('rejects laboratory request submission without authentication', async () => {
+
+    const request = await createRetrievalRequest();
+
+    await expectAppError(
+        submitLaboratoryRequest(
+            request._id.toString(),
+            null
+        ),
+        401
+    );
+});
+
 
 
 

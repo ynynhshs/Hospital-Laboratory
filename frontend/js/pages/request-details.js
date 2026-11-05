@@ -93,6 +93,10 @@
         'editDraftButton'
     );
 
+    const submitRequestButton = document.getElementById(
+    'submitRequestButton'
+    );
+
     const requestEditSection = document.getElementById(
         'requestEditSection'
     );
@@ -181,6 +185,8 @@
     let originalEditValues = null;
 
     let isEditDraftSaving = false;
+
+    let isSubmittingRequest = false;
 
     let patientSearchRequestVersion = 0;
 
@@ -746,6 +752,8 @@
 
         updateEditDraftButtonVisibility();
 
+        updateSubmitRequestButtonVisibility();
+
         if (printButton) {
             printButton.disabled = false;
             printButton.title = 'Print laboratory request details.';
@@ -795,6 +803,21 @@
         if (!editDraftButton) return;
 
         editDraftButton.hidden = !canEditCurrentRequest();
+    }
+
+    // ==========================================
+    // SUBMIT REQUEST PERMISSION AND VISIBILITY
+    // ==========================================
+
+    function canSubmitCurrentRequest() {
+        return canEditCurrentRequest();
+    }
+
+    function updateSubmitRequestButtonVisibility() {
+        if (!submitRequestButton) return;
+
+        submitRequestButton.hidden =
+            !canSubmitCurrentRequest();
     }
 
     function showEditDraftFeedback(message, type = '') {
@@ -1742,6 +1765,95 @@
         }
     }
 
+    
+    // ==========================================
+    // SUBMIT LABORATORY REQUEST
+    // ==========================================
+
+    async function submitCurrentRequest() {
+
+        if (isSubmittingRequest) {
+            return;
+        }
+
+        if (!canSubmitCurrentRequest()) {
+            window.alert(
+                'You do not have permission to submit this laboratory request.'
+            );
+            return;
+        }
+
+        const confirmSubmission = window.confirm(
+            'Are you sure you want to submit this laboratory request? Once submitted, it can no longer be edited as a draft.'
+        );
+
+        if (!confirmSubmission) {
+            return;
+        }
+
+        isSubmittingRequest = true;
+
+        if (submitRequestButton) {
+            submitRequestButton.disabled = true;
+            submitRequestButton.textContent = 'Submitting...';
+        }
+
+        try {
+            const response = await window.MediLinkAPI.request(
+                `/lab-requests/${encodeURIComponent(requestId)}/submit`,
+                {
+                    method: 'POST'
+                }
+            );
+
+            const updatedRequest =
+                response.data?.laboratoryRequest;
+
+            if (!updatedRequest) {
+                throw new Error(
+                    'The submission response contains no updated laboratory request.'
+                );
+            }
+
+            // Refresh the displayed request information.
+            displayRequestDetails(updatedRequest);
+
+            // Display submission confirmation.
+            updateRequestNotice(
+                'Laboratory Request Submitted',
+                'The laboratory request has been submitted successfully.'
+            );
+
+        } catch (error) {
+
+            console.error(
+                'Laboratory request submission failed:',
+                error
+            );
+
+            if (error.status === 401) {
+                window.location.replace('login.html');
+                return;
+            }
+
+            updateRequestNotice(
+                'Unable to Submit Laboratory Request',
+                error.message ||
+                    'An unexpected error occurred while submitting the request.'
+            );
+
+        } finally {
+
+            isSubmittingRequest = false;
+
+            if (submitRequestButton) {
+                submitRequestButton.disabled = false;
+                submitRequestButton.textContent = 'Submit Request';
+            }
+        }
+    }
+
+
 
     // ==========================================
     // EDIT DRAFT BUTTON EVENTS
@@ -1753,6 +1865,13 @@
             openEditDraftForm
         );
     }
+
+    if (submitRequestButton) {
+    submitRequestButton.addEventListener(
+        'click',
+        submitCurrentRequest
+    );
+}
 
     if (cancelEditDraftButton) {
         cancelEditDraftButton.addEventListener(
