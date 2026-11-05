@@ -1,30 +1,40 @@
-
 /* ==========================================
    MEDILINK LABORATORY
-   GLASSMORPHISM RESULT ENTRY STYLESHEET
+   CLAYMORPHISM RESULT ENTRY STYLESHEET
 ========================================== */
 
-/* 1. Development Notice */
+/* 0. Clay Theme Tokens */
+.app-layout {
+    --clay-bg: #dde0ea;
+    --clay-bg-raised: #e3e6ef;
+    --clay-shade-dark: rgba(146, 154, 175, 0.65);
+    --clay-shade-deep: rgba(132, 141, 163, 0.75);
+    --clay-shade-light: rgba(255, 255, 255, 0.95);
+    --color-background: #d7dae5;
+    --color-sidebar: #d0d4e1;
+    --color-text: #323a4c;
+    --color-text-secondary: #6b7589;
+    --color-border: rgba(50, 58, 76, 0.07);
+    --color-border-hover: rgba(50, 58, 76, 0.14);
+}
 
+/* 1. Development Notice */
 .result-entry-notice {
     align-items: flex-start;
     margin-bottom: 24px;
 }
-
 .result-entry-notice p {
     margin-top: 3px;
 }
 
 /* 2. Section Heading */
-
 .result-section-title {
     margin-bottom: 16px;
     color: var(--color-text);
     font-size: 18px;
 }
 
-/* 3. Result Summary Grid */
-
+/* 3. Result Summary Grid — Flat Clay */
 .result-summary-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -36,92 +46,63 @@
     align-items: center;
     gap: 15px;
     min-width: 0;
-    min-height: 105px;
-    padding: 20px;
-
-    border: 1px solid var(--glass-border);
+    min-height: 108px;
+    padding: 22px;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-large);
-    background: var(--glass-background);
-    box-shadow: var(--shadow-small);
-
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: none;
     transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
 .result-summary-card:hover {
     transform: translateY(-3px);
-    border-color: var(--glass-highlight);
+    border-color: var(--color-border-hover);
 }
 
 .result-summary-icon {
-    width: 46px;
-    height: 46px;
-
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-
-    border: 1px solid rgba(139, 146, 255, 0.20);
     border-radius: var(--radius-medium);
-
-    background: rgba(139, 146, 255, 0.13);
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
     color: var(--color-primary);
-
-    font-size: 21px;
+    font-size: 22px;
 }
 
 /* Result Status Colors */
+.result-draft     { color: var(--color-text-secondary); }
+.result-pending   { color: var(--color-warning); }
+.result-released  { color: var(--color-success); }
 
-.result-draft {
-    border-color: rgba(165, 177, 199, 0.20);
-    background: rgba(165, 177, 199, 0.12);
-    color: #b9c5d9;
-}
-
-.result-pending {
-    border-color: rgba(245, 199, 107, 0.20);
-    background: rgba(245, 199, 107, 0.13);
-    color: #f5c76b;
-}
-
-.result-released {
-    border-color: rgba(72, 214, 160, 0.20);
-    background: rgba(72, 214, 160, 0.13);
-    color: #64e7b5;
+.result-summary-card .summary-value {
+    color: var(--color-text);
+    font-size: 26px;
+    font-weight: 800;
 }
 
 /* 4. Result Worklist Toolbar */
-
 .result-worklist-toolbar {
     display: grid;
-
-    grid-template-columns:
-        minmax(230px, 1.7fr)
-        minmax(170px, 1fr)
-        auto;
-
+    grid-template-columns: minmax(230px, 1.7fr) minmax(170px, 1fr) auto;
     align-items: end;
     gap: 14px;
     margin-bottom: 22px;
-    padding: 20px;
-
-    border: 1px solid var(--glass-border);
+    padding: 22px;
     border-radius: var(--radius-large);
-
-    background: var(--glass-background);
-    box-shadow: var(--shadow-small);
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
 }
 
 .result-search,
 .result-worklist-filter {
     min-width: 0;
-
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -131,18 +112,24 @@
 .result-worklist-filter label {
     color: var(--color-text);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 /* 5. Result Worklist Table */
-
 .result-worklist-table {
     width: 100%;
     margin-top: 5px;
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
+    padding: 14px;
+    overflow-x: auto;
 }
 
 .result-worklist-table .data-table {
     min-width: 1000px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
 }
 
 .result-worklist-table .data-table th,
@@ -150,8 +137,28 @@
     padding: 14px 13px;
 }
 
-/* 6. Worklist Footer */
+.result-worklist-table .data-table th {
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    color: var(--color-text-secondary);
+    box-shadow: var(--shadow-clay-sm);
+    border-radius: var(--radius-small);
+    border-bottom: none;
+}
 
+.result-worklist-table .data-table td {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.result-worklist-table .data-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+[data-theme="dark"] .result-worklist-table .data-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* 6. Worklist Footer */
 .result-worklist-footer {
     display: flex;
     align-items: center;
@@ -159,13 +166,11 @@
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
-
     color: var(--color-text-secondary);
     font-size: 12px;
 }
 
 /* 7. Result Entry Form */
-
 .result-entry-card {
     margin-top: 8px;
     overflow: hidden;
@@ -175,30 +180,26 @@
     align-items: center;
 }
 
-.result-entry-card .card-header,
-.result-form-section,
-.result-form-actions {
-    min-width: 0;
-}
-
 .result-form-section {
-    padding: 22px 0;
-    border-top: 1px solid var(--color-border);
+    padding: 22px;
+    margin-top: 16px;
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset-sm);
 }
 
 .result-form-section:first-of-type {
-    border-top: none;
+    margin-top: 0;
 }
 
 .result-form-section-title {
     margin-bottom: 18px;
     color: var(--color-text);
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 /* 8. Patient and Specimen Information */
-
 .result-information-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -210,14 +211,13 @@
 }
 
 .result-information-grid .form-control[readonly] {
-    border-color: rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.045);
+    background-color: var(--clay-bg-raised);
+    box-shadow: var(--shadow-clay-inset);
     color: var(--color-text-secondary);
     cursor: default;
 }
 
 /* 9. Reference Range Notice */
-
 .result-range-notice {
     align-items: flex-start;
     margin-bottom: 20px;
@@ -225,7 +225,6 @@
 }
 
 /* 10. Multi-Component Results */
-
 .result-component-title {
     margin-bottom: 14px;
     color: var(--color-text);
@@ -236,10 +235,7 @@
     margin-top: 20px;
 }
 
-#multiComponentResultSection[hidden] {
-    display: none;
-}
-
+#multiComponentResultSection[hidden],
 #singleResultSection[hidden] {
     display: none;
 }
@@ -254,14 +250,12 @@
 }
 
 /* 11. Result Entry Actions */
-
 .result-form-actions {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 15px;
-
     padding-top: 22px;
     border-top: 1px solid var(--color-border);
 }
@@ -281,541 +275,73 @@
 }
 
 /* 12. Disabled Form Controls */
-
 #resultEntryForm button:disabled,
 #resultEntryForm input:disabled,
 #resultEntryForm textarea:disabled {
-    opacity: 0.50;
+    opacity: 0.5;
     cursor: not-allowed;
 }
 
 /* 13. Result Page Footer */
-
 .result-page-footer {
     margin-top: 28px;
     padding: 16px 0;
-
     border-top: 1px solid var(--color-border);
-
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
 }
 
-/* 14. Large Screens */
-
-@media (max-width: 1200px) {
-    .result-summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .result-worklist-toolbar {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-/* 15. Tablet Screens */
-
-@media (max-width: 900px) {
-    .result-information-grid {
-        grid-template-columns: 1fr;
-        column-gap: 0;
-    }
-}
-
-/* 16. Mobile Screens */
-
-@media (max-width: 768px) {
-    .result-summary-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .result-summary-card {
-        min-height: 90px;
-        padding: 16px;
-    }
-
-    .result-worklist-toolbar {
-        grid-template-columns: 1fr;
-        gap: 14px;
-        padding: 16px;
-    }
-
-    .result-worklist-toolbar .btn {
-        width: 100%;
-    }
-
-    .result-worklist-footer {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .result-form-actions {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-    .result-submit-actions {
-        display: grid;
-        grid-template-columns: 1fr;
-        width: 100%;
-    }
-
-    .result-form-footnote {
-        text-align: left;
-    }
-}
-
-/* 17. Small Mobile Screens */
-
-@media (max-width: 480px) {
-    .result-summary-card {
-        padding: 14px;
-    }
-
-    .result-summary-icon {
-        width: 42px;
-        height: 42px;
-    }
-
-    .result-summary-card .summary-value {
-        font-size: 23px;
-    }
-
-    .result-entry-notice,
-    .result-range-notice {
-        font-size: 12px;
-    }
-
-    .result-form-section {
-        padding: 18px 0;
-    }
-}
-
-/* 18. Reduced Motion Support */
-
-@media (prefers-reduced-motion: reduce) {
-    .result-summary-card {
-        transition: none;
-    }
-}
-
-/* ==========================================
-   19. UILORA-INSPIRED GLASS CARD REDESIGN
-========================================== */
-
-/* Result Summary Cards */
-
-.result-summary-card {
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-
-    border: 1px solid transparent;
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(30, 41, 67, 0.88),
-            rgba(12, 18, 35, 0.92)
-        ) padding-box,
-        linear-gradient(
-            120deg,
-            rgba(168, 85, 247, 0.42),
-            rgba(59, 130, 246, 0.32),
-            rgba(255, 255, 255, 0.12)
-        ) border-box;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.24),
-        0 0 16px rgba(147, 51, 234, 0.08),
-        0 0 22px rgba(59, 130, 246, 0.06);
-
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-
-    transition:
-        transform 1s ease,
-        box-shadow 1s ease;
-}
-
-/* Summary Card Outer Glow */
-
-.result-summary-card::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    z-index: 0;
-
-    border-radius: inherit;
-
-    background: linear-gradient(
-        90deg,
-        #9333ea,
-        #2563eb
-    );
-
-    filter: blur(18px);
-    opacity: 0.18;
-
-    pointer-events: none;
-
-    transition:
-        opacity 1s ease,
-        filter 1s ease;
-}
-
-/* Summary Card Hover */
-
-.result-summary-card:hover {
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.35),
-        0 0 25px rgba(147, 51, 234, 0.30),
-        0 0 40px rgba(59, 130, 246, 0.22);
-
-    transition-duration: 200ms;
-}
-
-.result-summary-card:hover::after {
-    opacity: 0.90;
-    filter: blur(23px);
-    transition-duration: 200ms;
-}
-
-/* Keep Summary Card Content Above Glow */
-
-.result-summary-card > * {
-    position: relative;
-    z-index: 1;
-}
-
-/* Summary Card Text */
-
-.result-summary-card .summary-label {
-    color: #b8c3d8;
-    transition: color 0.2s ease;
-}
-
-.result-summary-card:hover .summary-label {
-    color: #ffffff;
-}
-
-.result-summary-card .summary-value {
-    color: #f5f3ff;
-}
-
-/* Summary Card Icons */
-
-.result-summary-icon {
-    border-radius: 15px;
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.result-summary-card:hover .result-summary-icon {
-    transform: scale(1.08);
-
-    box-shadow:
-        0 0 14px rgba(147, 51, 234, 0.22),
-        0 0 20px rgba(59, 130, 246, 0.12);
-}
-
-/* Main Result Worklist and Entry Cards */
-
+/* 14. Main Card Override — FLAT */
 .content-section > .card {
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-
-    border: 1px solid transparent;
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(30, 41, 67, 0.88),
-            rgba(12, 18, 35, 0.92)
-        ) padding-box,
-        linear-gradient(
-            120deg,
-            rgba(168, 85, 247, 0.30),
-            rgba(59, 130, 246, 0.24),
-            rgba(255, 255, 255, 0.10)
-        ) border-box;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.24),
-        0 0 18px rgba(147, 51, 234, 0.06);
-
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-
-    transition:
-        transform 1s ease,
-        box-shadow 1s ease;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: none;
+    padding: 26px;
+    transition: border-color 0.3s ease;
 }
-
-/* Main Card Outer Glow */
-
-.content-section > .card::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    z-index: 0;
-
-    border-radius: inherit;
-
-    background: linear-gradient(
-        90deg,
-        #9333ea,
-        #2563eb
-    );
-
-    filter: blur(18px);
-    opacity: 0.16;
-
-    pointer-events: none;
-
-    transition:
-        opacity 1s ease,
-        filter 1s ease;
-}
-
-/* Keep Main Card Content Above Glow */
-
-.content-section > .card > * {
-    position: relative;
-    z-index: 1;
-}
-
-/* Main Card Hover */
 
 .content-section > .card:hover {
-    transform: translateY(-3px);
-
-    box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.35),
-        0 0 25px rgba(147, 51, 234, 0.30),
-        0 0 40px rgba(59, 130, 246, 0.22);
-
-    transition-duration: 200ms;
+    border-color: var(--color-border-hover);
 }
 
-.content-section > .card:hover::after {
-    opacity: 0.75;
-    filter: blur(23px);
-    transition-duration: 200ms;
+/* 15. Responsive Adjustments */
+@media (max-width: 1200px) {
+    .result-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .result-worklist-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* Main Card Headings */
-
-.content-section > .card .card-title {
-    color: #f1f5ff;
+@media (max-width: 900px) {
+    .result-information-grid { grid-template-columns: 1fr; column-gap: 0; }
 }
-
-.content-section > .card .card-description {
-    color: #a5b1c7;
-}
-
-/* Result Worklist Toolbar */
-
-.result-worklist-toolbar {
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 18px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(35, 43, 70, 0.72),
-            rgba(13, 21, 41, 0.76)
-        );
-
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.16),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.result-worklist-toolbar:hover {
-    border-color: rgba(139, 146, 255, 0.28);
-
-    box-shadow:
-        0 10px 28px rgba(0, 0, 0, 0.22),
-        0 0 18px rgba(147, 51, 234, 0.08);
-}
-
-.result-search label,
-.result-worklist-filter label {
-    color: #e7ecf7;
-}
-
-/* Result Worklist Table */
-
-.result-worklist-table {
-    border-radius: 14px;
-    overflow-x: auto;
-}
-
-.result-worklist-table .data-table th {
-    background: rgba(255, 255, 255, 0.055);
-    color: #aebbd0;
-}
-
-.result-worklist-table .data-table tbody tr {
-    transition: background 0.2s ease;
-}
-
-.result-worklist-table .data-table tbody tr:hover {
-    background: rgba(139, 146, 255, 0.075);
-}
-
-/* Result Entry Form Card */
-
-.result-entry-card {
-    overflow: visible;
-}
-
-.result-entry-card > form {
-    position: relative;
-    z-index: 1;
-}
-
-/* Internal Form Sections */
-
-.result-form-section {
-    padding: 20px;
-    margin-top: 14px;
-
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(35, 43, 70, 0.48),
-            rgba(13, 21, 41, 0.42)
-        );
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-}
-
-.result-form-section:first-of-type {
-    margin-top: 0;
-}
-
-.result-form-section-title {
-    color: #e7ecf7;
-}
-
-/* Result Information Fields */
-
-.result-information-grid .form-group {
-    min-width: 0;
-}
-
-.result-information-grid .form-control {
-    border-color: rgba(255, 255, 255, 0.12);
-}
-
-.result-information-grid .form-control:focus {
-    border-color: var(--color-primary, #8b92ff);
-    box-shadow: 0 0 0 3px rgba(139, 146, 255, 0.14);
-}
-
-.result-information-grid .form-control[readonly] {
-    background: rgba(9, 16, 32, 0.42);
-}
-
-/* Reference Range Notice */
-
-.result-range-notice {
-    border-radius: 12px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-}
-
-/* Multi-Component Results */
-
-#multiComponentResultSection .table-container {
-    border-radius: 12px;
-    overflow-x: auto;
-}
-
-#multiComponentResultSection .data-table th {
-    background: rgba(255, 255, 255, 0.055);
-    color: #aebbd0;
-}
-
-#resultComponentsBody td {
-    color: #e7ecf7;
-}
-
-#resultComponentsBody input,
-#resultComponentsBody select {
-    background: rgba(9, 16, 32, 0.58);
-    color: #f1f5ff;
-    border-color: rgba(255, 255, 255, 0.12);
-}
-
-/* Result Form Actions */
-
-.result-form-actions {
-    border-color: rgba(255, 255, 255, 0.12);
-}
-
-.result-form-footnote {
-    color: #a5b1c7;
-}
-
-/* Responsive Adjustments */
 
 @media (max-width: 768px) {
-    .result-summary-card {
-        border-radius: 20px;
-    }
-
-    .result-summary-card:hover {
-        transform: translateY(-2px);
-    }
-
-    .content-section > .card {
-        border-radius: 20px;
-    }
-
-    .result-worklist-toolbar {
-        border-radius: 16px;
-    }
-
-    .result-form-section {
-        padding: 15px;
-    }
+    .result-summary-grid { grid-template-columns: 1fr; gap: 12px; }
+    .result-summary-card { min-height: 90px; padding: 16px; }
+    .result-worklist-toolbar { grid-template-columns: 1fr; gap: 14px; padding: 16px; }
+    .result-worklist-toolbar .btn { width: 100%; }
+    .result-worklist-footer { align-items: flex-start; flex-direction: column; }
+    .result-form-actions { align-items: stretch; flex-direction: column; }
+    .result-submit-actions { display: grid; grid-template-columns: 1fr; width: 100%; }
+    .result-form-footnote { text-align: left; }
 }
 
-/* Reduced Motion Accessibility */
+@media (max-width: 480px) {
+    .result-summary-card { padding: 14px; }
+    .result-summary-icon { width: 42px; height: 42px; }
+    .result-summary-card .summary-value { font-size: 23px; }
+    .result-entry-notice, .result-range-notice { font-size: 12px; }
+    .result-form-section { padding: 18px; }
+}
 
+/* 16. Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
     .result-summary-card,
-    .result-summary-card::after,
-    .content-section > .card,
-    .content-section > .card::after,
-    .result-worklist-toolbar,
-    .result-summary-icon {
+    .content-section > .card {
         transition: none !important;
     }
-
     .result-summary-card:hover,
     .content-section > .card:hover {
         transform: none;

@@ -1,360 +1,189 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Result Entry | MediLink Laboratory</title>
 
-    <!-- Global Stylesheets -->
+    <!-- Load theme early -->
+    <script src="../js/theme.js"></script>
+
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/components.css">
-
-    <!-- Result Entry Stylesheet -->
     <link rel="stylesheet" href="../css/pages/result-entry.css">
 </head>
-
 <body>
-
     <div class="app-layout" id="appLayout">
-
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
-
             <div class="sidebar-brand">
                 <div class="brand-logo">M</div>
-
                 <div>
                     <h2>MediLink</h2>
                     <p>Laboratory Services</p>
                 </div>
             </div>
-
-            <!-- Navigation -->
             <nav class="sidebar-nav" aria-label="Main navigation">
-
                 <p class="nav-section-title">Workspace</p>
-
                 <a href="dashboard.html" class="nav-link">
                     <span class="nav-icon">▦</span>
                     <span>Dashboard</span>
                 </a>
-
                 <p class="nav-section-title">Laboratory Operations</p>
-
                 <a href="test-catalog.html" class="nav-link">
                     <span class="nav-icon">☷</span>
                     <span>Test Catalog</span>
                 </a>
-
                 <a href="laboratory-requests.html" class="nav-link">
                     <span class="nav-icon">▤</span>
                     <span>Laboratory Requests</span>
                 </a>
-
                 <a href="specimen-management.html" class="nav-link">
                     <span class="nav-icon">◉</span>
                     <span>Specimen Management</span>
                 </a>
-
                 <a href="processing-worklist.html" class="nav-link">
                     <span class="nav-icon">⚙</span>
                     <span>Processing Worklist</span>
                 </a>
-
                 <p class="nav-section-title">Results</p>
-
-                <a href="result-entry.html"
-                   class="nav-link active"
-                   aria-current="page">
+                <a href="result-entry.html" class="nav-link active" aria-current="page">
                     <span class="nav-icon">✎</span>
                     <span>Result Entry</span>
                 </a>
-
                 <a href="result-verification.html" class="nav-link">
                     <span class="nav-icon">✓</span>
                     <span>Result Verification</span>
                 </a>
-
                 <a href="laboratory-history.html" class="nav-link">
                     <span class="nav-icon">◷</span>
                     <span>Laboratory History</span>
                 </a>
-
                 <p class="nav-section-title">Administration</p>
-
                 <a href="reports.html" class="nav-link">
                     <span class="nav-icon">▥</span>
                     <span>Reports & Analytics</span>
                 </a>
-
                 <a href="audit-logs.html" class="nav-link">
                     <span class="nav-icon">▧</span>
                     <span>Audit Trail</span>
                 </a>
-
             </nav>
-
             <div class="sidebar-footer">
                 <p>MediLink Laboratory</p>
                 <p>Development Version 1.0</p>
             </div>
-
         </aside>
 
-        <!-- Mobile Sidebar Overlay -->
-        <button
-            type="button"
-            class="sidebar-overlay"
-            id="sidebarOverlay"
-            aria-label="Close navigation">
-        </button>
+        <button type="button" class="sidebar-overlay" id="sidebarOverlay" aria-label="Close navigation"></button>
 
-        <!-- Main Content -->
         <main class="main-content">
-
-            <!-- Top Header -->
             <header class="topbar">
-
                 <div class="topbar-left">
-
-                    <button
-                        type="button"
-                        class="sidebar-toggle"
-                        id="sidebarToggle"
-                        aria-label="Open navigation"
-                        aria-controls="sidebar"
-                        aria-expanded="false">
-                        ☰
-                    </button>
-
-                    <p class="topbar-title">
-                        Laboratory Workspace
-                    </p>
-
+                    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">☰</button>
+                    <p class="topbar-title">Laboratory Workspace</p>
                 </div>
-
                 <div class="topbar-right">
-
                     <div class="topbar-user">
-
                         <div class="user-avatar">U</div>
-
                         <div class="user-details">
                             <p class="user-name">System User</p>
                             <p class="user-role">Laboratory Technologist</p>
                         </div>
-
                     </div>
-
-                    <button
-                        type="button"
-                        class="btn btn-outline btn-small"
-                        id="logoutButton">
-                        Logout
+                    
+                    <!-- Theme Toggle -->
+                    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
+                        <span class="theme-toggle-icon-wrapper" aria-hidden="true">
+                            <span class="theme-toggle-sun">☀</span>
+                            <span class="theme-toggle-moon">☾</span>
+                        </span>
                     </button>
 
+                    <button type="button" class="btn btn-outline btn-small" id="logoutButton">Logout</button>
                 </div>
-
             </header>
 
-            <!-- Page Content -->
             <section class="page-content">
-
-                <!-- Page Heading -->
                 <div class="page-header">
-
                     <div>
-                        <h1 class="page-title">
-                            Laboratory Result Entry
-                        </h1>
-
-                        <p class="page-description">
-                            Enter and prepare laboratory test results
-                            for verification.
-                        </p>
+                        <h1 class="page-title">Laboratory Result Entry</h1>
+                        <p class="page-description">Enter and prepare laboratory test results for verification.</p>
                     </div>
-
-                    <button
-                        type="button"
-                        class="btn btn-outline"
-                        id="refreshResultWorklistButton">
-                        ↻ Refresh Worklist
-                    </button>
-
+                    <button type="button" class="btn btn-outline" id="refreshResultWorklistButton">↻ Refresh Worklist</button>
                 </div>
 
-                <!-- Development Notice -->
                 <div class="alert alert-info result-entry-notice">
-
                     <span>ⓘ</span>
-
                     <div>
                         <strong>Result Entry Setup</strong>
-
-                        <p>
-                            Result records and completed laboratory
-                            tests will be loaded from the database
-                            when the backend Results module is ready.
-                        </p>
+                        <p>Result records and completed laboratory tests will be loaded from the database when the backend Results module is ready.</p>
                     </div>
-
                 </div>
 
-                <!-- Result Entry Summary -->
                 <section class="content-section">
-
-                    <h2 class="result-section-title">
-                        Result Entry Overview
-                    </h2>
-
+                    <h2 class="result-section-title">Result Entry Overview</h2>
                     <div class="result-summary-grid">
-
                         <article class="card result-summary-card">
-
-                            <div class="result-summary-icon">
-                                ▤
-                            </div>
-
+                            <div class="result-summary-icon">▤</div>
                             <div>
-                                <p class="summary-label">
-                                    Awaiting Result Entry
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="awaitingResultCount">—</h2>
+                                <p class="summary-label">Awaiting Result Entry</p>
+                                <h2 class="summary-value" id="awaitingResultCount">—</h2>
                             </div>
-
                         </article>
-
                         <article class="card result-summary-card">
-
-                            <div class="result-summary-icon result-draft">
-                                ✎
-                            </div>
-
+                            <div class="result-summary-icon result-draft">✎</div>
                             <div>
-                                <p class="summary-label">
-                                    Draft Results
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="draftResultCount">—</h2>
+                                <p class="summary-label">Draft Results</p>
+                                <h2 class="summary-value" id="draftResultCount">—</h2>
                             </div>
-
                         </article>
-
                         <article class="card result-summary-card">
-
-                            <div class="result-summary-icon result-pending">
-                                ◷
-                            </div>
-
+                            <div class="result-summary-icon result-pending">◷</div>
                             <div>
-                                <p class="summary-label">
-                                    Pending Verification
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="pendingVerificationCount">—</h2>
+                                <p class="summary-label">Pending Verification</p>
+                                <h2 class="summary-value" id="pendingVerificationCount">—</h2>
                             </div>
-
                         </article>
-
                         <article class="card result-summary-card">
-
-                            <div class="result-summary-icon result-released">
-                                ✓
-                            </div>
-
+                            <div class="result-summary-icon result-released">✓</div>
                             <div>
-                                <p class="summary-label">
-                                    Released Results
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="releasedResultCount">—</h2>
+                                <p class="summary-label">Released Results</p>
+                                <h2 class="summary-value" id="releasedResultCount">—</h2>
                             </div>
-
                         </article>
-
                     </div>
-
                 </section>
 
-                <!-- Eligible Tests Worklist -->
                 <section class="content-section">
-
                     <article class="card">
-
                         <div class="card-header">
-
                             <div>
-                                <h2 class="card-title">
-                                    Tests Awaiting Result Entry
-                                </h2>
-
-                                <p class="card-description">
-                                    Select a completed laboratory test
-                                    to enter its result.
-                                </p>
+                                <h2 class="card-title">Tests Awaiting Result Entry</h2>
+                                <p class="card-description">Select a completed laboratory test to enter its result.</p>
                             </div>
-
                         </div>
 
-                        <!-- Worklist Search -->
                         <div class="result-worklist-toolbar">
-
                             <div class="result-search">
-
-                                <label for="resultWorklistSearch">
-                                    Search Tests
-                                </label>
-
-                                <input
-                                    type="search"
-                                    id="resultWorklistSearch"
-                                    class="form-control"
-                                    placeholder="Search request number, patient, or test..."
-                                >
-
+                                <label for="resultWorklistSearch">Search Tests</label>
+                                <input type="search" id="resultWorklistSearch" class="form-control" placeholder="Search request number, patient, or test...">
                             </div>
-
                             <div class="result-worklist-filter">
-
-                                <label for="resultWorklistStatusFilter">
-                                    Result Status
-                                </label>
-
-                                <select
-                                    id="resultWorklistStatusFilter"
-                                    class="form-control">
-
+                                <label for="resultWorklistStatusFilter">Result Status</label>
+                                <select id="resultWorklistStatusFilter" class="form-control">
                                     <option value="">All Statuses</option>
                                     <option value="Awaiting Entry">Awaiting Entry</option>
                                     <option value="Draft">Draft</option>
                                     <option value="Pending Verification">Pending Verification</option>
-
                                 </select>
-
                             </div>
-
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                id="resetResultWorklistFiltersButton">
-                                Reset Filters
-                            </button>
-
+                            <button type="button" class="btn btn-secondary" id="resetResultWorklistFiltersButton">Reset Filters</button>
                         </div>
 
-                        <!-- Eligible Tests Table -->
                         <div class="table-container result-worklist-table">
-
                             <table class="data-table">
-
                                 <thead>
                                     <tr>
                                         <th>Request Number</th>
@@ -366,295 +195,105 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-
                                 <tbody id="resultWorklistTableBody">
-
                                     <tr>
                                         <td colspan="7">
-
                                             <div class="empty-state">
-
-                                                <div class="empty-state-icon">
-                                                    ✎
-                                                </div>
-
-                                                <h3 class="empty-state-title">
-                                                    No tests awaiting result entry
-                                                </h3>
-
-                                                <p class="empty-state-description">
-                                                    Completed laboratory tests
-                                                    eligible for result entry
-                                                    will appear here.
-                                                </p>
-
+                                                <div class="empty-state-icon">✎</div>
+                                                <h3 class="empty-state-title">No tests awaiting result entry</h3>
+                                                <p class="empty-state-description">Completed laboratory tests eligible for result entry will appear here.</p>
                                             </div>
-
                                         </td>
                                     </tr>
-
                                 </tbody>
-
                             </table>
-
                         </div>
 
                         <div class="result-worklist-footer">
-
-                            <p id="resultWorklistRecordCount">
-                                No laboratory tests available.
-                            </p>
-
+                            <p id="resultWorklistRecordCount">No laboratory tests available.</p>
                         </div>
-
                     </article>
-
                 </section>
 
-                <!-- Result Entry Form -->
                 <section class="content-section">
-
                     <article class="card result-entry-card">
-
                         <div class="card-header">
-
                             <div>
-                                <h2 class="card-title">
-                                    Enter Laboratory Test Result
-                                </h2>
-
-                                <p class="card-description">
-                                    Complete the result information for
-                                    the selected laboratory test.
-                                </p>
+                                <h2 class="card-title">Enter Laboratory Test Result</h2>
+                                <p class="card-description">Complete the result information for the selected laboratory test.</p>
                             </div>
-
-                            <span class="badge badge-neutral"
-                                  id="resultFormStatus">
-                                No Test Selected
-                            </span>
-
+                            <span class="badge badge-neutral" id="resultFormStatus">No Test Selected</span>
                         </div>
 
                         <form id="resultEntryForm">
-
-                            <!-- Request and Patient Information -->
                             <div class="result-form-section">
-
-                                <h3 class="result-form-section-title">
-                                    Request and Patient Information
-                                </h3>
-
+                                <h3 class="result-form-section-title">Request and Patient Information</h3>
                                 <div class="result-information-grid">
-
                                     <div class="form-group">
-                                        <label class="form-label"
-                                               for="resultRequestNumber">
-                                            Request Number
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            id="resultRequestNumber"
-                                            class="form-control"
-                                            placeholder="Select a laboratory test"
-                                            readonly
-                                        >
+                                        <label class="form-label" for="resultRequestNumber">Request Number</label>
+                                        <input type="text" id="resultRequestNumber" class="form-control" placeholder="Select a laboratory test" readonly>
                                     </div>
-
                                     <div class="form-group">
-                                        <label class="form-label"
-                                               for="resultPatientName">
-                                            Patient Name
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            id="resultPatientName"
-                                            class="form-control"
-                                            placeholder="Patient name"
-                                            readonly
-                                        >
+                                        <label class="form-label" for="resultPatientName">Patient Name</label>
+                                        <input type="text" id="resultPatientName" class="form-control" placeholder="Patient name" readonly>
                                     </div>
-
                                     <div class="form-group">
-                                        <label class="form-label"
-                                               for="resultTestName">
-                                            Laboratory Test
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            id="resultTestName"
-                                            class="form-control"
-                                            placeholder="Selected laboratory test"
-                                            readonly
-                                        >
+                                        <label class="form-label" for="resultTestName">Laboratory Test</label>
+                                        <input type="text" id="resultTestName" class="form-control" placeholder="Selected laboratory test" readonly>
                                     </div>
-
                                     <div class="form-group">
-                                        <label class="form-label"
-                                               for="resultSpecimenCode">
-                                            Specimen Code
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            id="resultSpecimenCode"
-                                            class="form-control"
-                                            placeholder="Specimen code"
-                                            readonly
-                                        >
+                                        <label class="form-label" for="resultSpecimenCode">Specimen Code</label>
+                                        <input type="text" id="resultSpecimenCode" class="form-control" placeholder="Specimen code" readonly>
                                     </div>
-
                                 </div>
-
                             </div>
 
-                            <!-- Specimen Information -->
                             <div class="result-form-section">
-
-                                <h3 class="result-form-section-title">
-                                    Specimen Information
-                                </h3>
-
+                                <h3 class="result-form-section-title">Specimen Information</h3>
                                 <div class="result-information-grid">
-
                                     <div class="form-group">
-                                        <label class="form-label"
-                                               for="resultSpecimenType">
-                                            Specimen Type
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            id="resultSpecimenType"
-                                            class="form-control"
-                                            placeholder="Specimen type"
-                                            readonly
-                                        >
+                                        <label class="form-label" for="resultSpecimenType">Specimen Type</label>
+                                        <input type="text" id="resultSpecimenType" class="form-control" placeholder="Specimen type" readonly>
                                     </div>
-
                                     <div class="form-group">
-                                        <label class="form-label"
-                                               for="resultCompletedDate">
-                                            Processing Completed Date
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            id="resultCompletedDate"
-                                            class="form-control"
-                                            placeholder="Completion date"
-                                            readonly
-                                        >
+                                        <label class="form-label" for="resultCompletedDate">Processing Completed Date</label>
+                                        <input type="text" id="resultCompletedDate" class="form-control" placeholder="Completion date" readonly>
                                     </div>
-
                                 </div>
-
                             </div>
 
-                            <!-- Result Details -->
                             <div class="result-form-section">
-
-                                <h3 class="result-form-section-title">
-                                    Result Details
-                                </h3>
-
+                                <h3 class="result-form-section-title">Result Details</h3>
                                 <div class="alert alert-warning result-range-notice">
                                     <span>ⓘ</span>
-
-                                    <p>
-                                        Result units and reference ranges
-                                        must come from the approved
-                                        laboratory test configuration.
-                                        Do not enter or assume unapproved
-                                        clinical reference values.
-                                    </p>
+                                    <p>Result units and reference ranges must come from the approved laboratory test configuration. Do not enter or assume unapproved clinical reference values.</p>
                                 </div>
 
-                                <!-- Single Result Entry -->
                                 <div id="singleResultSection">
-
                                     <div class="result-information-grid">
-
                                         <div class="form-group">
-                                            <label class="form-label"
-                                                   for="resultValue">
-                                                Result Value
-                                                <span class="required-mark">*</span>
-                                            </label>
-
-                                            <input
-                                                type="text"
-                                                id="resultValue"
-                                                name="resultValue"
-                                                class="form-control"
-                                                placeholder="Enter test result"
-                                                disabled
-                                            >
+                                            <label class="form-label" for="resultValue">Result Value <span class="required-mark">*</span></label>
+                                            <input type="text" id="resultValue" name="resultValue" class="form-control" placeholder="Enter test result" disabled>
                                         </div>
-
                                         <div class="form-group">
-                                            <label class="form-label"
-                                                   for="resultUnit">
-                                                Unit
-                                            </label>
-
-                                            <input
-                                                type="text"
-                                                id="resultUnit"
-                                                class="form-control"
-                                                placeholder="Configured unit"
-                                                readonly
-                                            >
+                                            <label class="form-label" for="resultUnit">Unit</label>
+                                            <input type="text" id="resultUnit" class="form-control" placeholder="Configured unit" readonly>
                                         </div>
-
                                         <div class="form-group">
-                                            <label class="form-label"
-                                                   for="resultReferenceRange">
-                                                Reference Range
-                                            </label>
-
-                                            <input
-                                                type="text"
-                                                id="resultReferenceRange"
-                                                class="form-control"
-                                                placeholder="Approved reference range"
-                                                readonly
-                                            >
+                                            <label class="form-label" for="resultReferenceRange">Reference Range</label>
+                                            <input type="text" id="resultReferenceRange" class="form-control" placeholder="Approved reference range" readonly>
                                         </div>
-
                                         <div class="form-group">
-                                            <label class="form-label"
-                                                   for="resultRemarks">
-                                                Result Remarks
-                                            </label>
-
-                                            <input
-                                                type="text"
-                                                id="resultRemarks"
-                                                class="form-control"
-                                                placeholder="Optional technical remarks"
-                                                disabled
-                                            >
+                                            <label class="form-label" for="resultRemarks">Result Remarks</label>
+                                            <input type="text" id="resultRemarks" class="form-control" placeholder="Optional technical remarks" disabled>
                                         </div>
-
                                     </div>
-
                                 </div>
 
-                                <!-- Multi-Component Result Entry -->
                                 <div id="multiComponentResultSection" hidden>
-
-                                    <h4 class="result-component-title">
-                                        Test Components
-                                    </h4>
-
+                                    <h4 class="result-component-title">Test Components</h4>
                                     <div class="table-container">
-
                                         <table class="data-table">
-
                                             <thead>
                                                 <tr>
                                                     <th>Component</th>
@@ -664,107 +303,42 @@
                                                     <th>Result Flag</th>
                                                 </tr>
                                             </thead>
-
                                             <tbody id="resultComponentsBody">
-
                                                 <tr>
-                                                    <td colspan="5">
-                                                        No result components configured.
-                                                    </td>
+                                                    <td colspan="5">No result components configured.</td>
                                                 </tr>
-
                                             </tbody>
-
                                         </table>
-
                                     </div>
-
                                 </div>
-
                             </div>
 
-                            <!-- General Notes -->
                             <div class="result-form-section">
-
-                                <h3 class="result-form-section-title">
-                                    Additional Notes
-                                </h3>
-
+                                <h3 class="result-form-section-title">Additional Notes</h3>
                                 <div class="form-group">
-
-                                    <label class="form-label"
-                                           for="resultGeneralNotes">
-                                        Laboratory Notes
-                                    </label>
-
-                                    <textarea
-                                        id="resultGeneralNotes"
-                                        class="form-control"
-                                        rows="4"
-                                        placeholder="Enter relevant technical notes..."
-                                        disabled>
-                                    </textarea>
-
+                                    <label class="form-label" for="resultGeneralNotes">Laboratory Notes</label>
+                                    <textarea id="resultGeneralNotes" class="form-control" rows="4" placeholder="Enter relevant technical notes..." disabled></textarea>
                                 </div>
-
                             </div>
 
-                            <!-- Form Actions -->
                             <div class="result-form-actions">
-
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    id="clearResultFormButton">
-                                    Clear Form
-                                </button>
-
+                                <button type="button" class="btn btn-secondary" id="clearResultFormButton">Clear Form</button>
                                 <div class="result-submit-actions">
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-outline"
-                                        id="saveResultDraftButton"
-                                        disabled>
-                                        Save Draft
-                                    </button>
-
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary"
-                                        id="submitResultButton"
-                                        disabled>
-                                        Submit for Verification
-                                    </button>
-
+                                    <button type="button" class="btn btn-outline" id="saveResultDraftButton" disabled>Save Draft</button>
+                                    <button type="submit" class="btn btn-primary" id="submitResultButton" disabled>Submit for Verification</button>
                                 </div>
-
                             </div>
-
-                            <p class="result-form-footnote">
-                                Result submission and verification
-                                will be enabled after backend integration.
-                            </p>
-
+                            <p class="result-form-footnote">Result submission and verification will be enabled after backend integration.</p>
                         </form>
-
                     </article>
-
                 </section>
 
-                <!-- Page Footer -->
                 <footer class="result-page-footer">
                     MediLink Laboratory Request and Results Management System
                 </footer>
-
             </section>
-
         </main>
-
     </div>
-
-    <!-- Result Entry JavaScript -->
     <script src="../js/pages/result-entry.js"></script>
-
 </body>
 </html>

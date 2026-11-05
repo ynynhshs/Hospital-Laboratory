@@ -1,10 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Details | MediLink</title>
+
+    <!-- Load theme early -->
+    <script src="../js/theme.js"></script>
 
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/layout.css">
@@ -14,10 +16,8 @@
 <body>
 
 <div class="app-layout">
-
     <!-- Sidebar -->
     <aside class="sidebar">
-
         <div class="sidebar-brand">
             <div class="brand-logo">M</div>
             <div>
@@ -27,158 +27,111 @@
         </div>
 
         <nav class="sidebar-nav">
-
             <p class="nav-section-title">Workspace</p>
-
             <a href="dashboard.html" class="nav-link">
                 <span class="nav-icon">▦</span>
                 <span>Dashboard</span>
             </a>
 
             <p class="nav-section-title">Laboratory Operations</p>
-
             <a href="test-catalog.html" class="nav-link">
-                <span class="nav-icon">▤</span>
+                <span class="nav-icon">☷</span>
                 <span>Test Catalog</span>
             </a>
-
             <a href="laboratory-requests.html" class="nav-link active">
-                <span class="nav-icon">▣</span>
+                <span class="nav-icon">▤</span>
                 <span>Laboratory Requests</span>
             </a>
-
             <a href="specimen-management.html" class="nav-link">
                 <span class="nav-icon">◉</span>
                 <span>Specimen Management</span>
             </a>
-
             <a href="processing-worklist.html" class="nav-link">
-                <span class="nav-icon">☷</span>
+                <span class="nav-icon">⚙</span>
                 <span>Processing Worklist</span>
             </a>
 
             <p class="nav-section-title">Results</p>
-
             <a href="result-entry.html" class="nav-link">
                 <span class="nav-icon">✎</span>
                 <span>Result Entry</span>
             </a>
-
             <a href="result-verification.html" class="nav-link">
                 <span class="nav-icon">✓</span>
                 <span>Result Verification</span>
             </a>
-
             <a href="laboratory-history.html" class="nav-link">
                 <span class="nav-icon">◷</span>
                 <span>Laboratory History</span>
             </a>
 
             <p class="nav-section-title">Administration</p>
-
             <a href="reports.html" class="nav-link">
                 <span class="nav-icon">▥</span>
                 <span>Reports &amp; Analytics</span>
             </a>
-
             <a href="audit-logs.html" class="nav-link">
                 <span class="nav-icon">▧</span>
                 <span>Audit Trail</span>
             </a>
-
         </nav>
 
         <div class="sidebar-footer">
             <p>MediLink Laboratory</p>
             <p>Development Version 1.0</p>
         </div>
-
     </aside>
 
-    <!-- Mobile Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- Main Content -->
     <main class="main-content">
-
-        <!-- Topbar -->
         <header class="topbar">
-
             <div class="topbar-left">
-                <button
-                    type="button"
-                    class="sidebar-toggle"
-                    id="sidebarToggle"
-                    aria-label="Toggle navigation"
-                    aria-expanded="false"
-                >☰</button>
-
-                <div class="topbar-title">
-                    Laboratory Workspace
-                </div>
+                <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+                <div class="topbar-title">Laboratory Workspace</div>
             </div>
 
             <div class="topbar-right">
-                <div class="user-info">
+                <div class="topbar-user">
                     <div class="user-avatar">L</div>
-                    <div>
-                        <strong>Laboratory Staff</strong>
-                        <span>Laboratory Workspace</span>
+                    <div class="user-details">
+                        <p class="user-name">Laboratory Staff</p>
+                        <p class="user-role">Laboratory Workspace</p>
                     </div>
                 </div>
-
-                <button type="button" class="btn btn-outline" id="logoutButton">
-                    Logout
+                
+                <!-- Theme Toggle -->
+                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
+                    <span class="theme-toggle-icon-wrapper" aria-hidden="true">
+                        <span class="theme-toggle-sun">☀</span>
+                        <span class="theme-toggle-moon">☾</span>
+                    </span>
                 </button>
-            </div>
 
+                <button type="button" class="btn btn-outline btn-small" id="logoutButton">Logout</button>
+            </div>
         </header>
 
-        <!-- Page Content -->
         <div class="page-content">
-
             <!-- Page Header -->
             <section class="page-header">
                 <div>
                     <div class="request-breadcrumb">
-                        <a href="laboratory-requests.html">
-                            Laboratory Requests
-                        </a>
+                        <a href="laboratory-requests.html">Laboratory Requests</a>
                         <span>/</span>
                         <span>Request Details</span>
                     </div>
-
                     <h1>Laboratory Request Details</h1>
-
                     <p class="page-description">
-                        Review the patient's laboratory request, requested tests,
-                        specimen information, processing progress, and results.
+                        Review the patient's laboratory request, requested tests, specimen information, processing progress, and results.
                     </p>
                 </div>
 
                 <div class="request-header-actions">
-
-                    <a href="laboratory-requests.html" class="btn btn-outline">
-                        Back to Requests
-                    </a>
-
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        id="editDraftButton"
-                        hidden
-                    >
-                        Edit Draft
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn btn-outline"
-                        id="refreshRequestButton"
-                    >
-                        Refresh
-                    </button>
-
+                    <a href="laboratory-requests.html" class="btn btn-outline">Back to Requests</a>
+                    <button type="button" class="btn btn-primary" id="editDraftButton" hidden>Edit Draft</button>
+                    <button type="button" class="btn btn-outline" id="refreshRequestButton">Refresh</button>
                 </div>
             </section>
 
@@ -187,268 +140,104 @@
                 <span class="notice-icon">ⓘ</span>
                 <div>
                     <strong>Request Details Setup</strong>
-                    <p>
-                        Request information will be retrieved from the laboratory
-                        request database after the backend module is connected.
-                    </p>
+                    <p>Request information will be retrieved from the laboratory request database after the backend module is connected.</p>
                 </div>
             </div>
 
-            
-<!-- ==========================================
-     EDIT LABORATORY REQUEST DRAFT
-     ========================================== -->
+            <!-- EDIT LABORATORY REQUEST DRAFT -->
+            <section class="content-section request-edit-section" id="requestEditSection" hidden aria-labelledby="editRequestHeading">
+                <div class="section-heading">
+                    <div>
+                        <h2 id="editRequestHeading">Edit Laboratory Request Draft</h2>
+                        <p>Update the patient, requested tests, priority, and clinical notes.</p>
+                    </div>
+                </div>
 
-<section
-    class="content-section request-edit-section"
-    id="requestEditSection"
-    hidden
-    aria-labelledby="editRequestHeading"
->
+                <form class="details-card request-edit-form" id="requestEditForm" novalidate>
+                    <!-- Patient Selection -->
+                    <div class="request-edit-field">
+                        <label for="editPatientSearch">Search Patient</label>
+                        <div class="request-edit-search">
+                            <input type="search" id="editPatientSearch" placeholder="Search by patient code, name, or contact number" autocomplete="off" maxlength="100">
+                            <button type="button" class="btn btn-outline" id="searchPatientsButton">Search</button>
+                        </div>
+                        <div class="request-edit-results" id="patientSearchResults" role="listbox" aria-label="Patient search results" hidden></div>
+                        <div class="request-edit-selected-patient" id="selectedPatientSummary" aria-live="polite">No patient selected.</div>
+                    </div>
 
-    <div class="section-heading">
-        <div>
-            <h2 id="editRequestHeading">
-                Edit Laboratory Request Draft
-            </h2>
+                    <!-- Laboratory Test Selection -->
+                    <div class="request-edit-field">
+                        <label>Requested Laboratory Tests</label>
+                        <p class="request-edit-help">Select the active laboratory tests required for this request. You may select up to 50 tests.</p>
+                        <input type="search" id="editTestSearch" placeholder="Search laboratory tests by code or name..." autocomplete="off" maxlength="100">
+                        <div class="request-edit-test-list" id="editTestList" role="group" aria-label="Available laboratory tests" aria-live="polite">
+                            <p class="request-edit-loading">Active laboratory tests will appear here.</p>
+                        </div>
+                        <p class="request-edit-selection-count" id="editTestSelectionCount">0 of 50 tests selected</p>
+                    </div>
 
-            <p>
-                Update the patient, requested tests,
-                priority, and clinical notes.
-            </p>
-        </div>
-    </div>
+                    <!-- Priority -->
+                    <div class="request-edit-field">
+                        <label for="editRequestPriority">Request Priority</label>
+                        <select id="editRequestPriority" required>
+                            <option value="routine">Routine</option>
+                            <option value="urgent">Urgent</option>
+                            <option value="stat">STAT</option>
+                        </select>
+                    </div>
 
-    <form
-        class="details-card request-edit-form"
-        id="requestEditForm"
-        novalidate
-    >
+                    <!-- Clinical Notes -->
+                    <div class="request-edit-field">
+                        <label for="editClinicalNotes">Clinical Notes</label>
+                        <textarea id="editClinicalNotes" rows="4" maxlength="2000" placeholder="Enter additional clinical information..."></textarea>
+                        <p class="request-edit-help">Maximum 2,000 characters.</p>
+                    </div>
 
-        <!-- Patient Selection -->
+                    <!-- Feedback -->
+                    <div class="request-edit-feedback" id="editDraftFeedback" role="status" aria-live="polite" hidden></div>
 
-        <div class="request-edit-field">
-
-            <label for="editPatientSearch">
-                Search Patient
-            </label>
-
-            <div class="request-edit-search">
-
-                <input
-                    type="search"
-                    id="editPatientSearch"
-                    placeholder="Search by patient code, name, or contact number"
-                    autocomplete="off"
-                    maxlength="100"
-                >
-
-                <button
-                    type="button"
-                    class="btn btn-outline"
-                    id="searchPatientsButton"
-                >
-                    Search
-                </button>
-
-            </div>
-
-            <div
-                class="request-edit-results"
-                id="patientSearchResults"
-                role="listbox"
-                aria-label="Patient search results"
-                hidden
-            ></div>
-
-            <div
-                class="request-edit-selected-patient"
-                id="selectedPatientSummary"
-                aria-live="polite"
-            >
-                No patient selected.
-            </div>
-
-        </div>
-
-        <!-- Laboratory Test Selection -->
-
-        <div class="request-edit-field">
-
-            <label>
-                Requested Laboratory Tests
-            </label>
-
-            <p class="request-edit-help">
-                Select the active laboratory tests required
-                for this request. You may select up to 50 tests.
-            </p>
-
-            <input
-                type="search"
-                id="editTestSearch"
-                placeholder="Search laboratory tests by code or name..."
-                autocomplete="off"
-                maxlength="100"
-            >
-
-            <div
-                class="request-edit-test-list"
-                id="editTestList"
-                role="group"
-                aria-label="Available laboratory tests"
-                aria-live="polite"
-            >
-                <p class="request-edit-loading">
-                    Active laboratory tests will appear here.
-                </p>
-            </div>
-
-            <p
-                class="request-edit-selection-count"
-                id="editTestSelectionCount"
-            >
-                0 of 50 tests selected
-            </p>
-
-        </div>
-
-        <!-- Priority -->
-
-        <div class="request-edit-field">
-
-            <label for="editRequestPriority">
-                Request Priority
-            </label>
-
-            <select id="editRequestPriority" required>
-
-                <option value="routine">
-                    Routine
-                </option>
-
-                <option value="urgent">
-                    Urgent
-                </option>
-
-                <option value="stat">
-                    STAT
-                </option>
-
-            </select>
-
-        </div>
-
-        <!-- Clinical Notes -->
-
-        <div class="request-edit-field">
-
-            <label for="editClinicalNotes">
-                Clinical Notes
-            </label>
-
-            <textarea
-                id="editClinicalNotes"
-                rows="4"
-                maxlength="2000"
-                placeholder="Enter additional clinical information..."
-            ></textarea>
-
-            <p class="request-edit-help">
-                Maximum 2,000 characters.
-            </p>
-
-        </div>
-
-        <!-- Feedback -->
-
-        <div
-            class="request-edit-feedback"
-            id="editDraftFeedback"
-            role="status"
-            aria-live="polite"
-            hidden
-        ></div>
-
-        <!-- Form Actions -->
-
-        <div class="request-edit-actions">
-
-            <button
-                type="button"
-                class="btn btn-outline"
-                id="cancelEditDraftButton"
-            >
-                Cancel
-            </button>
-
-            <button
-                type="submit"
-                class="btn btn-primary"
-                id="saveEditDraftButton"
-            >
-                Save Changes
-            </button>
-
-        </div>
-
-    </form>
-
-</section>
-
-<!-- END EDIT LABORATORY REQUEST DRAFT -->
-
+                    <!-- Form Actions -->
+                    <div class="request-edit-actions">
+                        <button type="button" class="btn btn-outline" id="cancelEditDraftButton">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="saveEditDraftButton">Save Changes</button>
+                    </div>
+                </form>
+            </section>
 
             <!-- Request Overview -->
             <section class="content-section">
-
-                <div class="request-overview-card">
-
+                <div class="request-overview-card details-card">
                     <div class="request-overview-main">
                         <div>
                             <span class="field-label">Request Number</span>
                             <h2 id="requestNumber">Not Available</h2>
                         </div>
-
-                        <span
-                            class="status-badge status-pending"
-                            id="requestStatus"
-                        >
-                            Awaiting Data
-                        </span>
+                        <span class="badge badge-pending" id="requestStatus">Awaiting Data</span>
                     </div>
 
                     <div class="request-overview-grid">
-
                         <div class="detail-item">
                             <span class="field-label">Request Date</span>
                             <strong id="requestDate">—</strong>
                         </div>
-
                         <div class="detail-item">
                             <span class="field-label">Priority</span>
                             <strong id="requestPriority">—</strong>
                         </div>
-
                         <div class="detail-item">
                             <span class="field-label">Requested By</span>
                             <strong id="requestedBy">—</strong>
                         </div>
-
                         <div class="detail-item">
                             <span class="field-label">Request Type</span>
                             <strong id="requestType">—</strong>
                         </div>
-
                     </div>
-
                 </div>
-
             </section>
 
             <!-- Patient Information -->
             <section class="content-section">
-
                 <div class="section-heading">
                     <div>
                         <h2>Patient Information</h2>
@@ -457,76 +246,56 @@
                 </div>
 
                 <div class="details-card">
-
                     <div class="patient-profile">
-
                         <div class="patient-avatar" id="patientAvatar">P</div>
-
                         <div>
                             <h3 id="patientName">Patient information unavailable</h3>
                             <p id="patientCode">Patient Code: —</p>
                         </div>
-
                     </div>
 
                     <div class="patient-details-grid">
-
                         <div class="detail-item">
                             <span class="field-label">Date of Birth</span>
                             <strong id="patientBirthDate">—</strong>
                         </div>
-
                         <div class="detail-item">
                             <span class="field-label">Sex</span>
                             <strong id="patientSex">—</strong>
                         </div>
-
                         <div class="detail-item">
                             <span class="field-label">Contact Number</span>
                             <strong id="patientContact">—</strong>
                         </div>
-
                         <div class="detail-item">
                             <span class="field-label">Patient Record Type</span>
                             <strong id="patientRecordType">—</strong>
                         </div>
-
                     </div>
-
                 </div>
-
             </section>
 
             <!-- Clinical Notes -->
             <section class="content-section">
-
                 <div class="section-heading">
                     <div>
                         <h2>Clinical Notes</h2>
                         <p>Additional information supplied with the laboratory request.</p>
                     </div>
                 </div>
-
                 <div class="details-card">
-                    <p class="empty-detail-text" id="clinicalNotes">
-                        No clinical notes available.
-                    </p>
+                    <p class="empty-detail-text" id="clinicalNotes">No clinical notes available.</p>
                 </div>
-
             </section>
 
             <!-- Requested Tests -->
             <section class="content-section">
-
                 <div class="section-heading">
                     <div>
                         <h2>Requested Laboratory Tests</h2>
                         <p>All laboratory tests included in this request.</p>
                     </div>
-
-                    <span class="record-count" id="requestedTestCount">
-                        0 Tests
-                    </span>
+                    <span class="badge badge-neutral" id="requestedTestCount">0 Tests</span>
                 </div>
 
                 <div class="table-container">
@@ -540,22 +309,17 @@
                                 <th>Item Status</th>
                             </tr>
                         </thead>
-
                         <tbody id="requestedTestsTableBody">
                             <tr>
-                                <td colspan="5" class="empty-table-message">
-                                    Requested tests will appear here.
-                                </td>
+                                <td colspan="5" class="empty-table-message">Requested tests will appear here.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
             </section>
 
             <!-- Specimen Information -->
             <section class="content-section">
-
                 <div class="section-heading">
                     <div>
                         <h2>Specimen Information</h2>
@@ -575,22 +339,17 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-
                         <tbody id="specimenTableBody">
                             <tr>
-                                <td colspan="6" class="empty-table-message">
-                                    Specimen information will appear here.
-                                </td>
+                                <td colspan="6" class="empty-table-message">Specimen information will appear here.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
             </section>
 
             <!-- Processing Progress -->
             <section class="content-section">
-
                 <div class="section-heading">
                     <div>
                         <h2>Laboratory Processing Progress</h2>
@@ -600,24 +359,17 @@
 
                 <div class="details-card">
                     <div class="processing-timeline" id="processingTimeline">
-
                         <div class="timeline-empty-state">
                             <span>◷</span>
                             <strong>No processing activity available</strong>
-                            <p>
-                                Processing activities will appear here after
-                                the laboratory processing module is connected.
-                            </p>
+                            <p>Processing activities will appear here after the laboratory processing module is connected.</p>
                         </div>
-
                     </div>
                 </div>
-
             </section>
 
             <!-- Results Overview -->
             <section class="content-section">
-
                 <div class="section-heading">
                     <div>
                         <h2>Laboratory Results Overview</h2>
@@ -636,22 +388,17 @@
                                 <th>Released Date</th>
                             </tr>
                         </thead>
-
                         <tbody id="requestResultsTableBody">
                             <tr>
-                                <td colspan="5" class="empty-table-message">
-                                    Laboratory results will appear here.
-                                </td>
+                                <td colspan="5" class="empty-table-message">Laboratory results will appear here.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
             </section>
 
             <!-- Request Activity -->
             <section class="content-section">
-
                 <div class="section-heading">
                     <div>
                         <h2>Request Activity Timeline</h2>
@@ -661,52 +408,26 @@
 
                 <div class="details-card">
                     <div class="activity-timeline" id="requestActivityTimeline">
-
                         <div class="timeline-empty-state">
                             <span>◷</span>
                             <strong>No request activities available</strong>
-                            <p>
-                                Request activity records will appear here when
-                                the backend and audit logging functions are connected.
-                            </p>
+                            <p>Request activity records will appear here when the backend and audit logging functions are connected.</p>
                         </div>
-
                     </div>
                 </div>
-
             </section>
 
             <!-- Page Footer Actions -->
             <section class="request-footer-actions">
-
-                <a href="laboratory-requests.html" class="btn btn-outline">
-                    ← Back to Laboratory Requests
-                </a>
-
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    id="printRequestButton"
-                >
-                    Print Request Details
-                </button>
-
+                <a href="laboratory-requests.html" class="btn btn-outline">← Back to Laboratory Requests</a>
+                <button type="button" class="btn btn-primary" id="printRequestButton">Print Request Details</button>
             </section>
-
         </div>
-
     </main>
-
 </div>
 
-<!-- Shared API Utility -->
 <script src="../js/api/api.js"></script>
-
-<!-- Shared Authentication Utility -->
 <script src="../js/auth/auth.js"></script>
-
-<!-- Request Details JavaScript -->
 <script src="../js/pages/request-details.js"></script>
-
 </body>
 </html>

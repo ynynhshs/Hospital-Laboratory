@@ -1,458 +1,200 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Patient Records | MediLink Laboratory</title>
+    
+    <!-- Load theme early -->
+    <script src="../js/theme.js"></script>
 
-    <!-- Global Stylesheets -->
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/components.css">
-
-    <!-- Patient Records Stylesheet -->
     <link rel="stylesheet" href="../css/pages/patients.css">
 </head>
-
 <body>
-
     <div class="app-layout" id="appLayout">
-
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
-
             <div class="sidebar-brand">
                 <div class="brand-logo">M</div>
-
                 <div>
                     <h2>MediLink</h2>
                     <p>Laboratory Services</p>
                 </div>
             </div>
-
-            <!-- Sidebar Navigation -->
             <nav class="sidebar-nav" aria-label="Main navigation">
-
                 <p class="nav-section-title">Workspace</p>
-
                 <a href="dashboard.html" class="nav-link">
                     <span class="nav-icon">D</span>
                     <span>Dashboard</span>
                 </a>
-
                 <p class="nav-section-title">Patient Services</p>
-
-                <a href="patients.html" class="nav-link active"
-                   aria-current="page">
+                <a href="patients.html" class="nav-link active" aria-current="page">
                     <span class="nav-icon">P</span>
                     <span>Patient Records</span>
                 </a>
-
                 <p class="nav-section-title">Laboratory Operations</p>
-
                 <a href="test-catalog.html" class="nav-link">
                     <span class="nav-icon">T</span>
                     <span>Test Catalog</span>
                 </a>
-
                 <a href="laboratory-requests.html" class="nav-link">
                     <span class="nav-icon">L</span>
                     <span>Laboratory Requests</span>
                 </a>
-
                 <a href="specimen-management.html" class="nav-link">
                     <span class="nav-icon">S</span>
                     <span>Specimen Management</span>
                 </a>
-
                 <a href="processing-worklist.html" class="nav-link">
                     <span class="nav-icon">W</span>
                     <span>Processing Worklist</span>
                 </a>
-
                 <p class="nav-section-title">Results</p>
-
                 <a href="result-entry.html" class="nav-link">
                     <span class="nav-icon">E</span>
                     <span>Result Entry</span>
                 </a>
-
                 <a href="result-verification.html" class="nav-link">
                     <span class="nav-icon">V</span>
                     <span>Result Verification</span>
                 </a>
-
                 <a href="laboratory-history.html" class="nav-link">
                     <span class="nav-icon">H</span>
                     <span>Laboratory History</span>
                 </a>
-
                 <p class="nav-section-title">Administration</p>
-
                 <a href="reports.html" class="nav-link">
                     <span class="nav-icon">R</span>
                     <span>Reports &amp; Analytics</span>
                 </a>
-
                 <a href="audit-logs.html" class="nav-link">
                     <span class="nav-icon">A</span>
                     <span>Audit Trail</span>
                 </a>
-
             </nav>
-
-            <!-- Sidebar Footer -->
             <div class="sidebar-footer">
                 <p>MediLink Laboratory</p>
                 <p>Development Version 1.0</p>
             </div>
-
         </aside>
 
-        <!-- Mobile Sidebar Overlay -->
-        <button
-            type="button"
-            class="sidebar-overlay"
-            id="sidebarOverlay"
-            aria-label="Close navigation">
-        </button>
+        <button type="button" class="sidebar-overlay" id="sidebarOverlay" aria-label="Close navigation"></button>
 
-        <!-- Main Content -->
         <main class="main-content">
-
-            <!-- Top Header -->
             <header class="topbar">
-
                 <div class="topbar-left">
-
-                    <button
-                        type="button"
-                        class="sidebar-toggle"
-                        id="sidebarToggle"
-                        aria-label="Open navigation"
-                        aria-controls="sidebar"
-                        aria-expanded="false">
-                        Menu
-                    </button>
-
-                    <p class="topbar-title">
-                        Laboratory Workspace
-                    </p>
-
+                    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">Menu</button>
+                    <p class="topbar-title">Laboratory Workspace</p>
                 </div>
-
                 <div class="topbar-right">
-
                     <div class="topbar-user">
-
                         <div class="user-avatar" id="userAvatar">U</div>
-
                         <div class="user-details">
-                            <p class="user-name" id="userName">
-                                Loading user...
-                            </p>
-
-                            <p class="user-role" id="userRole">
-                                Checking account...
-                            </p>
+                            <p class="user-name" id="userName">Loading user...</p>
+                            <p class="user-role" id="userRole">Checking account...</p>
                         </div>
-
                     </div>
-
-                    <button
-                        type="button"
-                        class="btn btn-outline btn-small"
-                        id="logoutButton">
-                        Logout
+                    <!-- Theme Toggle -->
+                    <button type="button" class="theme-toggle" id="themeToggle"
+                            aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
+                        <span class="theme-toggle-icon-wrapper" aria-hidden="true">
+                            <span class="theme-toggle-sun">☀</span>
+                            <span class="theme-toggle-moon">☾</span>
+                        </span>
                     </button>
-
+                    <button type="button" class="btn btn-outline btn-small" id="logoutButton">Logout</button>
                 </div>
-
             </header>
 
-            <!-- Page Content -->
             <section class="page-content">
-
-                <!-- Page Heading -->
                 <div class="page-header">
-
                     <div>
-                        <h1 class="page-title">
-                            Patient Records
-                        </h1>
-
-                        <p class="page-description">
-                            Register, search, and view patient information
-                            for laboratory services.
-                        </p>
+                        <h1 class="page-title">Patient Records</h1>
+                        <p class="page-description">Register, search, and view patient information for laboratory services.</p>
                     </div>
-
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        id="addPatientButton"
-                        hidden>
-                        + Register Patient
-                    </button>
-
+                    <button type="button" class="btn btn-primary" id="addPatientButton" hidden>+ Register Patient</button>
                 </div>
 
-                <!-- Patient Registration Form -->
-                <section
-                    class="content-section"
-                    id="patientRegistrationSection"
-                    hidden>
-
-                    <article class="card patient-records-card
-                                    patient-registration-card">
-
+                <section class="content-section" id="patientRegistrationSection" hidden>
+                    <article class="card patient-records-card patient-registration-card">
                         <div class="card-header">
                             <div>
-                                <h2 class="card-title">
-                                    Register New Patient
-                                </h2>
-
-                                <p class="card-description">
-                                    Enter the patient's personal information.
-                                    Fields marked with * are required.
-                                </p>
+                                <h2 class="card-title">Register New Patient</h2>
+                                <p class="card-description">Enter the patient's personal information. Fields marked with * are required.</p>
                             </div>
                         </div>
-
                         <form id="patientRegistrationForm">
-
                             <div class="patient-form-grid">
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="patientCode">
-                                        Patient Code *
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="patientCode"
-                                        name="patientCode"
-                                        class="form-control"
-                                        maxlength="30"
-                                        placeholder="Enter patient code"
-                                        required>
+                                    <label class="form-label" for="patientCode">Patient Code *</label>
+                                    <input type="text" id="patientCode" name="patientCode" class="form-control" maxlength="30" placeholder="Enter patient code" required>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="firstName">
-                                        First Name *
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="firstName"
-                                        name="firstName"
-                                        class="form-control"
-                                        maxlength="60"
-                                        placeholder="Enter first name"
-                                        required>
+                                    <label class="form-label" for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" class="form-control" maxlength="60" placeholder="Enter first name" required>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="middleName">
-                                        Middle Name
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="middleName"
-                                        name="middleName"
-                                        class="form-control"
-                                        maxlength="60"
-                                        placeholder="Enter middle name">
+                                    <label class="form-label" for="middleName">Middle Name</label>
+                                    <input type="text" id="middleName" name="middleName" class="form-control" maxlength="60" placeholder="Enter middle name">
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="lastName">
-                                        Last Name *
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="lastName"
-                                        name="lastName"
-                                        class="form-control"
-                                        maxlength="60"
-                                        placeholder="Enter last name"
-                                        required>
+                                    <label class="form-label" for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" class="form-control" maxlength="60" placeholder="Enter last name" required>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="suffix">
-                                        Name Suffix
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="suffix"
-                                        name="suffix"
-                                        class="form-control"
-                                        maxlength="15"
-                                        placeholder="e.g. Jr., Sr., III">
+                                    <label class="form-label" for="suffix">Name Suffix</label>
+                                    <input type="text" id="suffix" name="suffix" class="form-control" maxlength="15" placeholder="e.g. Jr., Sr., III">
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="dateOfBirth">
-                                        Date of Birth *
-                                    </label>
-
-                                    <input
-                                        type="date"
-                                        id="dateOfBirth"
-                                        name="dateOfBirth"
-                                        class="form-control"
-                                        required>
+                                    <label class="form-label" for="dateOfBirth">Date of Birth *</label>
+                                    <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" required>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="sex">
-                                        Sex *
-                                    </label>
-
-                                    <select
-                                        id="sex"
-                                        name="sex"
-                                        class="form-control"
-                                        required>
-
-                                        <option value="">
-                                            Select sex
-                                        </option>
-
+                                    <label class="form-label" for="sex">Sex *</label>
+                                    <select id="sex" name="sex" class="form-control" required>
+                                        <option value="">Select sex</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="other">Other</option>
                                         <option value="unknown">Unknown</option>
-
                                     </select>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="contactNumber">
-                                        Contact Number
-                                    </label>
-
-                                    <input
-                                        type="tel"
-                                        id="contactNumber"
-                                        name="contactNumber"
-                                        class="form-control"
-                                        maxlength="25"
-                                        placeholder="Enter contact number">
+                                    <label class="form-label" for="contactNumber">Contact Number</label>
+                                    <input type="tel" id="contactNumber" name="contactNumber" class="form-control" maxlength="25" placeholder="Enter contact number">
                                 </div>
-
                             </div>
-
-                            <!-- Registration Feedback -->
-                            <div
-                                class="alert patient-form-message"
-                                id="patientFormMessage"
-                                role="status"
-                                aria-live="polite"
-                                hidden>
-                            </div>
-
-                            <!-- Form Actions -->
+                            <div class="alert patient-form-message" id="patientFormMessage" role="status" aria-live="polite" hidden></div>
                             <div class="patient-form-actions">
-
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    id="cancelPatientButton">
-                                    Cancel
-                                </button>
-
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary"
-                                    id="savePatientButton">
-                                    Save Patient
-                                </button>
-
+                                <button type="button" class="btn btn-secondary" id="cancelPatientButton">Cancel</button>
+                                <button type="submit" class="btn btn-primary" id="savePatientButton">Save Patient</button>
                             </div>
-
                         </form>
-
                     </article>
-
                 </section>
 
-                <!-- Patient Records Section -->
                 <section class="content-section">
-
                     <article class="card patient-records-card">
-
                         <div class="card-header">
-
                             <div>
-                                <h2 class="card-title">
-                                    Registered Patients
-                                </h2>
-
-                                <p class="card-description">
-                                    Search and view registered patient records.
-                                </p>
+                                <h2 class="card-title">Registered Patients</h2>
+                                <p class="card-description">Search and view registered patient records.</p>
                             </div>
-
                         </div>
-
-                        <!-- Search Toolbar -->
-                        <form class="patients-toolbar"
-                              id="patientSearchForm">
-
+                        <form class="patients-toolbar" id="patientSearchForm">
                             <div class="patients-search">
-
-                                <label for="patientSearch">
-                                    Search Patient
-                                </label>
-
-                                <input
-                                    type="search"
-                                    id="patientSearch"
-                                    name="search"
-                                    class="form-control"
-                                    placeholder="Search by patient code, name, or contact number..."
-                                    required>
-
+                                <label for="patientSearch">Search Patient</label>
+                                <input type="search" id="patientSearch" name="search" class="form-control" placeholder="Search by patient code, name, or contact number..." required>
                             </div>
-
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                                id="searchPatientsButton">
-                                Search
-                            </button>
-
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                id="resetPatientSearchButton">
-                                Reset
-                            </button>
-
+                            <button type="submit" class="btn btn-primary" id="searchPatientsButton">Search</button>
+                            <button type="button" class="btn btn-secondary" id="resetPatientSearchButton">Reset</button>
                         </form>
 
-                        <!-- Patient Records Table -->
-                        <div class="table-container
-                                    patients-table-container">
-
+                        <div class="table-container patients-table-container">
                             <table class="data-table">
-
                                 <thead>
                                     <tr>
                                         <th>Patient Code</th>
@@ -463,115 +205,47 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-
                                 <tbody id="patientsTableBody">
-
                                     <tr>
                                         <td colspan="6">
-
                                             <div class="empty-state">
-
-                                                <div class="empty-state-icon">
-                                                    P
-                                                </div>
-
-                                                <h3 class="empty-state-title">
-                                                    Search for Patients
-                                                </h3>
-
-                                                <p class="empty-state-description">
-                                                    Enter a patient code, name,
-                                                    or contact number to find
-                                                    registered patient records.
-                                                </p>
-
+                                                <div class="empty-state-icon">P</div>
+                                                <h3 class="empty-state-title">Search for Patients</h3>
+                                                <p class="empty-state-description">Enter a patient code, name, or contact number to find registered patient records.</p>
                                             </div>
-
                                         </td>
                                     </tr>
-
                                 </tbody>
-
                             </table>
-
                         </div>
 
-                        <!-- Patient Table Footer -->
                         <div class="patients-table-footer">
-
-                            <p id="patientRecordCount">
-                                No search performed yet.
-                            </p>
-
-                            <nav
-                                class="patients-pagination"
-                                id="patientsPagination"
-                                aria-label="Patient records pagination">
-                            </nav>
-
+                            <p id="patientRecordCount">No search performed yet.</p>
+                            <nav class="patients-pagination" id="patientsPagination" aria-label="Patient records pagination"></nav>
                         </div>
-
                     </article>
-
                 </section>
 
-                <!-- Patient Details Section -->
-                <section
-                    class="content-section"
-                    id="patientDetailsSection"
-                    hidden>
-
+                <section class="content-section" id="patientDetailsSection" hidden>
                     <article class="card patient-records-card">
-
                         <div class="card-header">
-
                             <div>
-                                <h2 class="card-title">
-                                    Patient Information
-                                </h2>
-
-                                <p class="card-description">
-                                    Detailed information about the selected patient.
-                                </p>
+                                <h2 class="card-title">Patient Information</h2>
+                                <p class="card-description">Detailed information about the selected patient.</p>
                             </div>
-
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                id="closePatientDetailsButton">
-                                Close
-                            </button>
-
+                            <button type="button" class="btn btn-secondary" id="closePatientDetailsButton">Close</button>
                         </div>
-
-                        <div
-                            class="patient-details-grid"
-                            id="patientDetailsContent">
-                        </div>
-
+                        <div class="patient-details-grid" id="patientDetailsContent"></div>
                     </article>
-
                 </section>
 
-                <!-- Page Footer -->
-                <footer class="patients-footer">
-                    MediLink Laboratory Request and Results Management System
-                </footer>
-
+                <footer class="patients-footer">MediLink Laboratory Request and Results Management System</footer>
             </section>
-
         </main>
-
     </div>
 
-    <!-- Shared API Utility -->
     <script src="../js/api/api.js"></script>
-
-    <!-- Shared Authentication Utility -->
     <script src="../js/auth/auth.js"></script>
-
-    <!-- Patient Records JavaScript -->
     <script src="../js/pages/patients.js"></script>
-
 </body>
 </html>

@@ -1,14 +1,13 @@
-
 /* ==========================================
    MEDILINK LABORATORY
-   LOGIN PAGE STYLESHEET
+   SOFT LIGHT NEUMORPHISM LOGIN PAGE STYLESHEET
 ========================================== */
 
 .login-page {
     display: grid;
     grid-template-columns: 1fr 1fr;
     min-height: 100vh;
-    background-color: var(--color-surface);
+    background-color: var(--color-background);
 }
 
 /* Branding Section */
@@ -18,8 +17,9 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 48px 9%;
-    background-color: var(--color-sidebar);
-    color: white;
+    background-color: #00186b;
+    color: var(--color-text);
+    box-shadow: 6px 0 24px -8px var(--neu-shadow-dark);
 }
 
 .login-brand {
@@ -29,13 +29,33 @@
 }
 
 .login-brand h1 {
-    color: white;
+    color: #ffffff;
     font-size: 24px;
 }
 
 .login-brand p {
-    color: #c1d4df;
+    color: var(--color-text-secondary);
     font-size: 12px;
+}
+
+/* Light Neumorphic Brand Logo (shared by desktop + mobile) */
+
+.brand-logo {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    border-radius: 14px;
+    background: var(--neu-bg);
+    box-shadow: var(--shadow-outset-sm);
+
+    color: var(--color-primary);
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .login-intro-content {
@@ -44,7 +64,7 @@
 }
 
 .intro-label {
-    color: #7dd8c8;
+    color: var(--color-accent);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -52,14 +72,14 @@
 
 .login-intro-content h2 {
     margin: 22px 0;
-    color: white;
+    color: #ffffff;
     font-size: clamp(30px, 4vw, 44px);
     line-height: 1.2;
 }
 
 .login-intro-content > p {
     max-width: 450px;
-    color: #c1d4df;
+    color: #b5b8be;
     font-size: 15px;
     line-height: 1.8;
 }
@@ -75,24 +95,29 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #e2edf3;
+    color: #ffffff;
     font-size: 14px;
 }
 
 .feature-check {
-    width: 23px;
-    height: 23px;
+    width: 26px;
+    height: 26px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     border-radius: 50%;
-    background-color: rgba(42, 157, 143, 0.25);
-    color: #7dd8c8;
+    background: var(--neu-bg);
+    box-shadow: var(--shadow-outset-sm);
+
+    color: var(--color-success);
+    font-size: 12px;
     font-weight: bold;
 }
 
 .login-intro-footer {
-    color: #a8c0cf;
+    color: var(--color-text-secondary);
     font-size: 12px;
 }
 
@@ -104,17 +129,18 @@
     align-items: center;
     justify-content: center;
     padding: 40px 24px 20px;
-    background-color: #f7f9fb;
+    background-color: var(--color-background);
 }
 
 .login-card {
     width: 100%;
-    max-width: 410px;
-    padding: 36px;
-    border: 1px solid var(--color-border);
+    max-width: 420px;
+    padding: 38px;
+    border: none;
     border-radius: var(--radius-large);
-    background-color: white;
-    box-shadow: var(--shadow-medium);
+    background: var(--neu-bg);
+    box-shadow: var(--shadow-outset-lg);
+    color: var(--color-text);
 }
 
 .mobile-brand {
@@ -126,6 +152,7 @@
 
 .mobile-brand h1 {
     font-size: 22px;
+    color: var(--color-text);
 }
 
 /* Login Heading */
@@ -144,6 +171,7 @@
 .login-heading h2 {
     margin: 12px 0 8px;
     font-size: 26px;
+    color: var(--color-text);
 }
 
 .login-heading p {
@@ -158,25 +186,64 @@
     margin-bottom: 22px;
 }
 
+.login-card .form-label {
+    color: var(--color-text);
+}
+
 .login-card .form-control {
     min-height: 48px;
-    background-color: #fbfcfd;
+    padding: 10px 14px;
+    border: none;
+    border-radius: var(--radius-small);
+    background: var(--neu-bg);
+    box-shadow: var(--shadow-inset);
+    color: var(--color-text);
+    transition: box-shadow 0.25s ease;
+}
+
+.login-card .form-control::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 0.7;
+}
+
+.login-card .form-control:focus {
+    outline: none;
+    box-shadow: inset 5px 5px 12px var(--neu-shadow-dark),
+                inset -5px -5px 12px var(--neu-shadow-light),
+                0 0 0 2px var(--color-primary-light);
 }
 
 .login-button {
     min-height: 48px;
     margin-top: 8px;
     font-size: 15px;
+    background: var(--color-primary);
+    box-shadow: 4px 4px 10px var(--neu-shadow-dark), -4px -4px 10px var(--neu-shadow-light);
+    border: none;
+    color: #ffffff;
+    border-radius: var(--radius-small);
+    transition: all 0.25s ease;
+}
+
+.login-button:hover {
+    background: var(--color-primary-dark);
+    box-shadow: 6px 6px 16px var(--neu-shadow-dark), -6px -6px 16px var(--neu-shadow-light);
+}
+
+.login-button:active {
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.15);
+    transform: translateY(1px);
 }
 
 /* Login Message */
 
 .login-message {
     margin-bottom: 15px;
-    padding: 12px;
+    padding: 13px 15px;
     border-radius: var(--radius-small);
-    background-color: var(--color-primary-light);
-    color: var(--color-primary-dark);
+    background: var(--neu-bg);
+    box-shadow: var(--shadow-inset);
+    color: var(--color-info);
     font-size: 13px;
 }
 
@@ -218,7 +285,7 @@
     }
 
     .login-card {
-        padding: 28px;
+        padding: 30px;
     }
 }
 
@@ -250,57 +317,11 @@
     }
 }
 
-/* ==========================================
-   LOGIN PAGE LIGHT THEME COLOR CORRECTIONS
-========================================== */
+/* Reduced Motion Support */
 
-/* Main login card text */
-.login-card {
-    color: #202a3b;
-}
-
-.login-heading h2 {
-    color: #172033;
-}
-
-.login-welcome {
-    color: #6269d8;
-}
-
-.login-heading p {
-    color: #596579;
-}
-
-/* Form labels */
-.login-card .form-label {
-    color: #263248;
-}
-
-/* Input fields */
-.login-card .form-control {
-    color: #202a3b;
-    background-color: #ffffff;
-    border: 1px solid #d6dce6;
-}
-
-.login-card .form-control::placeholder {
-    color: #7b8798;
-    opacity: 1;
-}
-
-.login-card .form-control:focus {
-    color: #202a3b;
-    background-color: #ffffff;
-    border-color: #7279e8;
-}
-
-/* Security notice and footer */
-.login-security,
-.login-footer {
-    color: #657287;
-}
-
-/* Login feedback message */
-.login-message {
-    color: #36409a;
+@media (prefers-reduced-motion: reduce) {
+    .login-button,
+    .login-card .form-control {
+        transition: none;
+    }
 }

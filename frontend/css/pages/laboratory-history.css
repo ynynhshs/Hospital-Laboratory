@@ -1,30 +1,42 @@
-
 /* ==========================================
    MEDILINK LABORATORY
-   GLASSMORPHISM LABORATORY HISTORY
+   CLAYMORPHISM LABORATORY HISTORY STYLESHEET
+   (cards are flat: no drop shadow)
 ========================================== */
 
-/* 1. Development Notice */
+/* 0. Clay Theme Tokens */
+.app-layout {
+    --clay-bg: #dde0ea;
+    --clay-bg-raised: #e3e6ef;
+    --clay-shade-dark: rgba(146, 154, 175, 0.65);
+    --clay-shade-deep: rgba(132, 141, 163, 0.75);
+    --clay-shade-light: rgba(255, 255, 255, 0.95);
+    --color-background: #d7dae5;
+    --color-sidebar: #d0d4e1;
+    --color-text: #323a4c;
+    --color-text-secondary: #6b7589;
+    --color-border: rgba(50, 58, 76, 0.07);
+}
 
+/* 1. Development Notice */
 .history-notice {
     align-items: flex-start;
     margin-bottom: 24px;
 }
-
 .history-notice p {
     margin-top: 3px;
 }
 
 /* 2. Section Heading */
-
 .history-section-title {
     margin-bottom: 16px;
     color: var(--color-text);
     font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
 }
 
-/* 3. History Summary Grid */
-
+/* 3. History Summary Grid — flat cards */
 .history-summary-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -36,98 +48,66 @@
     align-items: center;
     gap: 15px;
     min-width: 0;
-    min-height: 105px;
-    padding: 20px;
-
-    border: 1px solid var(--glass-border);
+    min-height: 108px;
+    padding: 22px;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-large);
-    background: var(--glass-background);
-    box-shadow: var(--shadow-small);
-
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: none;
     transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
 .history-summary-card:hover {
     transform: translateY(-3px);
-    border-color: var(--glass-highlight);
+    border-color: var(--color-border-hover);
+    box-shadow: none;
 }
 
 .history-summary-icon {
-    width: 46px;
-    height: 46px;
-
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-
-    border: 1px solid rgba(139, 146, 255, 0.20);
+    border: none;
     border-radius: var(--radius-medium);
-
-    background: rgba(139, 146, 255, 0.13);
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
     color: var(--color-primary);
-
     font-size: 21px;
 }
 
-/* History Status Colors */
-
-.history-released {
-    border-color: rgba(72, 214, 160, 0.20);
-    background: rgba(72, 214, 160, 0.13);
-    color: #64e7b5;
-}
-
-.history-amended {
-    border-color: rgba(245, 199, 107, 0.20);
-    background: rgba(245, 199, 107, 0.13);
-    color: #f5c76b;
-}
-
-.history-patients {
-    border-color: rgba(116, 189, 255, 0.20);
-    background: rgba(116, 189, 255, 0.13);
-    color: #83c5ff;
-}
+.history-released { color: var(--color-success); }
+.history-amended  { color: var(--color-warning); }
+.history-patients { color: var(--color-info); }
 
 .history-summary-card .summary-value {
     color: var(--color-text);
-    font-size: 25px;
+    font-size: 26px;
+    font-weight: 800;
 }
 
 /* 4. History Search Toolbar */
-
 .history-toolbar {
     display: grid;
-
-    grid-template-columns:
-        minmax(230px, 1.7fr)
-        minmax(160px, 1fr)
-        minmax(160px, 1fr);
-
+    grid-template-columns: minmax(230px, 1.7fr) minmax(160px, 1fr) minmax(160px, 1fr);
     align-items: end;
     gap: 14px;
     margin-bottom: 18px;
-    padding: 20px;
-
-    border: 1px solid var(--glass-border);
+    padding: 22px;
+    border: none;
     border-radius: var(--radius-large);
-
-    background: var(--glass-background);
-    box-shadow: var(--shadow-small);
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
 }
 
 .history-search,
 .history-filter,
 .history-date-field {
     min-width: 0;
-
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -138,32 +118,21 @@
 .history-date-field label {
     color: var(--color-text);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 /* 5. Date Range Toolbar */
-
 .history-date-toolbar {
     display: grid;
-
-    grid-template-columns:
-        minmax(150px, 1fr)
-        minmax(150px, 1fr)
-        auto;
-
+    grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr) auto;
     align-items: end;
     gap: 14px;
     margin-bottom: 22px;
-    padding: 20px;
-
-    border: 1px solid var(--glass-border);
+    padding: 22px;
+    border: none;
     border-radius: var(--radius-large);
-
-    background: var(--glass-background);
-    box-shadow: var(--shadow-small);
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
 }
 
 .history-filter-actions {
@@ -174,14 +143,20 @@
 }
 
 /* 6. Historical Records Table */
-
 .history-table-container {
     width: 100%;
+    overflow-x: auto;
     margin-top: 5px;
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
+    padding: 14px;
 }
 
 .history-table-container .data-table {
     min-width: 1150px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
 }
 
 .history-table-container .data-table th,
@@ -189,8 +164,28 @@
     padding: 14px 13px;
 }
 
-/* 7. History Table Footer */
+.history-table-container .data-table th {
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    color: var(--color-text-secondary);
+    box-shadow: var(--shadow-clay-sm);
+    border-radius: var(--radius-small);
+    border-bottom: none;
+}
 
+.history-table-container .data-table td {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.history-table-container .data-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+[data-theme="dark"] .history-table-container .data-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* 7. History Table Footer */
 .history-table-footer {
     display: flex;
     align-items: center;
@@ -198,16 +193,14 @@
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
-
     color: var(--color-text-secondary);
     font-size: 12px;
 }
 
 /* 8. Historical Details Card */
-
 .history-details-card {
     margin-top: 8px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .history-details-card .card-header {
@@ -215,23 +208,22 @@
 }
 
 .history-details-section {
-    padding: 22px 0;
-    border-top: 1px solid var(--color-border);
-}
-
-.history-details-section:first-of-type {
-    border-top: none;
+    padding: 22px;
+    margin-top: 16px;
+    border: none;
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset-sm);
 }
 
 .history-details-title {
     margin-bottom: 18px;
     color: var(--color-text);
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 /* 9. Historical Information Grid */
-
 .history-information-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -243,16 +235,20 @@
 }
 
 .history-information-grid .form-control[readonly] {
-    border-color: rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.045);
+    background-color: var(--clay-bg-raised);
+    box-shadow: var(--shadow-clay-inset);
     color: var(--color-text-secondary);
     cursor: default;
 }
 
 /* 10. Historical Result Table */
-
 .history-details-section .table-container {
     margin-top: 5px;
+    border-radius: var(--radius-medium);
+    overflow-x: auto;
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset-sm);
+    padding: 10px;
 }
 
 .history-details-section .data-table th,
@@ -265,20 +261,18 @@
 }
 
 /* 11. Historical Details Actions */
-
 .history-details-actions {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
-
     padding-top: 22px;
     border-top: 1px solid var(--color-border);
 }
 
 .history-details-actions button:disabled {
-    opacity: 0.50;
+    opacity: 0.5;
     cursor: not-allowed;
 }
 
@@ -290,35 +284,43 @@
 }
 
 /* 12. History Page Footer */
-
 .history-page-footer {
     margin-top: 28px;
     padding: 16px 0;
-
     border-top: 1px solid var(--color-border);
-
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
 }
 
-/* 13. Large Screens */
+/* 13. Main Card Override — FLAT */
+.content-section > .card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: none;
+    padding: 26px;
+    transition: border-color 0.3s ease;
+}
 
+.content-section > .card:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: none;
+}
+
+/* 14. Responsive Layout */
 @media (max-width: 1200px) {
     .history-summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
     .history-date-toolbar {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
     .history-filter-actions {
         grid-column: 1 / -1;
     }
 }
-
-/* 14. Tablet Screens */
 
 @media (max-width: 900px) {
     .history-information-grid {
@@ -327,486 +329,58 @@
     }
 }
 
-/* 15. Mobile Screens */
-
 @media (max-width: 768px) {
     .history-summary-grid {
         grid-template-columns: 1fr;
         gap: 12px;
     }
-
     .history-summary-card {
         min-height: 90px;
         padding: 16px;
     }
-
-    .history-toolbar {
-        grid-template-columns: 1fr;
-        gap: 14px;
-        padding: 16px;
-    }
-
+    .history-toolbar,
     .history-date-toolbar {
         grid-template-columns: 1fr;
         gap: 14px;
         padding: 16px;
     }
-
     .history-filter-actions {
         display: grid;
         grid-template-columns: 1fr;
     }
-
     .history-filter-actions .btn {
         width: 100%;
     }
-
     .history-table-footer {
         align-items: flex-start;
         flex-direction: column;
     }
-
     .history-details-actions {
         align-items: stretch;
         flex-direction: column;
     }
-
     .history-details-actions .btn {
         width: 100%;
     }
-
     .history-details-footnote {
         text-align: left;
     }
 }
 
-/* 16. Small Mobile Screens */
-
 @media (max-width: 480px) {
-    .history-summary-card {
-        padding: 14px;
-    }
-
-    .history-summary-icon {
-        width: 42px;
-        height: 42px;
-    }
-
-    .history-summary-card .summary-value {
-        font-size: 23px;
-    }
-
-    .history-notice {
-        font-size: 12px;
-    }
-
-    .history-details-section {
-        padding: 18px 0;
-    }
+    .history-summary-card { padding: 14px; }
+    .history-summary-icon { width: 42px; height: 42px; }
+    .history-summary-card .summary-value { font-size: 23px; }
+    .history-notice { font-size: 12px; }
+    .history-details-section { padding: 18px; }
 }
 
-/* 17. Reduced Motion Support */
-
-@media (prefers-reduced-motion: reduce) {
-    .history-summary-card {
-        transition: none;
-    }
-}
-
-/* ==========================================
-   18. UILORA-INSPIRED GLASS CARD REDESIGN
-========================================== */
-
-/* History Summary Cards */
-
-.history-summary-card {
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-
-    border: 1px solid transparent;
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(30, 41, 67, 0.88),
-            rgba(12, 18, 35, 0.92)
-        ) padding-box,
-        linear-gradient(
-            120deg,
-            rgba(168, 85, 247, 0.42),
-            rgba(59, 130, 246, 0.32),
-            rgba(255, 255, 255, 0.12)
-        ) border-box;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.24),
-        0 0 16px rgba(147, 51, 234, 0.08),
-        0 0 22px rgba(59, 130, 246, 0.06);
-
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-
-    transition:
-        transform 1s ease,
-        box-shadow 1s ease;
-}
-
-/* Summary Card Outer Glow */
-
-.history-summary-card::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    z-index: 0;
-
-    border-radius: inherit;
-
-    background: linear-gradient(
-        90deg,
-        #9333ea,
-        #2563eb
-    );
-
-    filter: blur(18px);
-    opacity: 0.18;
-
-    pointer-events: none;
-
-    transition:
-        opacity 1s ease,
-        filter 1s ease;
-}
-
-/* Summary Card Hover */
-
-.history-summary-card:hover {
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.35),
-        0 0 25px rgba(147, 51, 234, 0.30),
-        0 0 40px rgba(59, 130, 246, 0.22);
-
-    transition-duration: 200ms;
-}
-
-.history-summary-card:hover::after {
-    opacity: 0.90;
-    filter: blur(23px);
-    transition-duration: 200ms;
-}
-
-/* Keep Summary Content Above Glow */
-
-.history-summary-card > * {
-    position: relative;
-    z-index: 1;
-}
-
-/* Summary Card Text */
-
-.history-summary-card .summary-label {
-    color: #b8c3d8;
-    transition: color 0.2s ease;
-}
-
-.history-summary-card:hover .summary-label {
-    color: #ffffff;
-}
-
-.history-summary-card .summary-value {
-    color: #f5f3ff;
-}
-
-/* Summary Card Icons */
-
-.history-summary-icon {
-    border-radius: 15px;
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.history-summary-card:hover .history-summary-icon {
-    transform: scale(1.08);
-
-    box-shadow:
-        0 0 14px rgba(147, 51, 234, 0.22),
-        0 0 20px rgba(59, 130, 246, 0.12);
-}
-
-/* Main Historical Records and Details Cards */
-
-.content-section > .card {
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-
-    border: 1px solid transparent;
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(30, 41, 67, 0.88),
-            rgba(12, 18, 35, 0.92)
-        ) padding-box,
-        linear-gradient(
-            120deg,
-            rgba(168, 85, 247, 0.30),
-            rgba(59, 130, 246, 0.24),
-            rgba(255, 255, 255, 0.10)
-        ) border-box;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.24),
-        0 0 18px rgba(147, 51, 234, 0.06);
-
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-
-    transition:
-        transform 1s ease,
-        box-shadow 1s ease;
-}
-
-/* Main Card Outer Glow */
-
-.content-section > .card::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    z-index: 0;
-
-    border-radius: inherit;
-
-    background: linear-gradient(
-        90deg,
-        #9333ea,
-        #2563eb
-    );
-
-    filter: blur(18px);
-    opacity: 0.16;
-
-    pointer-events: none;
-
-    transition:
-        opacity 1s ease,
-        filter 1s ease;
-}
-
-/* Keep Main Card Content Above Glow */
-
-.content-section > .card > * {
-    position: relative;
-    z-index: 1;
-}
-
-/* Main Card Hover */
-
-.content-section > .card:hover {
-    transform: translateY(-3px);
-
-    box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.35),
-        0 0 25px rgba(147, 51, 234, 0.30),
-        0 0 40px rgba(59, 130, 246, 0.22);
-
-    transition-duration: 200ms;
-}
-
-.content-section > .card:hover::after {
-    opacity: 0.75;
-    filter: blur(23px);
-    transition-duration: 200ms;
-}
-
-/* Main Card Headings */
-
-.content-section > .card .card-title {
-    color: #f1f5ff;
-}
-
-.content-section > .card .card-description {
-    color: #a5b1c7;
-}
-
-/* History Search Toolbar */
-
-.history-toolbar,
-.history-date-toolbar {
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 18px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(35, 43, 70, 0.72),
-            rgba(13, 21, 41, 0.76)
-        );
-
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.16),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.history-toolbar:hover,
-.history-date-toolbar:hover {
-    border-color: rgba(139, 146, 255, 0.28);
-
-    box-shadow:
-        0 10px 28px rgba(0, 0, 0, 0.22),
-        0 0 18px rgba(147, 51, 234, 0.08);
-}
-
-/* Toolbar Labels */
-
-.history-search label,
-.history-filter label,
-.history-date-field label {
-    color: #e7ecf7;
-}
-
-/* Date Inputs */
-
-.history-date-toolbar input {
-    color-scheme: dark;
-}
-
-/* Historical Records Table */
-
-.history-table-container {
-    border-radius: 14px;
-    overflow-x: auto;
-}
-
-.history-table-container .data-table th,
-.history-details-section .data-table th {
-    background: rgba(255, 255, 255, 0.055);
-    color: #aebbd0;
-}
-
-.history-table-container .data-table tbody tr,
-.history-details-section .data-table tbody tr {
-    transition: background 0.2s ease;
-}
-
-.history-table-container .data-table tbody tr:hover,
-.history-details-section .data-table tbody tr:hover {
-    background: rgba(139, 146, 255, 0.075);
-}
-
-/* Historical Details Card */
-
-.history-details-card {
-    overflow: visible;
-}
-
-/* Internal Historical Information Sections */
-
-.history-details-section {
-    padding: 20px;
-    margin-top: 14px;
-
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(35, 43, 70, 0.48),
-            rgba(13, 21, 41, 0.42)
-        );
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-}
-
-.history-details-title {
-    color: #e7ecf7;
-}
-
-/* Historical Information Fields */
-
-.history-information-grid .form-control {
-    border-color: rgba(255, 255, 255, 0.12);
-}
-
-.history-information-grid .form-control[readonly] {
-    background: rgba(9, 16, 32, 0.42);
-}
-
-/* Historical Result Table */
-
-.history-details-section .table-container {
-    margin-top: 5px;
-    border-radius: 12px;
-    overflow-x: auto;
-}
-
-.history-details-section .data-table td {
-    color: #e7ecf7;
-}
-
-/* Historical Actions */
-
-.history-details-actions {
-    border-color: rgba(255, 255, 255, 0.12);
-}
-
-.history-details-footnote {
-    color: #a5b1c7;
-}
-
-/* Responsive Adjustments */
-
-@media (max-width: 768px) {
-    .history-summary-card {
-        border-radius: 20px;
-    }
-
-    .history-summary-card:hover {
-        transform: translateY(-2px);
-    }
-
-    .content-section > .card {
-        border-radius: 20px;
-    }
-
-    .history-toolbar,
-    .history-date-toolbar {
-        border-radius: 16px;
-    }
-
-    .history-details-section {
-        padding: 15px;
-    }
-}
-
-/* Reduced Motion Accessibility */
-
+/* 15. Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
     .history-summary-card,
-    .history-summary-card::after,
-    .content-section > .card,
-    .content-section > .card::after,
-    .history-toolbar,
-    .history-date-toolbar,
-    .history-summary-icon {
+    .content-section > .card {
         transition: none !important;
     }
-
     .history-summary-card:hover,
     .content-section > .card:hover {
         transform: none;

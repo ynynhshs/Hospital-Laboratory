@@ -1,30 +1,42 @@
-
 /* ==========================================
    MEDILINK LABORATORY
-   GLASSMORPHISM LABORATORY REQUESTS STYLESHEET
+   CLAYMORPHISM LABORATORY REQUESTS STYLESHEET
+   (cards are flat: no drop shadow)
 ========================================== */
 
-/* 1. Development Notice */
+/* 0. Clay Theme Tokens */
+.app-layout {
+    --clay-bg: #dde0ea;
+    --clay-bg-raised: #e3e6ef;
+    --clay-shade-dark: rgba(146, 154, 175, 0.65);
+    --clay-shade-deep: rgba(132, 141, 163, 0.75);
+    --clay-shade-light: rgba(255, 255, 255, 0.95);
+    --color-background: #d7dae5;
+    --color-sidebar: #d0d4e1;
+    --color-text: #323a4c;
+    --color-text-secondary: #6b7589;
+    --color-border: rgba(50, 58, 76, 0.07);
+}
 
+/* 1. Development Notice */
 .request-notice {
     align-items: flex-start;
     margin-bottom: 24px;
 }
-
 .request-notice p {
     margin-top: 3px;
 }
 
 /* 2. Section Heading */
-
 .request-section-title {
     margin-bottom: 16px;
     color: var(--color-text);
     font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
 }
 
-/* 3. Request Summary Grid */
-
+/* 3. Request Summary Grid — flat cards */
 .request-summary-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -36,90 +48,59 @@
     align-items: center;
     gap: 15px;
     min-width: 0;
-    min-height: 105px;
-    padding: 20px;
-
-    border: 1px solid var(--glass-border);
+    min-height: 108px;
+    padding: 22px;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-large);
-    background: var(--glass-background);
-    box-shadow: var(--shadow-small);
-
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: none;
     transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
 .request-summary-card:hover {
     transform: translateY(-3px);
-    border-color: var(--glass-highlight);
+    border-color: var(--color-border-hover);
+    box-shadow: none;
 }
 
 .request-summary-icon {
-    width: 48px;
-    height: 48px;
-
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-
-    border: 1px solid rgba(139, 146, 255, 0.20);
+    border: none;
     border-radius: var(--radius-medium);
-
-    background: rgba(139, 146, 255, 0.13);
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
     color: var(--color-primary);
-
     font-size: 22px;
 }
 
-.summary-pending {
-    border-color: rgba(245, 199, 107, 0.20);
-    background: rgba(245, 199, 107, 0.13);
-    color: #f5c76b;
-}
-
-.summary-progress {
-    border-color: rgba(116, 189, 255, 0.20);
-    background: rgba(116, 189, 255, 0.13);
-    color: #83c5ff;
-}
-
-.summary-completed {
-    border-color: rgba(72, 214, 160, 0.20);
-    background: rgba(72, 214, 160, 0.13);
-    color: #64e7b5;
-}
+.summary-pending   { color: var(--color-warning); }
+.summary-progress  { color: var(--color-info); }
+.summary-completed { color: var(--color-success); }
 
 /* 4. Request Toolbar */
-
 .request-toolbar {
     display: grid;
-    grid-template-columns:
-        minmax(220px, 1.7fr)
-        minmax(160px, 1fr)
-        minmax(140px, 0.85fr)
-        auto;
-
+    grid-template-columns: minmax(220px, 1.7fr) minmax(160px, 1fr) minmax(140px, 0.85fr) auto;
     align-items: end;
     gap: 14px;
     margin-bottom: 22px;
-    padding: 20px;
-
-    border: 1px solid var(--glass-border);
+    padding: 22px;
+    border: none;
     border-radius: var(--radius-large);
-
-    background: var(--glass-background);
-    box-shadow: var(--shadow-small);
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
 }
 
 .request-search,
 .request-filter {
     min-width: 0;
-
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -129,18 +110,24 @@
 .request-filter label {
     color: var(--color-text);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 /* 5. Request Table */
-
 .request-table-container {
     width: 100%;
+    overflow-x: auto;
     margin-top: 5px;
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
+    padding: 14px;
 }
 
 .request-table-container .data-table {
     min-width: 1100px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
 }
 
 .request-table-container .data-table th,
@@ -148,8 +135,28 @@
     padding: 14px 13px;
 }
 
-/* 6. Request Table Footer */
+.request-table-container .data-table th {
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    color: var(--color-text-secondary);
+    box-shadow: var(--shadow-clay-sm);
+    border-radius: var(--radius-small);
+    border-bottom: none;
+}
 
+.request-table-container .data-table td {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.request-table-container .data-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+[data-theme="dark"] .request-table-container .data-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* 6. Request Table Footer */
 .request-table-footer {
     display: flex;
     align-items: center;
@@ -157,431 +164,129 @@
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
-
     color: var(--color-text-secondary);
     font-size: 12px;
 }
 
 /* 7. Table Action Buttons */
-
 .request-action-group {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 8px;
 }
 
 .request-action-button {
-    min-height: 30px;
-    padding: 5px 10px;
-
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-small);
-
-    background: var(--glass-background);
+    min-height: 34px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
     color: var(--color-text);
-
     font-size: 11px;
+    font-weight: 700;
     cursor: pointer;
-
     transition: all 0.2s ease;
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
 }
 
 .request-action-button:hover {
-    border-color: var(--color-primary);
-    background: var(--glass-background-strong);
+    box-shadow: var(--shadow-clay);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.request-action-button:active {
+    box-shadow: var(--shadow-clay-inset-sm);
+    transform: translateY(1px);
 }
 
 .request-action-view {
-    border-color: rgba(139, 146, 255, 0.30);
-    background: rgba(139, 146, 255, 0.10);
-    color: #b5bbff;
-}
-
-.request-action-view:hover {
-    border-color: var(--color-primary);
-    background: rgba(139, 146, 255, 0.20);
+    color: var(--color-primary);
 }
 
 /* 8. Priority Indicators */
+.priority-routine { color: var(--color-text-secondary); }
+.priority-urgent  { color: var(--color-warning); font-weight: 800; }
+.priority-stat    { color: var(--color-danger);  font-weight: 800; }
 
-.priority-routine {
-    color: var(--color-text-secondary);
+/* 9. Main Card Override — FLAT */
+.content-section > .card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: none;
+    padding: 26px;
+    transition: border-color 0.3s ease;
 }
 
-.priority-urgent {
-    color: #f5c76b;
-    font-weight: 700;
+.content-section > .card:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: none;
 }
 
-.priority-stat {
-    color: #ff8993;
-    font-weight: 700;
-}
-
-/* 9. Page Footer */
-
+/* 10. Page Footer */
 .request-page-footer {
     margin-top: 28px;
     padding: 16px 0;
-
     border-top: 1px solid var(--color-border);
-
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
 }
 
-/* 10. Large Screens */
-
+/* 11. Responsive Layout */
 @media (max-width: 1200px) {
     .request-summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
     .request-toolbar {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
-
-/* 11. Tablet Screens */
 
 @media (max-width: 768px) {
     .request-summary-grid {
         grid-template-columns: 1fr;
         gap: 12px;
     }
-
     .request-summary-card {
         min-height: 90px;
         padding: 16px;
     }
-
     .request-toolbar {
         grid-template-columns: 1fr;
         gap: 14px;
         padding: 16px;
     }
-
     .request-toolbar .btn {
         width: 100%;
     }
-
     .request-table-footer {
         align-items: flex-start;
         flex-direction: column;
     }
 }
 
-/* 12. Small Mobile Screens */
-
 @media (max-width: 480px) {
-    .request-summary-icon {
-        width: 42px;
-        height: 42px;
-    }
-
-    .request-notice {
-        font-size: 12px;
-    }
-
-    .request-summary-card {
-        padding: 14px;
-    }
-
-    .summary-value {
-        font-size: 24px;
-    }
+    .request-summary-icon { width: 42px; height: 42px; }
+    .request-notice { font-size: 12px; }
+    .request-summary-card { padding: 14px; }
+    .summary-value { font-size: 24px; }
 }
 
-/* 13. Reduced Motion Support */
-
+/* 12. Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
     .request-summary-card,
-    .request-action-button {
-        transition: none;
-    }
-}
-
-/* ==========================================
-   14. UILORA-INSPIRED GLASS CARD REDESIGN
-========================================== */
-
-/* Request Summary Cards */
-
-.request-summary-card {
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-
-    border: 1px solid transparent;
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(30, 41, 67, 0.88),
-            rgba(12, 18, 35, 0.92)
-        ) padding-box,
-        linear-gradient(
-            120deg,
-            rgba(168, 85, 247, 0.42),
-            rgba(59, 130, 246, 0.32),
-            rgba(255, 255, 255, 0.12)
-        ) border-box;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.24),
-        0 0 16px rgba(147, 51, 234, 0.08),
-        0 0 22px rgba(59, 130, 246, 0.06);
-
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-
-    transition:
-        transform 1s ease,
-        box-shadow 1s ease;
-}
-
-/* Animated Outer Glow */
-
-.request-summary-card::after,
-.content-section > .card::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    z-index: -1;
-
-    border-radius: inherit;
-
-    background: linear-gradient(
-        90deg,
-        #9333ea,
-        #2563eb
-    );
-
-    filter: blur(18px);
-    opacity: 0.18;
-
-    pointer-events: none;
-
-    transition:
-        opacity 1s ease,
-        filter 1s ease;
-}
-
-/* Summary Card Hover */
-
-.request-summary-card:hover {
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.35),
-        0 0 25px rgba(147, 51, 234, 0.30),
-        0 0 40px rgba(59, 130, 246, 0.22);
-
-    transition-duration: 200ms;
-}
-
-.request-summary-card:hover::after {
-    opacity: 0.90;
-    filter: blur(23px);
-    transition-duration: 200ms;
-}
-
-/* Summary Card Content */
-
-.request-summary-card > * {
-    position: relative;
-    z-index: 1;
-}
-
-.request-summary-card .summary-label {
-    color: #b8c3d8;
-    transition: color 0.2s ease;
-}
-
-.request-summary-card:hover .summary-label {
-    color: #ffffff;
-}
-
-.request-summary-card .summary-value {
-    color: #f5f3ff;
-}
-
-/* Summary Card Icons */
-
-.request-summary-icon {
-    border-radius: 15px;
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.request-summary-card:hover .request-summary-icon {
-    transform: scale(1.08);
-
-    box-shadow:
-        0 0 14px rgba(147, 51, 234, 0.22),
-        0 0 20px rgba(59, 130, 246, 0.12);
-}
-
-/* Main Laboratory Request Records Card */
-
-.content-section > .card {
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-
-    border: 1px solid transparent;
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(30, 41, 67, 0.88),
-            rgba(12, 18, 35, 0.92)
-        ) padding-box,
-        linear-gradient(
-            120deg,
-            rgba(168, 85, 247, 0.30),
-            rgba(59, 130, 246, 0.24),
-            rgba(255, 255, 255, 0.10)
-        ) border-box;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.24),
-        0 0 18px rgba(147, 51, 234, 0.06);
-
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-}
-
-.content-section > .card:hover::after {
-    opacity: 0.65;
-    filter: blur(22px);
-    transition-duration: 200ms;
-}
-
-.content-section > .card .card-title {
-    color: #f1f5ff;
-}
-
-.content-section > .card .card-description {
-    color: #a5b1c7;
-}
-
-/* Request Toolbar */
-
-.request-toolbar {
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 18px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(35, 43, 70, 0.72),
-            rgba(13, 21, 41, 0.76)
-        );
-
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.16),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.request-toolbar:hover {
-    border-color: rgba(139, 146, 255, 0.28);
-
-    box-shadow:
-        0 10px 28px rgba(0, 0, 0, 0.22),
-        0 0 18px rgba(147, 51, 234, 0.08);
-}
-
-.request-search label,
-.request-filter label {
-    color: #e7ecf7;
-}
-
-/* Request Table */
-
-.request-table-container {
-    border-radius: 14px;
-    overflow-x: auto;
-}
-
-.request-table-container .data-table th {
-    background: rgba(255, 255, 255, 0.055);
-    color: #aebbd0;
-}
-
-.request-table-container .data-table tbody tr {
-    transition: background 0.2s ease;
-}
-
-.request-table-container .data-table tbody tr:hover {
-    background: rgba(139, 146, 255, 0.075);
-}
-
-/* Request Action Buttons */
-
-.request-action-button {
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.request-action-button:hover {
-    transform: translateY(-1px);
-}
-
-.request-action-view:hover {
-    box-shadow: 0 0 12px rgba(139, 146, 255, 0.15);
-}
-
-/* Responsive Adjustments */
-
-@media (max-width: 768px) {
-    .request-summary-card {
-        border-radius: 20px;
-    }
-
-    .request-summary-card:hover {
-        transform: translateY(-2px);
-    }
-
+    .request-action-button,
     .content-section > .card {
-        border-radius: 20px;
-    }
-
-    .request-toolbar {
-        border-radius: 16px;
-    }
-}
-
-/* Reduced Motion Accessibility */
-
-@media (prefers-reduced-motion: reduce) {
-    .request-summary-card,
-    .request-summary-card::after,
-    .content-section > .card::after,
-    .request-toolbar,
-    .request-summary-icon,
-    .request-action-button {
         transition: none !important;
     }
-
     .request-summary-card:hover,
-    .request-action-button:hover {
+    .request-action-button:hover,
+    .request-action-button:active,
+    .content-section > .card:hover {
         transform: none;
     }
 }

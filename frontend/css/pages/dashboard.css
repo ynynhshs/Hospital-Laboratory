@@ -1,114 +1,118 @@
-
 /* ==========================================
    MEDILINK LABORATORY
-   GLASSMORPHISM DASHBOARD STYLESHEET
+   CLAYMORPHISM DASHBOARD STYLESHEET
+   (cards flat, no drop shadow; theme-aware)
 ========================================== */
 
-/* 1. Dashboard Page Heading */
+/* 0. Clay Theme Tokens (light overrides — dark handled in base.css) */
+.app-layout {
+    --clay-bg: #dde0ea;
+    --clay-bg-raised: #e3e6ef;
+    --clay-shade-dark: rgba(146, 154, 175, 0.65);
+    --clay-shade-deep: rgba(132, 141, 163, 0.75);
+    --clay-shade-light: rgba(255, 255, 255, 0.95);
+    --color-background: #d7dae5;
+    --color-sidebar: #d0d4e1;
+    --color-text: #323a4c;
+    --color-text-secondary: #6b7589;
+    --color-border: rgba(50, 58, 76, 0.07);
+    --color-border-hover: rgba(50, 58, 76, 0.14);
+}
 
+/* 1. Dashboard Page Heading */
 .dashboard-date {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 9px 15px;
-
-    border: 1px solid var(--glass-border);
-    border-radius: 30px;
-
-    background: var(--glass-background);
+    padding: 11px 22px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
     color: var(--color-text-secondary);
-
     font-size: 12px;
-    font-weight: 600;
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    font-weight: 700;
+    letter-spacing: 0.3px;
 }
 
 /* 2. Dashboard Notice */
-
 .dashboard-notice {
     align-items: flex-start;
     margin-bottom: 28px;
-
-    border-color: rgba(116, 189, 255, 0.22);
-    background: rgba(116, 189, 255, 0.08);
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-inset-sm);
+    border: none;
+    color: var(--color-info);
 }
 
 .dashboard-notice p {
     margin-top: 3px;
-    color: #b9d9ff;
+    color: var(--color-text-secondary);
 }
 
 /* 3. Dashboard Section Titles */
-
 .dashboard-section-title {
     margin-bottom: 16px;
     color: var(--color-text);
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.2px;
 }
 
-/* 4. Statistics Grid */
-
+/* 4. Statistics Grid — flat cards */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 16px;
+    gap: 20px;
 }
 
 .stats-grid .stat-card {
     position: relative;
     min-width: 0;
-    min-height: 115px;
-    padding: 18px;
-
+    min-height: 122px;
+    padding: 22px;
     overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: none;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.stats-grid .stat-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-border-hover);
+    box-shadow: none;
 }
 
 .stats-grid .stat-card::before {
-    content: "";
-    position: absolute;
-    top: -35px;
-    right: -35px;
-
-    width: 100px;
-    height: 100px;
-
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.035);
-
-    pointer-events: none;
+    display: none;
 }
 
 .stat-value {
     position: relative;
     font-size: 26px;
     line-height: 1.4;
+    color: var(--color-text);
+    font-weight: 800;
 }
 
-.stat-icon-warning {
-    background: rgba(245, 199, 107, 0.13);
-    color: #f5c76b;
+.stat-icon {
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
+    color: var(--color-primary);
 }
 
-.stat-icon-info {
-    background: rgba(116, 189, 255, 0.13);
-    color: #83c5ff;
-}
-
-.stat-icon-danger {
-    background: rgba(255, 123, 134, 0.13);
-    color: #ff8993;
-}
-
-.stat-icon-success {
-    background: rgba(72, 214, 160, 0.13);
-    color: #64e7b5;
-}
+.stat-icon-warning { color: var(--color-warning); }
+.stat-icon-info    { color: var(--color-info); }
+.stat-icon-danger  { color: var(--color-danger); }
+.stat-icon-success { color: var(--color-success); }
 
 /* 5. Dashboard Main Grid */
-
 .dashboard-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.9fr);
@@ -117,51 +121,36 @@
 }
 
 /* 6. Request Status Chart */
-
 .dashboard-chart-card {
     min-width: 0;
 }
 
 .chart-placeholder {
     min-height: 300px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     padding: 25px;
-
-    border: 1px dashed rgba(255, 255, 255, 0.17);
-    border-radius: var(--radius-medium);
-
-    background:
-        radial-gradient(
-            circle at 50% 30%,
-            rgba(139, 146, 255, 0.10),
-            transparent 65%
-        ),
-        rgba(8, 15, 30, 0.30);
-
+    border: none;
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
     text-align: center;
 }
 
 .chart-placeholder-icon {
-    width: 64px;
-    height: 64px;
-
+    width: 72px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    margin-bottom: 14px;
-
-    border: 1px solid rgba(139, 146, 255, 0.25);
-    border-radius: 20px;
-
-    background: rgba(139, 146, 255, 0.14);
+    margin-bottom: 16px;
+    border-radius: var(--radius-medium);
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
     color: var(--color-primary);
-
     font-size: 36px;
 }
 
@@ -169,6 +158,7 @@
     margin-bottom: 7px;
     color: var(--color-text);
     font-size: 16px;
+    font-weight: 700;
 }
 
 .chart-placeholder p {
@@ -179,7 +169,6 @@
 }
 
 /* 7. Laboratory Activity Section */
-
 .activity-card {
     min-width: 0;
 }
@@ -187,43 +176,39 @@
 .activity-list {
     display: flex;
     flex-direction: column;
+    gap: 14px;
 }
 
 .activity-item {
     display: flex;
     align-items: center;
-    gap: 13px;
-
-    padding: 15px 0;
-
-    border-bottom: 1px solid var(--color-border);
-
-    transition: background 0.2s ease;
-}
-
-.activity-item:first-child {
-    padding-top: 5px;
-}
-
-.activity-item:last-child {
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: var(--radius-medium);
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
     border-bottom: none;
+    transition: all 0.25s ease;
+}
+
+.activity-item:hover {
+    box-shadow: var(--shadow-clay-inset-sm);
+    transform: translateY(-1px);
 }
 
 .activity-icon {
-    width: 42px;
-    height: 42px;
-
+    width: 46px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-
-    border: 1px solid rgba(139, 146, 255, 0.18);
-    border-radius: 13px;
-
-    background: rgba(139, 146, 255, 0.12);
+    border-radius: var(--radius-small);
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
     color: var(--color-primary);
-
     font-size: 19px;
 }
 
@@ -231,6 +216,7 @@
     margin-bottom: 3px;
     color: var(--color-text);
     font-size: 13px;
+    font-weight: 700;
 }
 
 .activity-item p {
@@ -240,7 +226,6 @@
 }
 
 /* 8. Recent Requests Section */
-
 .dashboard-grid + .content-section {
     margin-top: 24px;
 }
@@ -255,23 +240,22 @@
 
 .dashboard-grid + .content-section .empty-state {
     min-height: 185px;
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
+    border-radius: var(--radius-large);
 }
 
 /* 9. Dashboard Footer */
-
 .dashboard-footer {
     margin-top: 28px;
     padding: 16px 0;
-
     border-top: 1px solid var(--color-border);
-
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
 }
 
 /* 10. Large Laptop Screens */
-
 @media (max-width: 1400px) {
     .stats-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -279,69 +263,55 @@
 }
 
 /* 11. Tablet Screens */
-
 @media (max-width: 1024px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
-
     .stats-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
     .chart-placeholder {
         min-height: 260px;
     }
 }
 
 /* 12. Mobile Screens */
-
 @media (max-width: 768px) {
     .dashboard-date {
         width: 100%;
     }
-
     .stats-grid {
         grid-template-columns: 1fr;
         gap: 12px;
     }
-
     .stats-grid .stat-card {
         min-height: 90px;
     }
-
     .dashboard-grid {
         gap: 16px;
     }
-
     .chart-placeholder {
         min-height: 230px;
     }
-
     .dashboard-notice {
         font-size: 12px;
     }
-
     .dashboard-footer {
         line-height: 1.6;
     }
 }
 
 /* 13. Small Mobile Screens */
-
 @media (max-width: 480px) {
     .stats-grid .stat-card {
         padding: 14px;
     }
-
     .stat-value {
         font-size: 23px;
     }
-
     .activity-item {
         align-items: flex-start;
     }
-
     .dashboard-grid + .content-section .card-header {
         align-items: flex-start;
         flex-direction: column;
@@ -349,237 +319,14 @@
 }
 
 /* 14. Reduced Motion Support */
-
 @media (prefers-reduced-motion: reduce) {
-    .activity-item {
-        transition: none;
-    }
-}
-
-/* ==========================================
-   15. UILORA-INSPIRED GLASS CARD REDESIGN
-========================================== */
-
-/* Shared Glass Card Appearance */
-
-.stats-grid .stat-card,
-.dashboard-grid > .card,
-.dashboard-grid + .content-section > .card {
-    position: relative;
-    isolation: isolate;
-
-    border: 1px solid transparent;
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(30, 41, 67, 0.88),
-            rgba(12, 18, 35, 0.92)
-        ) padding-box,
-        linear-gradient(
-            120deg,
-            rgba(168, 85, 247, 0.42),
-            rgba(59, 130, 246, 0.32),
-            rgba(255, 255, 255, 0.12)
-        ) border-box;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.24),
-        0 0 16px rgba(147, 51, 234, 0.08),
-        0 0 22px rgba(59, 130, 246, 0.06);
-
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-
-    transition:
-        transform 1s ease,
-        box-shadow 1s ease,
-        background 1s ease;
-}
-
-/* Hover Glow Animation */
-
-.stats-grid .stat-card:hover,
-.dashboard-grid > .card:hover,
-.dashboard-grid + .content-section > .card:hover {
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.35),
-        0 0 25px rgba(147, 51, 234, 0.28),
-        0 0 40px rgba(59, 130, 246, 0.20);
-
-    transition-duration: 200ms;
-}
-
-/* Summary Card Decorative Glow */
-
-.stats-grid .stat-card::before {
-    transition:
-        background 0.3s ease,
-        transform 0.3s ease;
-}
-
-.stats-grid .stat-card:hover::before {
-    background: rgba(168, 85, 247, 0.13);
-    transform: scale(1.35);
-}
-
-/* Summary Card Content */
-
-.stats-grid .stat-card > * {
-    position: relative;
-    z-index: 1;
-}
-
-.stats-grid .stat-card .stat-label {
-    color: #b8c3d8;
-    transition: color 0.2s ease;
-}
-
-.stats-grid .stat-card:hover .stat-label {
-    color: #ffffff;
-}
-
-.stats-grid .stat-card .stat-value {
-    color: #f5f3ff;
-    transition: color 0.2s ease;
-}
-
-/* Summary Card Icons */
-
-.stats-grid .stat-card .stat-icon {
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 15px;
-
-    background-color: rgba(255, 255, 255, 0.07);
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.stats-grid .stat-card:hover .stat-icon {
-    transform: scale(1.07);
-    box-shadow: 0 0 16px rgba(168, 85, 247, 0.18);
-}
-
-/* Dashboard Main Cards */
-
-.dashboard-grid > .card,
-.dashboard-grid + .content-section > .card {
-    overflow: visible;
-}
-
-/* Card Headings */
-
-.dashboard-grid .card-title,
-.dashboard-grid + .content-section .card-title {
-    color: #f1f5ff;
-}
-
-.dashboard-grid .card-description,
-.dashboard-grid + .content-section .card-description {
-    color: #a5b1c7;
-}
-
-/* Chart Placeholder */
-
-.dashboard-chart-card .chart-placeholder {
-    border-color: rgba(168, 85, 247, 0.22);
-
-    background:
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(168, 85, 247, 0.12),
-            transparent 45%
-        ),
-        radial-gradient(
-            circle at 80% 80%,
-            rgba(59, 130, 246, 0.10),
-            transparent 50%
-        ),
-        rgba(8, 15, 30, 0.45);
-}
-
-/* Activity Items */
-
-.activity-item {
-    border-radius: 12px;
-
-    transition:
-        background 0.2s ease,
-        padding 0.2s ease;
-}
-
-.activity-item:hover {
-    padding-left: 10px;
-    padding-right: 10px;
-
-    background: rgba(139, 146, 255, 0.09);
-}
-
-.activity-icon {
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        background 0.3s ease;
-}
-
-.activity-item:hover .activity-icon {
-    transform: scale(1.08);
-
-    background: rgba(139, 146, 255, 0.20);
-
-    box-shadow:
-        0 0 14px rgba(147, 51, 234, 0.20),
-        0 0 20px rgba(59, 130, 246, 0.10);
-}
-
-/* Recent Requests Table Card */
-
-.dashboard-grid + .content-section > .card {
-    border-radius: 24px;
-}
-
-.dashboard-grid + .content-section .table-container {
-    border-radius: 14px;
-    overflow-x: auto;
-}
-
-/* Responsive Card Adjustments */
-
-@media (max-width: 768px) {
+    .activity-item,
     .stats-grid .stat-card,
     .dashboard-grid > .card,
     .dashboard-grid + .content-section > .card {
-        border-radius: 20px;
-    }
-
-    .stats-grid .stat-card:hover,
-    .dashboard-grid > .card:hover,
-    .dashboard-grid + .content-section > .card:hover {
-        transform: translateY(-2px);
-    }
-}
-
-/* Accessibility: Reduced Motion */
-
-@media (prefers-reduced-motion: reduce) {
-    .stats-grid .stat-card,
-    .dashboard-grid > .card,
-    .dashboard-grid + .content-section > .card,
-    .stats-grid .stat-card::before,
-    .stats-grid .stat-card .stat-icon,
-    .activity-item,
-    .activity-icon {
         transition: none !important;
     }
-
+    .activity-item:hover,
     .stats-grid .stat-card:hover,
     .dashboard-grid > .card:hover,
     .dashboard-grid + .content-section > .card:hover {
@@ -588,88 +335,48 @@
 }
 
 /* ==========================================
-   16. UILORA ANIMATED OUTER GLOW FIX
+   15. FLAT CLAY CARD OVERRIDE (no shadow)
 ========================================== */
-
-/* Allow the glow to extend outside each card */
 
 .stats-grid .stat-card,
 .dashboard-grid > .card,
 .dashboard-grid + .content-section > .card {
     position: relative;
     isolation: isolate;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: none;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
-
-/* Independent purple-blue glow layer */
-
-.stats-grid .stat-card::after,
-.dashboard-grid > .card::after,
-.dashboard-grid + .content-section > .card::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    z-index: -1;
-
-    border-radius: inherit;
-
-    background: linear-gradient(
-        90deg,
-        #9333ea,
-        #2563eb
-    );
-
-    filter: blur(18px);
-    opacity: 0.18;
-
-    pointer-events: none;
-
-    transition:
-        opacity 1s ease,
-        filter 1s ease;
-}
-
-/* Strong glow on hover */
-
-.stats-grid .stat-card:hover::after,
-.dashboard-grid > .card:hover::after,
-.dashboard-grid + .content-section > .card:hover::after {
-    opacity: 0.90;
-    filter: blur(23px);
-
-    transition-duration: 200ms;
-}
-
-/* Stronger card shadow on hover */
 
 .stats-grid .stat-card:hover,
 .dashboard-grid > .card:hover,
 .dashboard-grid + .content-section > .card:hover {
-    box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.35),
-        0 0 25px rgba(147, 51, 234, 0.30),
-        0 0 45px rgba(59, 130, 246, 0.24);
-
-    transform: translateY(-4px);
-
-    transition-duration: 200ms;
+    transform: translateY(-3px);
+    border-color: var(--color-border-hover);
+    box-shadow: none;
 }
 
-/* Keyboard accessibility */
-
-.stats-grid .stat-card:focus-within,
-.dashboard-grid > .card:focus-within,
-.dashboard-grid + .content-section > .card:focus-within {
-    box-shadow:
-        0 0 20px rgba(147, 51, 234, 0.24),
-        0 0 30px rgba(59, 130, 246, 0.18);
+.stats-grid .stat-card .stat-label {
+    color: var(--color-text-secondary);
 }
-
-/* Reduced Motion */
-
-@media (prefers-reduced-motion: reduce) {
-    .stats-grid .stat-card::after,
-    .dashboard-grid > .card::after,
-    .dashboard-grid + .content-section > .card::after {
-        transition: none !important;
-    }
+.stats-grid .stat-card .stat-value {
+    color: var(--color-text);
+}
+.dashboard-grid .card-title,
+.dashboard-grid + .content-section .card-title {
+    color: var(--color-text);
+}
+.dashboard-grid .card-description,
+.dashboard-grid + .content-section .card-description {
+    color: var(--color-text-secondary);
+}
+.dashboard-grid + .content-section .table-container {
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
+    padding: 14px;
+    overflow-x: auto;
 }

@@ -1,534 +1,227 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Test Catalog | MediLink Laboratory</title>
+    
+    <!-- Load theme early -->
+    <script src="../js/theme.js"></script>
 
-    <!-- Global Stylesheets -->
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/components.css">
-
-    <!-- Test Catalog Stylesheet -->
     <link rel="stylesheet" href="../css/pages/test-catalog.css">
 </head>
-
 <body>
-
     <div class="app-layout" id="appLayout">
-
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
-
             <div class="sidebar-brand">
                 <div class="brand-logo">M</div>
-
                 <div>
                     <h2>MediLink</h2>
                     <p>Laboratory Services</p>
                 </div>
             </div>
-
-            <!-- Navigation -->
             <nav class="sidebar-nav" aria-label="Main navigation">
-
                 <p class="nav-section-title">Workspace</p>
-
                 <a href="dashboard.html" class="nav-link">
                     <span class="nav-icon">▦</span>
                     <span>Dashboard</span>
                 </a>
-
                 <p class="nav-section-title">Laboratory Operations</p>
-
-                <a href="test-catalog.html" class="nav-link active"
-                   aria-current="page">
+                <a href="test-catalog.html" class="nav-link active" aria-current="page">
                     <span class="nav-icon">☷</span>
                     <span>Test Catalog</span>
                 </a>
-
                 <a href="laboratory-requests.html" class="nav-link">
                     <span class="nav-icon">▤</span>
                     <span>Laboratory Requests</span>
                 </a>
-
                 <a href="specimen-management.html" class="nav-link">
                     <span class="nav-icon">◉</span>
                     <span>Specimen Management</span>
                 </a>
-
                 <a href="processing-worklist.html" class="nav-link">
                     <span class="nav-icon">⚙</span>
                     <span>Processing Worklist</span>
                 </a>
-
                 <p class="nav-section-title">Results</p>
-
                 <a href="result-entry.html" class="nav-link">
                     <span class="nav-icon">✎</span>
                     <span>Result Entry</span>
                 </a>
-
                 <a href="result-verification.html" class="nav-link">
                     <span class="nav-icon">✓</span>
                     <span>Result Verification</span>
                 </a>
-
                 <a href="laboratory-history.html" class="nav-link">
                     <span class="nav-icon">◷</span>
                     <span>Laboratory History</span>
                 </a>
-
                 <p class="nav-section-title">Administration</p>
-
                 <a href="reports.html" class="nav-link">
                     <span class="nav-icon">▥</span>
                     <span>Reports & Analytics</span>
                 </a>
-
                 <a href="audit-logs.html" class="nav-link">
                     <span class="nav-icon">▧</span>
                     <span>Audit Trail</span>
                 </a>
-
             </nav>
-
             <div class="sidebar-footer">
                 <p>MediLink Laboratory</p>
                 <p>Development Version 1.0</p>
             </div>
-
         </aside>
 
-        <!-- Mobile Sidebar Overlay -->
-        <button
-            type="button"
-            class="sidebar-overlay"
-            id="sidebarOverlay"
-            aria-label="Close navigation">
-        </button>
+        <button type="button" class="sidebar-overlay" id="sidebarOverlay" aria-label="Close navigation"></button>
 
-        <!-- Main Content -->
         <main class="main-content">
-
-            <!-- Top Header -->
             <header class="topbar">
-
                 <div class="topbar-left">
-
-                    <button
-                        type="button"
-                        class="sidebar-toggle"
-                        id="sidebarToggle"
-                        aria-label="Open navigation"
-                        aria-controls="sidebar"
-                        aria-expanded="false">
-                        ☰
-                    </button>
-
-                    <p class="topbar-title">
-                        Laboratory Workspace
-                    </p>
-
+                    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">☰</button>
+                    <p class="topbar-title">Laboratory Workspace</p>
                 </div>
-
                 <div class="topbar-right">
-
                     <div class="topbar-user">
-
                         <div class="user-avatar" id="userAvatar">U</div>
-
                         <div class="user-details">
                             <p class="user-name" id="userName">System User</p>
                             <p class="user-role" id="userRole">Laboratory Personnel</p>
                         </div>
-
                     </div>
-
-                    <button
-                        type="button"
-                        class="btn btn-outline btn-small"
-                        id="logoutButton">
-                        Logout
+                    <!-- Theme Toggle -->
+                    <button type="button" class="theme-toggle" id="themeToggle"
+                            aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
+                        <span class="theme-toggle-icon-wrapper" aria-hidden="true">
+                            <span class="theme-toggle-sun">☀</span>
+                            <span class="theme-toggle-moon">☾</span>
+                        </span>
                     </button>
-
+                    <button type="button" class="btn btn-outline btn-small" id="logoutButton">Logout</button>
                 </div>
-
             </header>
 
-            <!-- Page Content -->
             <section class="page-content">
-
-                <!-- Page Heading -->
                 <div class="page-header">
-
                     <div>
-                        <h1 class="page-title">
-                            Laboratory Test Catalog
-                        </h1>
-
-                        <p class="page-description">
-                            View and maintain the laboratory tests
-                            available for laboratory requests.
-                        </p>
+                        <h1 class="page-title">Laboratory Test Catalog</h1>
+                        <p class="page-description">View and maintain the laboratory tests available for laboratory requests.</p>
                     </div>
-
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        id="addTestButton">
-                        + Add Laboratory Test
-                    </button>
-
+                    <button type="button" class="btn btn-primary" id="addTestButton">+ Add Laboratory Test</button>
                 </div>
 
-                                <!-- Laboratory Test Registration Form -->
-                <section
-                    class="content-section"
-                    id="testRegistrationSection"
-                    hidden>
-
+                <section class="content-section" id="testRegistrationSection" hidden>
                     <article class="card catalog-registration-card">
-
                         <div class="card-header">
                             <div>
-                                <h2 class="card-title">
-                                    Register New Laboratory Test
-                                </h2>
-
-                                <p class="card-description">
-                                    Enter the laboratory test information.
-                                    Fields marked with * are required.
-                                </p>
+                                <h2 class="card-title">Register New Laboratory Test</h2>
+                                <p class="card-description">Enter the laboratory test information. Fields marked with * are required.</p>
                             </div>
                         </div>
-
                         <form id="testRegistrationForm">
-
                             <div class="catalog-form-grid">
-
-                                <!-- Test Code -->
                                 <div class="form-group">
-                                    <label
-                                        class="form-label"
-                                        for="testCode">
-                                        Test Code *
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="testCode"
-                                        name="testCode"
-                                        class="form-control"
-                                        maxlength="30"
-                                        placeholder="e.g. HEM-CBC-001"
-                                        autocomplete="off"
-                                        required>
+                                    <label class="form-label" for="testCode">Test Code *</label>
+                                    <input type="text" id="testCode" name="testCode" class="form-control" maxlength="30" placeholder="e.g. HEM-CBC-001" autocomplete="off" required>
                                 </div>
-
-                                <!-- Test Name -->
                                 <div class="form-group">
-                                    <label
-                                        class="form-label"
-                                        for="testName">
-                                        Test Name *
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="testName"
-                                        name="testName"
-                                        class="form-control"
-                                        maxlength="120"
-                                        placeholder="Enter laboratory test name"
-                                        required>
+                                    <label class="form-label" for="testName">Test Name *</label>
+                                    <input type="text" id="testName" name="testName" class="form-control" maxlength="120" placeholder="Enter laboratory test name" required>
                                 </div>
-
-                                <!-- Category -->
                                 <div class="form-group">
-                                    <label
-                                        class="form-label"
-                                        for="testCategory">
-                                        Category *
-                                    </label>
-
-                                    <select
-                                        id="testCategory"
-                                        name="category"
-                                        class="form-control"
-                                        required>
-
-                                        <option value="">
-                                            Select category
-                                        </option>
-
-                                        <option value="Hematology">
-                                            Hematology
-                                        </option>
-
-                                        <option value="Clinical Chemistry">
-                                            Clinical Chemistry
-                                        </option>
-
-                                        <option value="Microbiology">
-                                            Microbiology
-                                        </option>
-
-                                        <option value="Immunology">
-                                            Immunology
-                                        </option>
-
-                                        <option value="Urinalysis">
-                                            Urinalysis
-                                        </option>
-
-                                        <option value="Other">
-                                            Other
-                                        </option>
-
+                                    <label class="form-label" for="testCategory">Category *</label>
+                                    <select id="testCategory" name="category" class="form-control" required>
+                                        <option value="">Select category</option>
+                                        <option value="Hematology">Hematology</option>
+                                        <option value="Clinical Chemistry">Clinical Chemistry</option>
+                                        <option value="Microbiology">Microbiology</option>
+                                        <option value="Immunology">Immunology</option>
+                                        <option value="Urinalysis">Urinalysis</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
-
-                                <!-- Specimen Type -->
                                 <div class="form-group">
-                                    <label
-                                        class="form-label"
-                                        for="specimenType">
-                                        Specimen Type *
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="specimenType"
-                                        name="specimenType"
-                                        class="form-control"
-                                        maxlength="80"
-                                        placeholder="e.g. EDTA Whole Blood"
-                                        required>
+                                    <label class="form-label" for="specimenType">Specimen Type *</label>
+                                    <input type="text" id="specimenType" name="specimenType" class="form-control" maxlength="80" placeholder="e.g. EDTA Whole Blood" required>
                                 </div>
-
-                                <!-- Testing Method -->
                                 <div class="form-group">
-                                    <label
-                                        class="form-label"
-                                        for="testingMethod">
-                                        Testing Method *
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="testingMethod"
-                                        name="testingMethod"
-                                        class="form-control"
-                                        maxlength="100"
-                                        placeholder="Enter testing method"
-                                        required>
+                                    <label class="form-label" for="testingMethod">Testing Method *</label>
+                                    <input type="text" id="testingMethod" name="testingMethod" class="form-control" maxlength="100" placeholder="Enter testing method" required>
                                 </div>
-
-                                <!-- Turnaround Time -->
                                 <div class="form-group">
-                                    <label
-                                        class="form-label"
-                                        for="turnaroundTime">
-                                        Turnaround Time *
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="turnaroundTime"
-                                        name="turnaroundTime"
-                                        class="form-control"
-                                        maxlength="50"
-                                        placeholder="e.g. Same day"
-                                        required>
+                                    <label class="form-label" for="turnaroundTime">Turnaround Time *</label>
+                                    <input type="text" id="turnaroundTime" name="turnaroundTime" class="form-control" maxlength="50" placeholder="e.g. Same day" required>
                                 </div>
-
-                                <!-- Status -->
                                 <div class="form-group">
-                                    <label
-                                        class="form-label"
-                                        for="testStatus">
-                                        Status *
-                                    </label>
-
-                                    <select
-                                        id="testStatus"
-                                        name="status"
-                                        class="form-control"
-                                        required>
-
-                                        <option value="active" selected>
-                                            Active
-                                        </option>
-
-                                        <option value="inactive">
-                                            Inactive
-                                        </option>
-
+                                    <label class="form-label" for="testStatus">Status *</label>
+                                    <select id="testStatus" name="status" class="form-control" required>
+                                        <option value="active" selected>Active</option>
+                                        <option value="inactive">Inactive</option>
                                     </select>
                                 </div>
-
                             </div>
-
-                            <!-- Registration Feedback -->
-                            <div
-                                class="alert catalog-form-message"
-                                id="testFormMessage"
-                                role="status"
-                                aria-live="polite"
-                                hidden>
-                            </div>
-
-                            <!-- Form Actions -->
+                            <div class="alert catalog-form-message" id="testFormMessage" role="status" aria-live="polite" hidden></div>
                             <div class="catalog-form-actions">
-
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    id="cancelTestButton">
-                                    Cancel
-                                </button>
-
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary"
-                                    id="saveTestButton">
-                                    Save Laboratory Test
-                                </button>
-
+                                <button type="button" class="btn btn-secondary" id="cancelTestButton">Cancel</button>
+                                <button type="submit" class="btn btn-primary" id="saveTestButton">Save Laboratory Test</button>
                             </div>
-
                         </form>
-
                     </article>
-
                 </section>
 
-                <!-- Development Notice -->
                 <div class="alert alert-info catalog-notice" id="catalogNotice">
                     <span>ⓘ</span>
-
                     <div>
                         <strong>Catalog Setup</strong>
-
-                        <p>
-                            The catalog interface is under development.
-                            Laboratory test records will be loaded from
-                            the database when the backend module is ready.
-                        </p>
+                        <p>The catalog interface is under development. Laboratory test records will be loaded from the database when the backend module is ready.</p>
                     </div>
                 </div>
 
-                <!-- Catalog Summary -->
                 <section class="content-section">
-
                     <div class="catalog-summary-grid">
-
                         <article class="card catalog-summary-card">
-
-                            <div class="catalog-summary-icon">
-                                ☷
-                            </div>
-
+                            <div class="catalog-summary-icon">☷</div>
                             <div>
-                                <p class="summary-label">
-                                    Total Laboratory Tests
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="totalTestsCount">—</h2>
+                                <p class="summary-label">Total Laboratory Tests</p>
+                                <h2 class="summary-value" id="totalTestsCount">—</h2>
                             </div>
-
                         </article>
-
                         <article class="card catalog-summary-card">
-
-                            <div class="catalog-summary-icon active-summary-icon">
-                                ✓
-                            </div>
-
+                            <div class="catalog-summary-icon active-summary-icon">✓</div>
                             <div>
-                                <p class="summary-label">
-                                    Active Tests
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="activeTestsCount">—</h2>
+                                <p class="summary-label">Active Tests</p>
+                                <h2 class="summary-value" id="activeTestsCount">—</h2>
                             </div>
-
                         </article>
-
                         <article class="card catalog-summary-card">
-
-                            <div class="catalog-summary-icon inactive-summary-icon">
-                                ◷
-                            </div>
-
+                            <div class="catalog-summary-icon inactive-summary-icon">◷</div>
                             <div>
-                                <p class="summary-label">
-                                    Inactive Tests
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="inactiveTestsCount">—</h2>
+                                <p class="summary-label">Inactive Tests</p>
+                                <h2 class="summary-value" id="inactiveTestsCount">—</h2>
                             </div>
-
                         </article>
-
                     </div>
-
                 </section>
 
-                <!-- Test Catalog Table -->
                 <section class="content-section">
-
                     <article class="card">
-
                         <div class="card-header">
-
                             <div>
-                                <h2 class="card-title">
-                                    Laboratory Test Records
-                                </h2>
-
-                                <p class="card-description">
-                                    Search and filter available laboratory tests.
-                                </p>
+                                <h2 class="card-title">Laboratory Test Records</h2>
+                                <p class="card-description">Search and filter available laboratory tests.</p>
                             </div>
-
                         </div>
-
-                        <!-- Search and Filters -->
                         <div class="catalog-toolbar">
-
                             <div class="catalog-search">
-
-                                <label for="testSearch">
-                                    Search Tests
-                                </label>
-
-                                <input
-                                    type="search"
-                                    id="testSearch"
-                                    class="form-control"
-                                    placeholder="Search by test code or test name..."
-                                >
-
+                                <label for="testSearch">Search Tests</label>
+                                <input type="search" id="testSearch" class="form-control" placeholder="Search by test code or test name...">
                             </div>
-
                             <div class="catalog-filter">
-
-                                <label for="categoryFilter">
-                                    Category
-                                </label>
-
-                                <select
-                                    id="categoryFilter"
-                                    class="form-control">
-
+                                <label for="categoryFilter">Category</label>
+                                <select id="categoryFilter" class="form-control">
                                     <option value="">All Categories</option>
                                     <option value="Hematology">Hematology</option>
                                     <option value="Clinical Chemistry">Clinical Chemistry</option>
@@ -536,43 +229,21 @@
                                     <option value="Immunology">Immunology</option>
                                     <option value="Urinalysis">Urinalysis</option>
                                     <option value="Other">Other</option>
-
                                 </select>
-
                             </div>
-
                             <div class="catalog-filter">
-
-                                <label for="statusFilter">
-                                    Status
-                                </label>
-
-                                <select
-                                    id="statusFilter"
-                                    class="form-control">
-
+                                <label for="statusFilter">Status</label>
+                                <select id="statusFilter" class="form-control">
                                     <option value="">All Statuses</option>
                                     <option value="active">Active</option>
                                     <option value="inactive">Inactive</option>
-
                                 </select>
-
                             </div>
-
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                id="resetFiltersButton">
-                                Reset Filters
-                            </button>
-
+                            <button type="button" class="btn btn-secondary" id="resetFiltersButton">Reset Filters</button>
                         </div>
 
-                        <!-- Test Records Table -->
                         <div class="table-container catalog-table-container">
-
                             <table class="data-table">
-
                                 <thead>
                                     <tr>
                                         <th>Test Code</th>
@@ -585,72 +256,32 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-
                                 <tbody id="testCatalogTableBody">
-
                                     <tr>
                                         <td colspan="8">
-
                                             <div class="empty-state">
-
-                                                <div class="empty-state-icon">
-                                                    ☷
-                                                </div>
-
-                                                <h3 class="empty-state-title">
-                                                    No laboratory tests configured
-                                                </h3>
-
-                                                <p class="empty-state-description">
-                                                    Laboratory test records
-                                                    will appear here once
-                                                    they have been added
-                                                    to the catalog.
-                                                </p>
-
+                                                <div class="empty-state-icon">☷</div>
+                                                <h3 class="empty-state-title">No laboratory tests configured</h3>
+                                                <p class="empty-state-description">Laboratory test records will appear here once they have been added to the catalog.</p>
                                             </div>
-
                                         </td>
                                     </tr>
-
                                 </tbody>
-
                             </table>
-
                         </div>
 
-                        <!-- Table Information -->
                         <div class="catalog-table-footer">
-
-                            <p id="catalogRecordCount">
-                                No laboratory test records available.
-                            </p>
-
+                            <p id="catalogRecordCount">No laboratory test records available.</p>
                         </div>
-
                     </article>
-
                 </section>
 
-                <!-- Page Footer -->
-                <footer class="catalog-footer">
-                    MediLink Laboratory Request and Results Management System
-                </footer>
-
+                <footer class="catalog-footer">MediLink Laboratory Request and Results Management System</footer>
             </section>
-
         </main>
-
     </div>
-
-<!-- Shared API Utility -->
-<script src="../js/api/api.js"></script>
-
-<!-- Shared Authentication Utility -->
-<script src="../js/auth/auth.js"></script>
-
-<!-- Test Catalog JavaScript -->
-<script src="../js/pages/test-catalog.js"></script>
-
+    <script src="../js/api/api.js"></script>
+    <script src="../js/auth/auth.js"></script>
+    <script src="../js/pages/test-catalog.js"></script>
 </body>
 </html>

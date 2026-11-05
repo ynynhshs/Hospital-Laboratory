@@ -1,22 +1,33 @@
-
 /* ==========================================
    MEDILINK LABORATORY
-   GLASSMORPHISM TEST CATALOG STYLESHEET
+   CLAYMORPHISM TEST CATALOG STYLESHEET
+   (cards are flat: no drop shadow)
 ========================================== */
 
-/* 1. Page Notice */
+/* 0. Clay Theme Tokens */
+.app-layout {
+    --clay-bg: #dde0ea;
+    --clay-bg-raised: #e3e6ef;
+    --clay-shade-dark: rgba(146, 154, 175, 0.65);
+    --clay-shade-deep: rgba(132, 141, 163, 0.75);
+    --clay-shade-light: rgba(255, 255, 255, 0.95);
+    --color-background: #d7dae5;
+    --color-sidebar: #d0d4e1;
+    --color-text: #323a4c;
+    --color-text-secondary: #6b7589;
+    --color-border: rgba(50, 58, 76, 0.07);
+}
 
+/* 1. Page Notice */
 .catalog-notice {
     align-items: flex-start;
     margin-bottom: 24px;
 }
-
 .catalog-notice p {
     margin-top: 3px;
 }
 
-/* 2. Catalog Summary Cards */
-
+/* 2. Catalog Summary Cards — flat */
 .catalog-summary-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -27,97 +38,70 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    min-height: 110px;
-    padding: 20px;
-
-    border: 1px solid var(--glass-border);
+    min-height: 112px;
+    padding: 22px;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-large);
-    background: var(--glass-background);
-    box-shadow: var(--shadow-small);
-
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: none;
     transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
 .catalog-summary-card:hover {
     transform: translateY(-3px);
-    border-color: var(--glass-highlight);
+    border-color: var(--color-border-hover);
+    box-shadow: none;
 }
 
 .catalog-summary-icon {
-    width: 48px;
-    height: 48px;
-
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-
-    border: 1px solid rgba(139, 146, 255, 0.20);
+    border: none;
     border-radius: var(--radius-medium);
-
-    background: rgba(139, 146, 255, 0.13);
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
     color: var(--color-primary);
-
     font-size: 22px;
 }
 
-.active-summary-icon {
-    border-color: rgba(72, 214, 160, 0.20);
-    background: rgba(72, 214, 160, 0.13);
-    color: #64e7b5;
-}
-
-.inactive-summary-icon {
-    border-color: rgba(245, 199, 107, 0.20);
-    background: rgba(245, 199, 107, 0.13);
-    color: #f5c76b;
-}
+.active-summary-icon   { color: var(--color-success); }
+.inactive-summary-icon { color: var(--color-warning); }
 
 .summary-label {
     color: var(--color-text-secondary);
     font-size: 13px;
+    font-weight: 600;
 }
-
 .summary-value {
     margin-top: 3px;
     color: var(--color-text);
     font-size: 27px;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 /* 3. Catalog Toolbar */
-
 .catalog-toolbar {
     display: grid;
-    grid-template-columns:
-        minmax(220px, 1.8fr)
-        minmax(145px, 1fr)
-        minmax(130px, 0.9fr)
-        auto;
-
+    grid-template-columns: minmax(220px, 1.8fr) minmax(145px, 1fr) minmax(130px, 0.9fr) auto;
     align-items: end;
     gap: 14px;
     margin-bottom: 22px;
-
-    padding: 20px;
-
-    border: 1px solid var(--glass-border);
+    padding: 22px;
+    border: none;
     border-radius: var(--radius-large);
-
-    background: var(--glass-background);
-    box-shadow: var(--shadow-small);
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
 }
 
 .catalog-search,
 .catalog-filter {
     min-width: 0;
-
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -127,22 +111,50 @@
 .catalog-filter label {
     color: var(--color-text);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 /* 4. Catalog Table */
-
 .catalog-table-container {
+    width: 100%;
+    overflow-x: auto;
     margin-top: 5px;
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    box-shadow: var(--shadow-clay-inset);
+    padding: 14px;
 }
 
 .catalog-table-container .data-table {
     min-width: 1050px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
 }
 
 .catalog-table-container .data-table th,
 .catalog-table-container .data-table td {
     padding: 14px 13px;
+}
+
+.catalog-table-container .data-table th {
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    color: var(--color-text-secondary);
+    box-shadow: var(--shadow-clay-sm);
+    border-radius: var(--radius-small);
+    border-bottom: none;
+}
+
+.catalog-table-container .data-table td {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.catalog-table-container .data-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+[data-theme="dark"] .catalog-table-container .data-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .catalog-table-container .empty-state {
@@ -151,597 +163,92 @@
 }
 
 /* 5. Catalog Table Footer */
-
 .catalog-table-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-
     margin-top: 16px;
-
     color: var(--color-text-secondary);
     font-size: 12px;
 }
 
 /* 6. Action Buttons Inside Table */
-
 .table-action-group {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 8px;
 }
 
 .table-action {
-    min-height: 30px;
-    padding: 5px 9px;
-
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-small);
-
-    background: var(--glass-background);
+    min-height: 34px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow: var(--shadow-clay-sm);
     color: var(--color-text);
-
     font-size: 11px;
+    font-weight: 700;
     cursor: pointer;
-
     transition: all 0.2s ease;
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
 }
 
 .table-action:hover {
-    background: var(--glass-background-strong);
-    border-color: var(--color-primary);
+    box-shadow: var(--shadow-clay);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.table-action:active {
+    box-shadow: var(--shadow-clay-inset-sm);
+    transform: translateY(1px);
 }
 
 .table-action-edit {
-    border-color: rgba(139, 146, 255, 0.30);
-    background: rgba(139, 146, 255, 0.10);
-    color: #b5bbff;
-}
-
-.table-action-edit:hover {
-    border-color: var(--color-primary);
-    background: rgba(139, 146, 255, 0.20);
+    color: var(--color-primary);
 }
 
 /* 7. Catalog Footer */
-
 .catalog-footer {
     margin-top: 28px;
     padding: 16px 0;
-
     border-top: 1px solid var(--color-border);
-
     color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
 }
 
-/* 8. Tablet Layout */
-
-@media (max-width: 1100px) {
-    .catalog-toolbar {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .catalog-toolbar .btn {
-        width: fit-content;
-    }
-}
-
-/* 9. Mobile Layout */
-
-@media (max-width: 768px) {
-    .catalog-summary-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .catalog-summary-card {
-        min-height: 90px;
-        padding: 16px;
-    }
-
-    .catalog-toolbar {
-        grid-template-columns: 1fr;
-        gap: 14px;
-        padding: 16px;
-    }
-
-    .catalog-toolbar .btn {
-        width: 100%;
-    }
-
-    .catalog-table-footer {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-}
-
-/* 10. Small Mobile Screens */
-
-@media (max-width: 480px) {
-    .summary-value {
-        font-size: 24px;
-    }
-
-    .catalog-summary-icon {
-        width: 42px;
-        height: 42px;
-    }
-
-    .catalog-notice {
-        font-size: 12px;
-    }
-}
-
-/* 11. Reduced Motion Support */
-
-@media (prefers-reduced-motion: reduce) {
-    .catalog-summary-card,
-    .table-action {
-        transition: none;
-    }
-}
-
-/* ==========================================
-   12. UILORA-INSPIRED GLASS CARD REDESIGN
-========================================== */
-
-/* Summary Cards */
-
-.catalog-summary-card {
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-
-    border: 1px solid transparent;
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(30, 41, 67, 0.88),
-            rgba(12, 18, 35, 0.92)
-        ) padding-box,
-        linear-gradient(
-            120deg,
-            rgba(168, 85, 247, 0.42),
-            rgba(59, 130, 246, 0.32),
-            rgba(255, 255, 255, 0.12)
-        ) border-box;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.24),
-        0 0 16px rgba(147, 51, 234, 0.08),
-        0 0 22px rgba(59, 130, 246, 0.06);
-
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-
-    transition:
-        transform 1s ease,
-        box-shadow 1s ease;
-}
-
-/* Animated Purple-Blue Glow */
-
-.catalog-summary-card::before {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    z-index: -1;
-
-    border-radius: inherit;
-
-    background: linear-gradient(
-        120deg,
-        #9333ea,
-        #2563eb
-    );
-
-    filter: blur(18px);
-    opacity: 0.16;
-
-    pointer-events: none;
-
-    transition:
-        opacity 1s ease,
-        filter 1s ease;
-}
-
-/* Hover Animation */
-
-.catalog-summary-card:hover {
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.35),
-        0 0 25px rgba(147, 51, 234, 0.28),
-        0 0 40px rgba(59, 130, 246, 0.20);
-
-    transition-duration: 200ms;
-}
-
-.catalog-summary-card:hover::before {
-    opacity: 0.85;
-    filter: blur(22px);
-    transition-duration: 200ms;
-}
-
-/* Keep Summary Card Content Above Glow */
-
-.catalog-summary-card > * {
-    position: relative;
-    z-index: 1;
-}
-
-/* Summary Card Text */
-
-.catalog-summary-card .summary-label {
-    color: #b8c3d8;
-    transition: color 0.2s ease;
-}
-
-.catalog-summary-card:hover .summary-label {
-    color: #ffffff;
-}
-
-.catalog-summary-card .summary-value {
-    color: #f5f3ff;
-}
-
-/* Summary Card Icons */
-
-.catalog-summary-icon {
-    border: 1px solid rgba(255, 255, 255, 0.12);
-
-    background: rgba(139, 146, 255, 0.14);
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.catalog-summary-card:hover .catalog-summary-icon {
-    transform: scale(1.08);
-
-    box-shadow:
-        0 0 14px rgba(147, 51, 234, 0.22),
-        0 0 20px rgba(59, 130, 246, 0.12);
-}
-
-/* Active Icon */
-
-.catalog-summary-icon.active-summary-icon {
-    border-color: rgba(72, 214, 160, 0.25);
-    background: rgba(72, 214, 160, 0.14);
-    color: #64e7b5;
-}
-
-/* Inactive Icon */
-
-.catalog-summary-icon.inactive-summary-icon {
-    border-color: rgba(245, 199, 107, 0.25);
-    background: rgba(245, 199, 107, 0.14);
-    color: #f5c76b;
-}
-
-/* Main Laboratory Records Card */
-
+/* 8. Main Card Override — FLAT */
 .content-section > .card {
-    position: relative;
-    isolation: isolate;
-
-    border: 1px solid transparent;
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(30, 41, 67, 0.88),
-            rgba(12, 18, 35, 0.92)
-        ) padding-box,
-        linear-gradient(
-            120deg,
-            rgba(168, 85, 247, 0.30),
-            rgba(59, 130, 246, 0.24),
-            rgba(255, 255, 255, 0.10)
-        ) border-box;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.24),
-        0 0 18px rgba(147, 51, 234, 0.06);
-
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+    background-color: var(--clay-bg);
+    background-image: var(--clay-glow);
+    box-shadow: none;
+    padding: 26px;
+    transition: border-color 0.3s ease;
 }
 
 .content-section > .card:hover {
-    box-shadow:
-        0 14px 36px rgba(0, 0, 0, 0.30),
-        0 0 24px rgba(147, 51, 234, 0.12),
-        0 0 30px rgba(59, 130, 246, 0.09);
+    border-color: var(--color-border-hover);
+    box-shadow: none;
 }
 
-/* Main Card Heading */
-
-.content-section > .card .card-title {
-    color: #f1f5ff;
-}
-
-.content-section > .card .card-description {
-    color: #a5b1c7;
-}
-
-/* Search and Filter Toolbar */
-
-.catalog-toolbar {
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 18px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(35, 43, 70, 0.72),
-            rgba(13, 21, 41, 0.76)
-        );
-
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.16),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.catalog-toolbar:hover {
-    border-color: rgba(139, 146, 255, 0.28);
-
-    box-shadow:
-        0 10px 28px rgba(0, 0, 0, 0.22),
-        0 0 18px rgba(147, 51, 234, 0.08);
-}
-
-/* Search and Filter Labels */
-
-.catalog-search label,
-.catalog-filter label {
-    color: #e7ecf7;
-}
-
-/* Table Container */
-
-.catalog-table-container {
-    border-radius: 14px;
-    overflow-x: auto;
-}
-
-/* Table Header */
-
-.catalog-table-container .data-table th {
-    background: rgba(255, 255, 255, 0.055);
-    color: #aebbd0;
-}
-
-/* Table Rows */
-
-.catalog-table-container .data-table tbody tr {
-    transition: background 0.2s ease;
-}
-
-.catalog-table-container .data-table tbody tr:hover {
-    background: rgba(139, 146, 255, 0.075);
-}
-
-/* Table Actions */
-
-.table-action {
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.table-action:hover {
-    transform: translateY(-1px);
-}
-
-.table-action-edit:hover {
-    box-shadow: 0 0 12px rgba(139, 146, 255, 0.15);
-}
-
-/* Table Footer */
-
-.catalog-table-footer {
-    color: #a5b1c7;
-}
-
-/* Responsive Adjustments */
-
-@media (max-width: 768px) {
-    .catalog-summary-card {
-        border-radius: 20px;
-    }
-
-    .catalog-summary-card:hover {
-        transform: translateY(-2px);
-    }
-
-    .content-section > .card {
-        border-radius: 20px;
-    }
-
-    .catalog-toolbar {
-        border-radius: 16px;
-    }
-}
-
-/* Accessibility: Reduced Motion */
-
-@media (prefers-reduced-motion: reduce) {
-    .catalog-summary-card,
-    .catalog-summary-card::before,
-    .catalog-summary-icon,
-    .catalog-toolbar,
-    .content-section > .card,
-    .table-action {
-        transition: none !important;
-    }
-
-    .catalog-summary-card:hover,
-    .table-action:hover {
-        transform: none;
-    }
-}
-
-/* ==========================================
-   13. TEST CATALOG - UPGRADED UILORA GLOW
-========================================== */
-
-/* Summary Cards */
-
-.catalog-summary-card {
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-}
-
-/* Correct the Glow Layer Position */
-
-.catalog-summary-card::before {
-    z-index: 0;
-    opacity: 0.18;
-    pointer-events: none;
-    transition:
-        opacity 1s ease,
-        filter 1s ease;
-}
-
-/* Keep Card Content Above the Glow */
-
-.catalog-summary-card > * {
-    position: relative;
-    z-index: 1;
-}
-
-/* Summary Card Hover */
-
-.catalog-summary-card:hover::before {
-    opacity: 0.90;
-    filter: blur(23px);
-    transition-duration: 200ms;
-}
-
-/* Main Laboratory Test Records Card */
-
-.content-section > .card {
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-}
-
-/* Add the Missing Outer Glow */
-
-.content-section > .card::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    z-index: 0;
-
-    border-radius: inherit;
-
-    background: linear-gradient(
-        90deg,
-        #9333ea,
-        #2563eb
-    );
-
-    filter: blur(18px);
-    opacity: 0.16;
-
-    pointer-events: none;
-
-    transition:
-        opacity 1s ease,
-        filter 1s ease;
-}
-
-/* Keep Main Card Contents Above the Glow */
-
-.content-section > .card > * {
-    position: relative;
-    z-index: 1;
-}
-
-/* Main Card Hover */
-
-.content-section > .card:hover::after {
-    opacity: 0.75;
-    filter: blur(23px);
-    transition-duration: 200ms;
-}
-
-.content-section > .card:hover {
-    box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.35),
-        0 0 25px rgba(147, 51, 234, 0.30),
-        0 0 40px rgba(59, 130, 246, 0.22);
-
-    transform: translateY(-3px);
-    transition-duration: 200ms;
-}
-
-/* Reduced Motion */
-
-@media (prefers-reduced-motion: reduce) {
-    .catalog-summary-card::before,
-    .content-section > .card::after {
-        transition: none !important;
-    }
-
-    .content-section > .card:hover {
-        transform: none;
-    }
-}
-
-/* ==========================================
-   14. LABORATORY TEST REGISTRATION FORM
-========================================== */
-
-/* Registration Card */
-
+/* 9. Registration Form Grid */
 .catalog-registration-card {
     margin-bottom: 24px;
 }
-
 .catalog-registration-card .card-description {
     margin-bottom: 20px;
 }
-
-/* Registration Form Grid */
 
 .catalog-form-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
 }
-
-/* Form Groups */
 
 .catalog-form-grid .form-group {
     display: flex;
@@ -751,18 +258,14 @@
 }
 
 .catalog-form-grid .form-label {
-    color: #e7ecf7;
+    color: var(--color-text);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
 }
-
-/* Form Feedback */
 
 .catalog-form-message {
     margin-top: 18px;
 }
-
-/* Form Action Buttons */
 
 .catalog-form-actions {
     display: flex;
@@ -772,96 +275,91 @@
     margin-top: 20px;
 }
 
-/* Responsive Registration Form */
+/* 10. Test Status Badges — clay pills */
+.catalog-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 74px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    text-transform: capitalize;
+    background-color: var(--clay-bg-raised);
+    background-image: var(--clay-glow);
+    box-shadow:
+        4px 4px 9px var(--clay-shade-dark),
+        -4px -4px 9px var(--clay-shade-light),
+        inset -2px -2px 5px var(--clay-shade-dark),
+        inset 2px 2px 5px var(--clay-shade-light);
+}
+
+.catalog-status.status-active   { color: var(--color-success); }
+.catalog-status.status-inactive { color: var(--color-warning); }
+
+/* 11. Responsive Layout */
+@media (max-width: 1100px) {
+    .catalog-toolbar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .catalog-toolbar .btn {
+        width: fit-content;
+    }
+}
 
 @media (max-width: 768px) {
+    .catalog-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .catalog-summary-card {
+        min-height: 90px;
+        padding: 16px;
+    }
+    .catalog-toolbar {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 16px;
+    }
+    .catalog-toolbar .btn {
+        width: 100%;
+    }
+    .catalog-table-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
     .catalog-form-grid {
         grid-template-columns: 1fr;
         gap: 14px;
     }
-
     .catalog-form-actions {
         flex-direction: column;
     }
-
     .catalog-form-actions .btn {
         width: 100%;
     }
 }
 
-/* ==========================================
-   15. TEST STATUS BADGES
-========================================== */
-
-.catalog-status {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    min-width: 68px;
-    padding: 5px 10px;
-
-    border: 1px solid transparent;
-    border-radius: 20px;
-
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: capitalize;
-}
-
-.catalog-status.status-active {
-    color: #64e7b5;
-    background: rgba(72, 214, 160, 0.12);
-    border-color: rgba(72, 214, 160, 0.25);
-}
-
-.catalog-status.status-inactive {
-    color: #f5c76b;
-    background: rgba(245, 199, 107, 0.12);
-    border-color: rgba(245, 199, 107, 0.25);
-}
-
-/* ==========================================
-   16. TEST CATALOG PAGINATION
-========================================== */
-
-.catalog-pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-
-    margin-top: 16px;
-}
-
-.catalog-pagination .btn {
-    min-width: 36px;
-}
-
-.catalog-pagination .btn.active {
-    border-color: var(--color-primary);
-    background: var(--color-primary);
-    color: #ffffff;
-}
-
-.catalog-pagination .btn:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
-/* ==========================================
-   17. RESPONSIVE PAGINATION
-========================================== */
-
 @media (max-width: 480px) {
-    .catalog-pagination {
-        gap: 5px;
-    }
-
-    .catalog-pagination .btn {
-        min-width: 32px;
-        padding: 6px 9px;
-    }
+    .summary-value { font-size: 24px; }
+    .catalog-summary-icon { width: 42px; height: 42px; }
+    .catalog-notice { font-size: 12px; }
 }
 
+/* 12. Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .catalog-summary-card,
+    .table-action,
+    .content-section > .card {
+        transition: none !important;
+    }
+    .catalog-summary-card:hover,
+    .table-action:hover,
+    .table-action:active,
+    .content-section > .card:hover {
+        transform: none;
+    }
+}

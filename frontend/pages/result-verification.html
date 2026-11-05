@@ -1,361 +1,190 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Result Verification | MediLink Laboratory</title>
 
-    <!-- Global Stylesheets -->
+    <!-- Load theme early -->
+    <script src="../js/theme.js"></script>
+
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/components.css">
-
-    <!-- Result Verification Stylesheet -->
     <link rel="stylesheet" href="../css/pages/result-verification.css">
 </head>
-
 <body>
-
     <div class="app-layout" id="appLayout">
-
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
-
             <div class="sidebar-brand">
                 <div class="brand-logo">M</div>
-
                 <div>
                     <h2>MediLink</h2>
                     <p>Laboratory Services</p>
                 </div>
             </div>
-
-            <!-- Navigation -->
             <nav class="sidebar-nav" aria-label="Main navigation">
-
                 <p class="nav-section-title">Workspace</p>
-
                 <a href="dashboard.html" class="nav-link">
                     <span class="nav-icon">▦</span>
                     <span>Dashboard</span>
                 </a>
-
                 <p class="nav-section-title">Laboratory Operations</p>
-
                 <a href="test-catalog.html" class="nav-link">
                     <span class="nav-icon">☷</span>
                     <span>Test Catalog</span>
                 </a>
-
                 <a href="laboratory-requests.html" class="nav-link">
                     <span class="nav-icon">▤</span>
                     <span>Laboratory Requests</span>
                 </a>
-
                 <a href="specimen-management.html" class="nav-link">
                     <span class="nav-icon">◉</span>
                     <span>Specimen Management</span>
                 </a>
-
                 <a href="processing-worklist.html" class="nav-link">
                     <span class="nav-icon">⚙</span>
                     <span>Processing Worklist</span>
                 </a>
-
                 <p class="nav-section-title">Results</p>
-
                 <a href="result-entry.html" class="nav-link">
                     <span class="nav-icon">✎</span>
                     <span>Result Entry</span>
                 </a>
-
-                <a href="result-verification.html"
-                   class="nav-link active"
-                   aria-current="page">
+                <a href="result-verification.html" class="nav-link active" aria-current="page">
                     <span class="nav-icon">✓</span>
                     <span>Result Verification</span>
                 </a>
-
                 <a href="laboratory-history.html" class="nav-link">
                     <span class="nav-icon">◷</span>
                     <span>Laboratory History</span>
                 </a>
-
                 <p class="nav-section-title">Administration</p>
-
                 <a href="reports.html" class="nav-link">
                     <span class="nav-icon">▥</span>
                     <span>Reports & Analytics</span>
                 </a>
-
                 <a href="audit-logs.html" class="nav-link">
                     <span class="nav-icon">▧</span>
                     <span>Audit Trail</span>
                 </a>
-
             </nav>
-
             <div class="sidebar-footer">
                 <p>MediLink Laboratory</p>
                 <p>Development Version 1.0</p>
             </div>
-
         </aside>
 
-        <!-- Mobile Sidebar Overlay -->
-        <button
-            type="button"
-            class="sidebar-overlay"
-            id="sidebarOverlay"
-            aria-label="Close navigation">
-        </button>
+        <button type="button" class="sidebar-overlay" id="sidebarOverlay" aria-label="Close navigation"></button>
 
-        <!-- Main Content -->
         <main class="main-content">
-
-            <!-- Top Header -->
             <header class="topbar">
-
                 <div class="topbar-left">
-
-                    <button
-                        type="button"
-                        class="sidebar-toggle"
-                        id="sidebarToggle"
-                        aria-label="Open navigation"
-                        aria-controls="sidebar"
-                        aria-expanded="false">
-                        ☰
-                    </button>
-
-                    <p class="topbar-title">
-                        Laboratory Workspace
-                    </p>
-
+                    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">☰</button>
+                    <p class="topbar-title">Laboratory Workspace</p>
                 </div>
-
                 <div class="topbar-right">
-
                     <div class="topbar-user">
-
                         <div class="user-avatar">U</div>
-
                         <div class="user-details">
                             <p class="user-name">System User</p>
                             <p class="user-role">Result Verifier</p>
                         </div>
-
                     </div>
-
-                    <button
-                        type="button"
-                        class="btn btn-outline btn-small"
-                        id="logoutButton">
-                        Logout
+                    
+                    <!-- Theme Toggle -->
+                    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
+                        <span class="theme-toggle-icon-wrapper" aria-hidden="true">
+                            <span class="theme-toggle-sun">☀</span>
+                            <span class="theme-toggle-moon">☾</span>
+                        </span>
                     </button>
 
+                    <button type="button" class="btn btn-outline btn-small" id="logoutButton">Logout</button>
                 </div>
-
             </header>
 
-            <!-- Page Content -->
             <section class="page-content">
-
-                <!-- Page Heading -->
                 <div class="page-header">
-
                     <div>
-                        <h1 class="page-title">
-                            Result Verification and Release
-                        </h1>
-
-                        <p class="page-description">
-                            Review submitted laboratory results,
-                            verify their accuracy, and manage result release.
-                        </p>
+                        <h1 class="page-title">Result Verification and Release</h1>
+                        <p class="page-description">Review submitted laboratory results, verify their accuracy, and manage result release.</p>
                     </div>
-
-                    <button
-                        type="button"
-                        class="btn btn-outline"
-                        id="refreshVerificationButton">
-                        ↻ Refresh Worklist
-                    </button>
-
+                    <button type="button" class="btn btn-outline" id="refreshVerificationButton">↻ Refresh Worklist</button>
                 </div>
 
-                <!-- Development Notice -->
                 <div class="alert alert-info verification-notice">
-
                     <span>ⓘ</span>
-
                     <div>
                         <strong>Result Verification Setup</strong>
-
-                        <p>
-                            Submitted laboratory results will appear
-                            here when the Results and Verification
-                            backend workflows are implemented.
-                        </p>
+                        <p>Submitted laboratory results will appear here when the Results and Verification backend workflows are implemented.</p>
                     </div>
-
                 </div>
 
-                <!-- Verification Summary -->
                 <section class="content-section">
-
-                    <h2 class="verification-section-title">
-                        Verification Overview
-                    </h2>
-
+                    <h2 class="verification-section-title">Verification Overview</h2>
                     <div class="verification-summary-grid">
-
                         <article class="card verification-summary-card">
-
-                            <div class="verification-summary-icon verification-pending">
-                                ◷
-                            </div>
-
+                            <div class="verification-summary-icon verification-pending">◷</div>
                             <div>
-                                <p class="summary-label">
-                                    Pending Verification
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="pendingVerificationCount">—</h2>
+                                <p class="summary-label">Pending Verification</p>
+                                <h2 class="summary-value" id="pendingVerificationCount">—</h2>
                             </div>
-
                         </article>
-
                         <article class="card verification-summary-card">
-
-                            <div class="verification-summary-icon verification-approved">
-                                ✓
-                            </div>
-
+                            <div class="verification-summary-icon verification-approved">✓</div>
                             <div>
-                                <p class="summary-label">
-                                    Verified Results
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="verifiedResultsCount">—</h2>
+                                <p class="summary-label">Verified Results</p>
+                                <h2 class="summary-value" id="verifiedResultsCount">—</h2>
                             </div>
-
                         </article>
-
                         <article class="card verification-summary-card">
-
-                            <div class="verification-summary-icon verification-released">
-                                ✔
-                            </div>
-
+                            <div class="verification-summary-icon verification-released">✔</div>
                             <div>
-                                <p class="summary-label">
-                                    Released Results
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="releasedResultsCount">—</h2>
+                                <p class="summary-label">Released Results</p>
+                                <h2 class="summary-value" id="releasedResultsCount">—</h2>
                             </div>
-
                         </article>
-
                         <article class="card verification-summary-card">
-
-                            <div class="verification-summary-icon verification-returned">
-                                ↩
-                            </div>
-
+                            <div class="verification-summary-icon verification-returned">↩</div>
                             <div>
-                                <p class="summary-label">
-                                    Returned for Correction
-                                </p>
-
-                                <h2 class="summary-value"
-                                    id="returnedResultsCount">—</h2>
+                                <p class="summary-label">Returned for Correction</p>
+                                <h2 class="summary-value" id="returnedResultsCount">—</h2>
                             </div>
-
                         </article>
-
                     </div>
-
                 </section>
 
-                <!-- Verification Worklist -->
                 <section class="content-section">
-
                     <article class="card">
-
                         <div class="card-header">
-
                             <div>
-                                <h2 class="card-title">
-                                    Laboratory Results for Review
-                                </h2>
-
-                                <p class="card-description">
-                                    Select a submitted laboratory result
-                                    to review its details.
-                                </p>
+                                <h2 class="card-title">Laboratory Results for Review</h2>
+                                <p class="card-description">Select a submitted laboratory result to review its details.</p>
                             </div>
-
                         </div>
 
-                        <!-- Search and Filters -->
                         <div class="verification-toolbar">
-
                             <div class="verification-search">
-
-                                <label for="verificationSearch">
-                                    Search Results
-                                </label>
-
-                                <input
-                                    type="search"
-                                    id="verificationSearch"
-                                    class="form-control"
-                                    placeholder="Search request, patient, or test..."
-                                >
-
+                                <label for="verificationSearch">Search Results</label>
+                                <input type="search" id="verificationSearch" class="form-control" placeholder="Search request, patient, or test...">
                             </div>
-
                             <div class="verification-filter">
-
-                                <label for="verificationStatusFilter">
-                                    Result Status
-                                </label>
-
-                                <select
-                                    id="verificationStatusFilter"
-                                    class="form-control">
-
+                                <label for="verificationStatusFilter">Result Status</label>
+                                <select id="verificationStatusFilter" class="form-control">
                                     <option value="">All Statuses</option>
                                     <option value="Pending Verification">Pending Verification</option>
                                     <option value="Verified">Verified</option>
                                     <option value="Released">Released</option>
                                     <option value="Returned for Correction">Returned for Correction</option>
-
                                 </select>
-
                             </div>
-
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                id="resetVerificationFiltersButton">
-                                Reset Filters
-                            </button>
-
+                            <button type="button" class="btn btn-secondary" id="resetVerificationFiltersButton">Reset Filters</button>
                         </div>
 
-                        <!-- Verification Records Table -->
                         <div class="table-container verification-table-container">
-
                             <table class="data-table">
-
                                 <thead>
                                     <tr>
                                         <th>Request Number</th>
@@ -367,202 +196,74 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-
                                 <tbody id="verificationTableBody">
-
                                     <tr>
                                         <td colspan="7">
-
                                             <div class="empty-state">
-
-                                                <div class="empty-state-icon">
-                                                    ✓
-                                                </div>
-
-                                                <h3 class="empty-state-title">
-                                                    No results awaiting review
-                                                </h3>
-
-                                                <p class="empty-state-description">
-                                                    Submitted laboratory results
-                                                    will appear here for verification.
-                                                </p>
-
+                                                <div class="empty-state-icon">✓</div>
+                                                <h3 class="empty-state-title">No results awaiting review</h3>
+                                                <p class="empty-state-description">Submitted laboratory results will appear here for verification.</p>
                                             </div>
-
                                         </td>
                                     </tr>
-
                                 </tbody>
-
                             </table>
-
                         </div>
 
                         <div class="verification-table-footer">
-
-                            <p id="verificationRecordCount">
-                                No laboratory results available.
-                            </p>
-
+                            <p id="verificationRecordCount">No laboratory results available.</p>
                         </div>
-
                     </article>
-
                 </section>
 
-                <!-- Selected Result Review -->
                 <section class="content-section">
-
                     <article class="card verification-review-card">
-
                         <div class="card-header">
-
                             <div>
-                                <h2 class="card-title">
-                                    Laboratory Result Review
-                                </h2>
-
-                                <p class="card-description">
-                                    Review the selected patient's result
-                                    and supporting information.
-                                </p>
+                                <h2 class="card-title">Laboratory Result Review</h2>
+                                <p class="card-description">Review the selected patient's result and supporting information.</p>
                             </div>
-
-                            <span
-                                class="badge badge-neutral"
-                                id="verificationFormStatus">
-                                No Result Selected
-                            </span>
-
+                            <span class="badge badge-neutral" id="verificationFormStatus">No Result Selected</span>
                         </div>
 
-                        <!-- Request Information -->
                         <div class="verification-form-section">
-
-                            <h3 class="verification-form-title">
-                                Request and Patient Information
-                            </h3>
-
+                            <h3 class="verification-form-section-title">Request and Patient Information</h3>
                             <div class="verification-information-grid">
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="reviewRequestNumber">
-                                        Request Number
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="reviewRequestNumber"
-                                        class="form-control"
-                                        placeholder="Select a result"
-                                        readonly
-                                    >
+                                    <label class="form-label" for="reviewRequestNumber">Request Number</label>
+                                    <input type="text" id="reviewRequestNumber" class="form-control" placeholder="Select a result" readonly>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="reviewPatientName">
-                                        Patient Name
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="reviewPatientName"
-                                        class="form-control"
-                                        placeholder="Patient name"
-                                        readonly
-                                    >
+                                    <label class="form-label" for="reviewPatientName">Patient Name</label>
+                                    <input type="text" id="reviewPatientName" class="form-control" placeholder="Patient name" readonly>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="reviewTestName">
-                                        Laboratory Test
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="reviewTestName"
-                                        class="form-control"
-                                        placeholder="Laboratory test"
-                                        readonly
-                                    >
+                                    <label class="form-label" for="reviewTestName">Laboratory Test</label>
+                                    <input type="text" id="reviewTestName" class="form-control" placeholder="Laboratory test" readonly>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="reviewEnteredBy">
-                                        Result Entered By
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="reviewEnteredBy"
-                                        class="form-control"
-                                        placeholder="Technologist name"
-                                        readonly
-                                    >
+                                    <label class="form-label" for="reviewEnteredBy">Result Entered By</label>
+                                    <input type="text" id="reviewEnteredBy" class="form-control" placeholder="Technologist name" readonly>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="reviewSpecimenCode">
-                                        Specimen Code
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="reviewSpecimenCode"
-                                        class="form-control"
-                                        placeholder="Specimen code"
-                                        readonly
-                                    >
+                                    <label class="form-label" for="reviewSpecimenCode">Specimen Code</label>
+                                    <input type="text" id="reviewSpecimenCode" class="form-control" placeholder="Specimen code" readonly>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label"
-                                           for="reviewSubmittedDate">
-                                        Result Submission Date
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="reviewSubmittedDate"
-                                        class="form-control"
-                                        placeholder="Submission date"
-                                        readonly
-                                    >
+                                    <label class="form-label" for="reviewSubmittedDate">Result Submission Date</label>
+                                    <input type="text" id="reviewSubmittedDate" class="form-control" placeholder="Submission date" readonly>
                                 </div>
-
                             </div>
-
                         </div>
 
-                        <!-- Result Information -->
                         <div class="verification-form-section">
-
-                            <h3 class="verification-form-title">
-                                Submitted Laboratory Results
-                            </h3>
-
+                            <h3 class="verification-form-section-title">Submitted Laboratory Results</h3>
                             <div class="alert alert-warning verification-range-notice">
                                 <span>ⓘ</span>
-
-                                <p>
-                                    Verify results using the approved
-                                    laboratory procedures and configured
-                                    reference ranges. This interface does
-                                    not independently provide clinical
-                                    interpretation.
-                                </p>
+                                <p>Verify results using the approved laboratory procedures and configured reference ranges. This interface does not independently provide clinical interpretation.</p>
                             </div>
-
                             <div class="table-container">
-
                                 <table class="data-table">
-
                                     <thead>
                                         <tr>
                                             <th>Test Component</th>
@@ -572,112 +273,41 @@
                                             <th>Result Flag</th>
                                         </tr>
                                     </thead>
-
                                     <tbody id="reviewResultComponentsBody">
-
                                         <tr>
-                                            <td colspan="5">
-                                                No result details available.
-                                            </td>
+                                            <td colspan="5">No result details available.</td>
                                         </tr>
-
                                     </tbody>
-
                                 </table>
-
                             </div>
-
                         </div>
 
-                        <!-- Verifier Review Notes -->
                         <div class="verification-form-section">
-
-                            <h3 class="verification-form-title">
-                                Verification Review Notes
-                            </h3>
-
+                            <h3 class="verification-form-section-title">Verification Review Notes</h3>
                             <div class="form-group">
-
-                                <label class="form-label"
-                                       for="verificationRemarks">
-                                    Review Remarks
-                                </label>
-
-                                <textarea
-                                    id="verificationRemarks"
-                                    class="form-control"
-                                    rows="4"
-                                    placeholder="Enter verification observations or reasons for returning a result..."
-                                    disabled>
-                                </textarea>
-
+                                <label class="form-label" for="verificationRemarks">Review Remarks</label>
+                                <textarea id="verificationRemarks" class="form-control" rows="4" placeholder="Enter verification observations or reasons for returning a result..." disabled></textarea>
                             </div>
-
                         </div>
 
-                        <!-- Verification Actions -->
                         <div class="verification-actions">
-
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                id="clearVerificationButton">
-                                Clear Selection
-                            </button>
-
+                            <button type="button" class="btn btn-secondary" id="clearVerificationButton">Clear Selection</button>
                             <div class="verification-action-group">
-
-                                <button
-                                    type="button"
-                                    class="btn btn-danger"
-                                    id="returnResultButton"
-                                    disabled>
-                                    Return for Correction
-                                </button>
-
-                                <button
-                                    type="button"
-                                    class="btn btn-success"
-                                    id="verifyResultButton"
-                                    disabled>
-                                    Verify Result
-                                </button>
-
-                                <button
-                                    type="button"
-                                    class="btn btn-primary"
-                                    id="releaseResultButton"
-                                    disabled>
-                                    Release Result
-                                </button>
-
+                                <button type="button" class="btn btn-danger" id="returnResultButton" disabled>Return for Correction</button>
+                                <button type="button" class="btn btn-success" id="verifyResultButton" disabled>Verify Result</button>
+                                <button type="button" class="btn btn-primary" id="releaseResultButton" disabled>Release Result</button>
                             </div>
-
                         </div>
-
-                        <p class="verification-form-footnote">
-                            Verification and release actions will be
-                            enabled after backend authorization and
-                            audit trail implementation.
-                        </p>
-
+                        <p class="verification-form-footnote">Verification and release actions will be enabled after backend authorization and audit trail implementation.</p>
                     </article>
-
                 </section>
 
-                <!-- Page Footer -->
                 <footer class="verification-page-footer">
                     MediLink Laboratory Request and Results Management System
                 </footer>
-
             </section>
-
         </main>
-
     </div>
-
-    <!-- Result Verification JavaScript -->
     <script src="../js/pages/result-verification.js"></script>
-
 </body>
 </html>
