@@ -1,4 +1,3 @@
-
 const express = require('express');
 
 const {
@@ -6,7 +5,8 @@ const {
     getLaboratoryRequestsController,
     getLaboratoryRequestByIdController,
     updateDraftRequestController,
-    submitLaboratoryRequestController
+    submitLaboratoryRequestController,
+    updateTestStatus // <-- ADDED THIS
 } = require('./laboratory-request.controller');
 
 const {
@@ -102,6 +102,17 @@ router.post(
         'requesting_clinician'
     ),
     submitLaboratoryRequestController
+);
+
+// ==========================================
+// 6. UPDATE INDIVIDUAL TEST STATUS (WORKLIST)
+// ==========================================
+
+router.patch(
+    '/:requestId/tests/:testId/status',
+    requireAuth,
+    authorizeRoles('lab_admin', 'lab_technologist'),
+    updateTestStatus // <-- FIXED THIS
 );
 
 module.exports = router;

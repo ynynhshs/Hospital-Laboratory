@@ -7,6 +7,8 @@ const {
     submitLaboratoryRequest
 } = require('./laboratory-request.service');
 
+const LaboratoryRequest = require('./laboratory-request.model');
+
 // ==========================================
 // MEDILINK LABORATORY
 // LABORATORY REQUEST CONTROLLER
@@ -134,6 +136,61 @@ async function submitLaboratoryRequestController(req, res, next) {
     }
 }
 
+// Update the status of a specific test inside a request
+const updateTestStatus = async (req, res, next) => {
+    try {
+        const { requestId, testId } = req.params;
+        const { status } = req.body;
+
+        const request = await LaboratoryRequest.findById(requestId);
+        if (!request) {
+            return res.status(404).json({ success: false, message: 'Request not found.' });
+        }
+
+        // Find the specific test in the array
+        const testItem = request.tests.id(testId);
+        if (!testItem) {
+            return res.status(404).json({ success: false, message: 'Test not found in this request.' });
+        }
+
+        // Update test status
+        testItem.status = status;
+
+        // If starting processing, log the time
+        if (status === 'in_progress' && !request.startedAt) {
+            request.startedAt = new Date();
+            request.status = 'in_progress';
+            request.activities.push({
+                action: 'processing_started',
+                message: `Processing started for ${testItem.testSnapshot.testName}`,
+                performedBy: req.user.id
+            });
+        }
+
+        // Check if ALL tests are completed
+        const allCompleted = request.tests.every(t => t.status === 'completed');
+        if (allCompleted) {
+            request.status = 'completed';
+            request.completedAt = new Date();
+            request.activities.push({
+                action: 'completed',
+                message: 'All laboratory tests completed.',
+                performedBy: req.user.id
+            });
+        }
+
+        await request.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Test status updated.',
+            data: { laboratoryRequest: request }
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 // ==========================================
 // 5. EXPORT CONTROLLER FUNCTIONS
 // ==========================================
@@ -143,5 +200,6 @@ module.exports = {
     getLaboratoryRequestsController,
     getLaboratoryRequestByIdController,
     updateDraftRequestController,
-    submitLaboratoryRequestController
+    submitLaboratoryRequestController,
+    updateTestStatus
 };

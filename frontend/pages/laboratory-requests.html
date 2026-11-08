@@ -231,6 +231,62 @@
         </main>
     </div>
 
+    <!-- Create Request Modal -->
+    <div class="modal-overlay" id="createRequestModal" hidden>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Laboratory Request</h2>
+                <button type="button" class="btn-close" id="closeModalButton">✕</button>
+            </div>
+            <div class="modal-body">
+                <!-- Patient Search -->
+                <div class="form-group">
+                    <label>1. Search Patient (from MediAdmit)</label>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="modalPatientSearch" class="form-control" placeholder="Enter Patient ID or Name...">
+                        <button type="button" class="btn btn-secondary" id="modalSearchPatientBtn">Search</button>
+                    </div>
+                    <div id="modalPatientResults" class="patient-search-results" style="max-height: 150px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; border-radius: 4px;">
+                        <p style="color: #888;">Search to find a patient...</p>
+                    </div>
+                </div>
+
+                <!-- Selected Patient Display -->
+                <div class="form-group" id="selectedPatientDisplay" hidden style="background: #e0f2fe; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+                    <strong>Selected Patient:</strong> <span id="selectedPatientName"></span> (<span id="selectedPatientCode"></span>)
+                </div>
+
+                <!-- Priority -->
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>2. Priority</label>
+                    <select id="modalPriority" class="form-control">
+                        <option value="routine">Routine</option>
+                        <option value="urgent">Urgent</option>
+                        <option value="stat">STAT</option>
+                    </select>
+                </div>
+
+                <!-- Test Selection -->
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>3. Select Laboratory Tests</label>
+                    <div id="modalTestList" style="max-height: 150px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 4px; background: #fff;">
+                        <p style="color: #888; margin: 0;">Loading available tests...</p>
+                    </div>
+                </div>
+
+                <!-- Clinical Notes -->
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>4. Clinical Notes</label>
+                    <textarea id="modalNotes" class="form-control" rows="3" placeholder="Enter clinical notes here..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelModalButton">Cancel</button>
+                <button type="button" class="btn btn-primary" id="submitRequestBtn" disabled>Submit Request</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/api/api.js"></script>
     <script src="../js/auth/auth.js"></script>
     <script src="../js/pages/laboratory-requests.js"></script>

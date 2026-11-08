@@ -86,14 +86,13 @@
                 </div>
                 <div class="topbar-right">
                     <div class="topbar-user">
-                        <div class="user-avatar">U</div>
+                        <div class="user-avatar" id="userAvatar">U</div>
                         <div class="user-details">
-                            <p class="user-name">System User</p>
-                            <p class="user-role">Laboratory Personnel</p>
+                            <p class="user-name" id="userName">Loading...</p>
+                            <p class="user-role" id="userRole">Checking account...</p>
                         </div>
                     </div>
                     
-                    <!-- Theme Toggle -->
                     <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
                         <span class="theme-toggle-icon-wrapper" aria-hidden="true">
                             <span class="theme-toggle-sun">☀</span>
@@ -112,14 +111,6 @@
                         <p class="page-description">Record, receive, and monitor laboratory specimens throughout the testing workflow.</p>
                     </div>
                     <button type="button" class="btn btn-primary" id="registerSpecimenButton">+ Register Specimen</button>
-                </div>
-
-                <div class="alert alert-info specimen-notice">
-                    <span>ⓘ</span>
-                    <div>
-                        <strong>Specimen Management Setup</strong>
-                        <p>Specimen records and tracking activities will be connected to the database when the backend module is implemented.</p>
-                    </div>
                 </div>
 
                 <section class="content-section">
@@ -181,25 +172,10 @@
                                 <label for="specimenStatusFilter">Specimen Status</label>
                                 <select id="specimenStatusFilter" class="form-control">
                                     <option value="">All Statuses</option>
-                                    <option value="Pending Collection">Pending Collection</option>
                                     <option value="Collected">Collected</option>
                                     <option value="Received">Received</option>
                                     <option value="Accepted">Accepted</option>
                                     <option value="Rejected">Rejected</option>
-                                    <option value="Processing">Processing</option>
-                                    <option value="Completed">Completed</option>
-                                </select>
-                            </div>
-                            <div class="specimen-filter">
-                                <label for="specimenTypeFilter">Specimen Type</label>
-                                <select id="specimenTypeFilter" class="form-control">
-                                    <option value="">All Types</option>
-                                    <option value="Blood">Blood</option>
-                                    <option value="Urine">Urine</option>
-                                    <option value="Stool">Stool</option>
-                                    <option value="Sputum">Sputum</option>
-                                    <option value="Swab">Swab</option>
-                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                             <button type="button" class="btn btn-secondary" id="resetSpecimenFiltersButton">Reset Filters</button>
@@ -214,18 +190,17 @@
                                         <th>Patient</th>
                                         <th>Specimen Type</th>
                                         <th>Collection Date</th>
-                                        <th>Received Date</th>
                                         <th>Specimen Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="specimenTableBody">
                                     <tr>
-                                        <td colspan="8">
+                                        <td colspan="7">
                                             <div class="empty-state">
                                                 <div class="empty-state-icon">◉</div>
-                                                <h3 class="empty-state-title">No specimen records available</h3>
-                                                <p class="empty-state-description">Specimen records will appear here when specimens are registered in the system.</p>
+                                                <h3 class="empty-state-title">Loading specimen records...</h3>
+                                                <p class="empty-state-description">Retrieving data from the database.</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -234,7 +209,7 @@
                         </div>
 
                         <div class="specimen-table-footer">
-                            <p id="specimenRecordCount">No specimen records available.</p>
+                            <p id="specimenRecordCount">Loading...</p>
                         </div>
                     </article>
                 </section>
@@ -246,6 +221,51 @@
         </main>
     </div>
 
+    <!-- Register Specimen Modal -->
+    <div class="modal-overlay" id="specimenModal" hidden>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Register New Specimen</h2>
+                <button type="button" class="btn-close" id="closeSpecimenModalBtn">✕</button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="form-group">
+                    <label>1. Select Laboratory Request</label>
+                    <select id="modalRequestSelect" class="form-control">
+                        <option value="">Loading pending requests...</option>
+                    </select>
+                    <small style="color: #666; display: block; margin-top: 4px;">Only Submitted or Accepted requests appear here.</small>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>2. Specimen Type</label>
+                    <select id="modalSpecimenType" class="form-control">
+                        <option value="Blood">Blood</option>
+                        <option value="Urine">Urine</option>
+                        <option value="Stool">Stool</option>
+                        <option value="Sputum">Sputum</option>
+                        <option value="Swab">Swab</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>3. Notes (Optional)</label>
+                    <textarea id="modalSpecimenNotes" class="form-control" rows="2" placeholder="e.g. Patient was fasting..."></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelSpecimenModalBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="submitSpecimenBtn">Save Specimen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/api/api.js"></script>
+    <script src="../js/auth/auth.js"></script>
     <script src="../js/pages/specimen-management.js"></script>
 </body>
 </html>

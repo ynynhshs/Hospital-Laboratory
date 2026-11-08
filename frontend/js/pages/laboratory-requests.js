@@ -695,16 +695,171 @@
         });
     }
 
-    // ==========================================
-    // 12. CREATE REQUEST BUTTON
+        // ==========================================
+    // 12. CREATE REQUEST MODAL LOGIC
     // ==========================================
 
-    if (createRequestButton) {
-        createRequestButton.addEventListener('click', () => {
-            window.alert(
-                'The laboratory request creation form is not yet connected. ' +
-                'The backend draft creation API is already available.'
-            );
+    const createRequestModal = document.getElementById('createRequestModal');
+    const closeModalButton = document.getElementById('closeModalButton');
+    const cancelModalButton = document.getElementById('cancelModalButton');
+    const modalSearchPatientBtn = document.getElementById('modalSearchPatientBtn');
+    const modalPatientSearch = document.getElementById('modalPatientSearch');
+    const modalPatientResults = document.getElementById('modalPatientResults');
+    const selectedPatientDisplay = document.getElementById('selectedPatientDisplay');
+    const selectedPatientName = document.getElementById('selectedPatientName');
+    const selectedPatientCode = document.getElementById('selectedPatientCode');
+    const submitRequestBtn = document.getElementById('submitRequestBtn');
+    
+    let selectedPatientId = null;
+
+        if (createRequestButton && createRequestModal) {
+        createRequestButton.addEventListener('click', async () => {
+            createRequestModal.hidden = false;
+            
+            // Reset modal state
+            modalPatientSearch.value = '';
+            modalPatientResults.innerHTML = '<p style="color: #888;">Search to find a patient...</p>';
+            selectedPatientDisplay.hidden = true;
+            submitRequestBtn.disabled = true;
+            selectedPatientId = null;
+            
+            // NEW: Load the test catalog
+            const testListContainer = document.getElementById('modalTestList');
+            testListContainer.innerHTML = '<p style="color: #888; margin: 0;">Loading available tests...</p>';
+
+            try {
+                // Fetch tests from the Test Catalog API
+                const testResponse = await window.MediLinkAPI.request('/test-catalog?limit=100', { method: 'GET' });
+                const tests = testResponse.data.tests || [];
+
+                if (tests.length === 0) {
+                    testListContainer.innerHTML = '<p style="color: red; margin: 0;">No active tests found in the catalog. Please add tests first.</p>';
+                    return;
+                }
+
+                testListContainer.innerHTML = ''; // Clear loading text
+                
+                tests.forEach(test => {
+                    const label = document.createElement('label');
+                    label.style.display = 'flex';
+                    label.style.alignItems = 'center';
+                    label.style.gap = '8px';
+                    label.style.marginBottom = '8px';
+                    label.style.cursor = 'pointer';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = test._id;
+                    checkbox.className = 'modal-test-checkbox';
+
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(`${test.code} - ${test.name}`));
+                    
+                    testListContainer.appendChild(label);
+                });
+
+            } catch (error) {
+                testListContainer.innerHTML = `<p style="color: red; margin: 0;">Failed to load tests: ${error.message}</p>`;
+            }
+        });
+    }
+
+    function closeRequestModal() {
+        if (createRequestModal) createRequestModal.hidden = true;
+    }
+
+    if (closeModalButton) closeModalButton.addEventListener('click', closeRequestModal);
+    if (cancelModalButton) cancelModalButton.addEventListener('click', closeRequestModal);
+
+    if (modalSearchPatientBtn) {
+        modalSearchPatientBtn.addEventListener('click', async () => {
+            const searchTerm = modalPatientSearch.value.trim();
+            if (!searchTerm) return;
+
+            modalPatientResults.innerHTML = '<p>Searching...</p>';
+
+            try {
+                // This calls your existing /api/v1/patients endpoint!
+                const response = await window.MediLinkAPI.request(
+                    `/patients?search=${encodeURIComponent(searchTerm)}&limit=5`,
+                    { method: 'GET' }
+                );
+
+                const patients = response.data.patients || [];
+                modalPatientResults.innerHTML = '';
+
+                if (patients.length === 0) {
+                    modalPatientResults.innerHTML = '<p>No patients found in MediAdmit.</p>';
+                    return;
+                }
+
+                patients.forEach(patient => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'btn btn-outline';
+                    btn.style.display = 'block';
+                    btn.style.width = '100%';
+                    btn.style.marginBottom = '5px';
+                    btn.style.textAlign = 'left';
+                    btn.textContent = `${patient.patientCode} - ${patient.firstName} ${patient.lastName}`;
+                    
+                    btn.addEventListener('click', () => {
+                        selectedPatientId = patient._id;
+                        selectedPatientName.textContent = `${patient.firstName} ${patient.lastName}`;
+                        selectedPatientCode.textContent = patient.patientCode;
+                        selectedPatientDisplay.hidden = false;
+                        submitRequestBtn.disabled = false;
+                    });
+
+                    modalPatientResults.appendChild(btn);
+                });
+
+            } catch (error) {
+                modalPatientResults.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        });
+    }
+
+        if (submitRequestBtn) {
+        submitRequestBtn.addEventListener('click', async () => {
+            if (!selectedPatientId) return;
+
+            // Gather selected tests
+            const checkboxes = document.querySelectorAll('.modal-test-checkbox:checked');
+            const selectedTests = Array.from(checkboxes).map(cb => cb.value);
+
+            if (selectedTests.length === 0) {
+                window.alert('Please select at least one laboratory test.');
+                return;
+            }
+
+            submitRequestBtn.textContent = 'Submitting...';
+            submitRequestBtn.disabled = true;
+
+            try {
+                // We are now passing the array of selected test IDs!
+                const payload = {
+                    patientId: selectedPatientId,
+                    priority: document.getElementById('modalPriority').value,
+                    clinicalNotes: document.getElementById('modalNotes').value,
+                    tests: selectedTests 
+                };
+
+                await window.MediLinkAPI.request('/lab-requests', {
+                    method: 'POST',
+                    body: payload
+                });
+
+                window.alert('Laboratory request created successfully!');
+                closeRequestModal();
+                loadRequests(1); // Reload the table
+                refreshSummaryCards();
+
+            } catch (error) {
+                window.alert('Failed to create request: ' + error.message);
+                submitRequestBtn.textContent = 'Submit Request';
+                submitRequestBtn.disabled = false;
+            }
         });
     }
 

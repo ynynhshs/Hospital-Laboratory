@@ -1,285 +1,249 @@
-
 // ==========================================
 // MEDILINK LABORATORY
-// SPECIMEN MANAGEMENT JAVASCRIPT
+// SPECIMEN MANAGEMENT JAVASCRIPT (API VERSION)
 // ==========================================
 
-// 1. Get Page Elements
+(function () {
+    'use strict';
 
-const appLayout = document.getElementById('appLayout');
-const sidebarToggle = document.getElementById('sidebarToggle');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
-const logoutButton = document.getElementById('logoutButton');
+    // 1. Elements
+    const appLayout = document.getElementById('appLayout');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const logoutButton = document.getElementById('logoutButton');
+    const userNameElement = document.getElementById('userName');
+    const userRoleElement = document.getElementById('userRole');
+    const userAvatarElement = document.getElementById('userAvatar');
 
-const specimenSearch = document.getElementById('specimenSearch');
-const specimenStatusFilter = document.getElementById('specimenStatusFilter');
-const specimenTypeFilter = document.getElementById('specimenTypeFilter');
+    const registerSpecimenButton = document.getElementById('registerSpecimenButton');
+    const specimenSearch = document.getElementById('specimenSearch');
+    const specimenStatusFilter = document.getElementById('specimenStatusFilter');
+    const resetSpecimenFiltersButton = document.getElementById('resetSpecimenFiltersButton');
+    const tableBody = document.getElementById('specimenTableBody');
+    const recordCount = document.getElementById('specimenRecordCount');
 
-const resetSpecimenFiltersButton = document.getElementById(
-    'resetSpecimenFiltersButton'
-);
+    // Modal Elements
+    const specimenModal = document.getElementById('specimenModal');
+    const closeSpecimenModalBtn = document.getElementById('closeSpecimenModalBtn');
+    const cancelSpecimenModalBtn = document.getElementById('cancelSpecimenModalBtn');
+    const modalRequestSelect = document.getElementById('modalRequestSelect');
+    const modalSpecimenType = document.getElementById('modalSpecimenType');
+    const modalSpecimenNotes = document.getElementById('modalSpecimenNotes');
+    const submitSpecimenBtn = document.getElementById('submitSpecimenBtn');
 
-const registerSpecimenButton = document.getElementById(
-    'registerSpecimenButton'
-);
+    let allSpecimens = []; // Store for client-side filtering
 
-const tableBody = document.getElementById('specimenTableBody');
-const recordCount = document.getElementById('specimenRecordCount');
-
-// 2. Get Specimen Records
-
-function getSpecimenRows() {
-    if (!tableBody) return [];
-
-    return Array.from(
-        tableBody.querySelectorAll('tr[data-specimen-row="true"]')
-    );
-}
-
-// 3. Display No Matching Specimens Message
-
-function updateEmptySearchMessage(shouldShow) {
-    if (!tableBody) return;
-
-    let emptyRow = tableBody.querySelector('[data-filter-empty]');
-
-    if (shouldShow && !emptyRow) {
-        emptyRow = document.createElement('tr');
-        emptyRow.setAttribute('data-filter-empty', 'true');
-
-        const cell = document.createElement('td');
-        cell.colSpan = 8;
-
-        const message = document.createElement('div');
-        message.className = 'empty-state';
-
-        const heading = document.createElement('h3');
-        heading.className = 'empty-state-title';
-        heading.textContent = 'No matching specimen records';
-
-        const description = document.createElement('p');
-        description.className = 'empty-state-description';
-        description.textContent =
-            'Try changing your search or filter selections.';
-
-        message.append(heading, description);
-        cell.appendChild(message);
-        emptyRow.appendChild(cell);
-        tableBody.appendChild(emptyRow);
+    // 2. Fetch User Info
+    function displayUserInformation(user) {
+        const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.username;
+        userNameElement.textContent = fullName;
+        userAvatarElement.textContent = fullName.charAt(0).toUpperCase();
+        
+        const roleNames = {
+            lab_admin: 'Laboratory Administrator',
+            lab_receptionist: 'Laboratory Receptionist',
+            lab_technologist: 'Laboratory Technologist',
+            result_verifier: 'Result Verifier',
+            requesting_clinician: 'Requesting Clinician'
+        };
+        userRoleElement.textContent = roleNames[user.role] || 'Laboratory Personnel';
     }
 
-    if (!shouldShow && emptyRow) {
-        emptyRow.remove();
+    // 3. Load Specimens from API
+    async function loadSpecimens() {
+        try {
+            const response = await window.MediLinkAPI.request('/specimens', { method: 'GET' });
+            allSpecimens = response.data.specimens || [];
+            renderSpecimens();
+            updateSummaryCounts();
+        } catch (error) {
+            console.error('Failed to load specimens:', error);
+            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: red;">Error: ${error.message}</td></tr>`;
+        }
     }
-}
 
-// 4. Filter Specimen Records
+    // 4. Render Specimens Table
+    function renderSpecimens() {
+        tableBody.replaceChildren();
+        
+        const searchTerm = specimenSearch.value.toLowerCase();
+        const statusFilter = specimenStatusFilter.value.toLowerCase();
 
-function filterSpecimens() {
-    if (!tableBody) return;
+        const filtered = allSpecimens.filter(spc => {
+            const requestNo = spc.requestId?.requestNumber || '';
+            const patientName = spc.requestId?.patient ? `${spc.requestId.patient.firstName} ${spc.requestId.patient.lastName}` : '';
+            
+            const matchesSearch = spc.specimenCode.toLowerCase().includes(searchTerm) || 
+                                  requestNo.toLowerCase().includes(searchTerm) || 
+                                  patientName.toLowerCase().includes(searchTerm);
+            
+            const matchesStatus = !statusFilter || spc.status.toLowerCase().includes(statusFilter);
+            
+            return matchesSearch && matchesStatus;
+        });
 
-    const rows = getSpecimenRows();
-
-    // Keep the original empty state when no records exist.
-    if (rows.length === 0) {
-        updateEmptySearchMessage(false);
-
-        if (recordCount) {
-            recordCount.textContent =
-                'No specimen records available.';
+        if (filtered.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">◉</div>
+                            <h3 class="empty-state-title">No matching specimen records</h3>
+                            <p class="empty-state-description">Try changing your search or filter selections.</p>
+                        </div>
+                    </td>
+                </tr>`;
+            recordCount.textContent = 'No matching specimen records.';
+            return;
         }
 
-        return;
+        filtered.forEach(spc => {
+            const row = document.createElement('tr');
+            
+            // Safely handle populated request and patient
+            const requestNo = spc.requestId ? spc.requestId.requestNumber : 'N/A';
+            const patientName = spc.requestId && spc.requestId.patient 
+                ? `${spc.requestId.patient.firstName} ${spc.requestId.patient.lastName}` 
+                : 'Unknown Patient';
+            
+            const dateCollected = spc.collectedAt ? new Date(spc.collectedAt).toLocaleDateString() : 'N/A';
+
+            row.innerHTML = `
+                <td>${spc.specimenCode}</td>
+                <td>${requestNo}</td>
+                <td>${patientName}</td>
+                <td>${spc.specimenType}</td>
+                <td>${dateCollected}</td>
+                <td><span class="badge badge-${spc.status === 'collected' ? 'info' : 'success'}">${spc.status.toUpperCase()}</span></td>
+                <td><button class="btn btn-secondary btn-small">View</button></td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        recordCount.textContent = `Showing ${filtered.length} of ${allSpecimens.length} specimen records.`;
     }
 
-    const searchValue = specimenSearch
-        ? specimenSearch.value.trim().toLowerCase()
-        : '';
-
-    const selectedStatus = specimenStatusFilter
-        ? specimenStatusFilter.value.trim().toLowerCase()
-        : '';
-
-    const selectedType = specimenTypeFilter
-        ? specimenTypeFilter.value.trim().toLowerCase()
-        : '';
-
-    let visibleCount = 0;
-
-    rows.forEach((row) => {
-        const cells = row.querySelectorAll('td');
-
-        // Expected column positions:
-        // 0 = Specimen Code
-        // 1 = Request Number
-        // 2 = Patient
-        // 3 = Specimen Type
-        // 4 = Collection Date
-        // 5 = Received Date
-        // 6 = Specimen Status
-        // 7 = Actions
-
-        const specimenCode = cells[0].textContent.toLowerCase();
-        const requestNumber = cells[1].textContent.toLowerCase();
-        const patientName = cells[2].textContent.toLowerCase();
-        const specimenType = cells[3].textContent.toLowerCase().trim();
-        const specimenStatus = cells[6].textContent.toLowerCase().trim();
-
-        const matchesSearch =
-            specimenCode.includes(searchValue) ||
-            requestNumber.includes(searchValue) ||
-            patientName.includes(searchValue);
-
-        const matchesStatus =
-            !selectedStatus ||
-            specimenStatus.includes(selectedStatus);
-
-        const matchesType =
-            !selectedType ||
-            specimenType.includes(selectedType);
-
-        const isVisible =
-            matchesSearch &&
-            matchesStatus &&
-            matchesType;
-
-        row.hidden = !isVisible;
-
-        if (isVisible) {
-            visibleCount++;
-        }
-    });
-
-    // Show a message if no records match.
-    updateEmptySearchMessage(visibleCount === 0);
-
-    // Update visible record count.
-    if (recordCount) {
-        recordCount.textContent =
-            `Showing ${visibleCount} of ${rows.length} specimen records.`;
+    // 5. Update Summary Cards
+    function updateSummaryCounts() {
+        document.getElementById('totalSpecimensCount').textContent = allSpecimens.length;
+        document.getElementById('pendingCollectionCount').textContent = allSpecimens.filter(s => s.status === 'pending').length;
+        document.getElementById('receivedSpecimensCount').textContent = allSpecimens.filter(s => s.status === 'received').length;
+        document.getElementById('acceptedSpecimensCount').textContent = allSpecimens.filter(s => s.status === 'accepted' || s.status === 'collected').length;
+        document.getElementById('rejectedSpecimensCount').textContent = allSpecimens.filter(s => s.status === 'rejected').length;
     }
-}
 
-// 5. Search Specimens
+    // 6. Modal Logic - Fetch Pending Requests
+    async function openModal() {
+        specimenModal.hidden = false;
+        modalRequestSelect.innerHTML = '<option value="">Loading requests...</option>';
+        
+        try {
+            // Fetch requests that are submitted or accepted
+            const response = await window.MediLinkAPI.request('/lab-requests?status=submitted&limit=100', { method: 'GET' });
+            const requests = response.data.requests || [];
 
-if (specimenSearch) {
-    specimenSearch.addEventListener('input', filterSpecimens);
-}
+            if (requests.length === 0) {
+                modalRequestSelect.innerHTML = '<option value="">No submitted requests found</option>';
+                return;
+            }
 
-// 6. Filter by Specimen Status
-
-if (specimenStatusFilter) {
-    specimenStatusFilter.addEventListener(
-        'change',
-        filterSpecimens
-    );
-}
-
-// 7. Filter by Specimen Type
-
-if (specimenTypeFilter) {
-    specimenTypeFilter.addEventListener(
-        'change',
-        filterSpecimens
-    );
-}
-
-// 8. Reset All Specimen Filters
-
-if (resetSpecimenFiltersButton) {
-    resetSpecimenFiltersButton.addEventListener('click', () => {
-        if (specimenSearch) specimenSearch.value = '';
-        if (specimenStatusFilter) specimenStatusFilter.value = '';
-        if (specimenTypeFilter) specimenTypeFilter.value = '';
-
-        filterSpecimens();
-    });
-}
-
-// 9. Register Specimen Button
-
-if (registerSpecimenButton) {
-    registerSpecimenButton.addEventListener('click', () => {
-        window.alert(
-            'Specimen registration will be enabled when the Specimen Management backend module is implemented.'
-        );
-    });
-}
-
-// 10. Open Mobile Sidebar
-
-function openSidebar() {
-    if (!appLayout || !sidebarToggle) return;
-
-    appLayout.classList.add('sidebar-open');
-
-    sidebarToggle.setAttribute('aria-expanded', 'true');
-    sidebarToggle.setAttribute('aria-label', 'Close navigation');
-}
-
-// 11. Close Mobile Sidebar
-
-function closeSidebar() {
-    if (!appLayout || !sidebarToggle) return;
-
-    appLayout.classList.remove('sidebar-open');
-
-    sidebarToggle.setAttribute('aria-expanded', 'false');
-    sidebarToggle.setAttribute('aria-label', 'Open navigation');
-}
-
-// 12. Toggle Sidebar
-
-if (sidebarToggle && appLayout) {
-    sidebarToggle.addEventListener('click', () => {
-        const isOpen = appLayout.classList.contains('sidebar-open');
-
-        if (isOpen) {
-            closeSidebar();
-        } else {
-            openSidebar();
+            modalRequestSelect.innerHTML = '<option value="">-- Select Request --</option>';
+            requests.forEach(req => {
+                const patientName = req.patient ? `${req.patient.firstName} ${req.patient.lastName}` : 'Unknown';
+                const option = document.createElement('option');
+                option.value = req._id;
+                option.textContent = `${req.requestNumber} - ${patientName}`;
+                modalRequestSelect.appendChild(option);
+            });
+        } catch (error) {
+            modalRequestSelect.innerHTML = '<option value="">Error loading requests</option>';
         }
-    });
-}
-
-// 13. Close Sidebar Using Overlay
-
-if (sidebarOverlay) {
-    sidebarOverlay.addEventListener('click', closeSidebar);
-}
-
-// 14. Close Sidebar Using Escape Key
-
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-        closeSidebar();
     }
-});
 
-// 15. Close Sidebar After Selecting Navigation
+    // 7. Submit New Specimen
+    async function submitSpecimen() {
+        const requestId = modalRequestSelect.value;
+        const specimenType = modalSpecimenType.value;
+        const notes = modalSpecimenNotes.value;
 
-const navigationLinks = document.querySelectorAll(
-    '.sidebar-nav .nav-link'
-);
-
-navigationLinks.forEach((link) => {
-    link.addEventListener('click', closeSidebar);
-});
-
-// 16. Temporary Logout Navigation
-
-if (logoutButton) {
-    logoutButton.addEventListener('click', () => {
-        const confirmLogout = window.confirm(
-            'Return to the MediLink login page? Actual account logout will be enabled during Phase 4.'
-        );
-
-        if (confirmLogout) {
-            window.location.href = 'login.html';
+        if (!requestId) {
+            alert('Please select a laboratory request.');
+            return;
         }
-    });
-}
 
-// 17. Initial Specimen Display
+        submitSpecimenBtn.disabled = true;
+        submitSpecimenBtn.textContent = 'Saving...';
 
-filterSpecimens();
+        try {
+            await window.MediLinkAPI.request('/specimens', {
+                method: 'POST',
+                body: {
+                    requestId,
+                    specimenType,
+                    notes
+                }
+            });
+            
+            alert('Specimen registered successfully!');
+            specimenModal.hidden = true;
+            modalRequestSelect.value = '';
+            modalSpecimenNotes.value = '';
+            
+            // Force a fresh reload of the table
+            await loadSpecimens(); 
+
+        } catch (error) {
+            alert('Failed to save specimen: ' + error.message);
+        } finally {
+            submitSpecimenBtn.disabled = false;
+            submitSpecimenBtn.textContent = 'Save Specimen';
+        }
+    }
+
+    // 8. Event Listeners
+    if (registerSpecimenButton) registerSpecimenButton.addEventListener('click', openModal);
+    if (closeSpecimenModalBtn) closeSpecimenModalBtn.addEventListener('click', () => specimenModal.hidden = true);
+    if (cancelSpecimenModalBtn) cancelSpecimenModalBtn.addEventListener('click', () => specimenModal.hidden = true);
+    if (submitSpecimenBtn) submitSpecimenBtn.addEventListener('click', submitSpecimen);
+
+    if (specimenSearch) specimenSearch.addEventListener('input', renderSpecimens);
+    if (specimenStatusFilter) specimenStatusFilter.addEventListener('change', renderSpecimens);
+    
+    if (resetSpecimenFiltersButton) {
+        resetSpecimenFiltersButton.addEventListener('click', () => {
+            specimenSearch.value = '';
+            specimenStatusFilter.value = '';
+            renderSpecimens();
+        });
+    }
+
+    // Sidebar & Logout (Standard logic)
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            appLayout.classList.toggle('sidebar-open');
+        });
+    }
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', () => appLayout.classList.remove('sidebar-open'));
+    
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+            if (confirm('Log out?')) {
+                await window.MediLinkAuth.logout();
+                window.location.replace('login.html');
+            }
+        });
+    }
+
+    // 9. Initialize
+    async function init() {
+        try {
+            const user = await window.MediLinkAuth.getCurrentUser();
+            displayUserInformation(user);
+            await loadSpecimens();
+        } catch (error) {
+            if (error.status === 401) window.location.replace('login.html');
+        }
+    }
+    init();
+
+})();

@@ -11,6 +11,8 @@ const patientRoutes = require('./modules/patients/patient.routes');
 const testCatalogRoutes = require('./modules/test-catalog/test-catalog.routes');
 const labRequestRoutes = require('./modules/lab-requests/laboratory-request.routes');
 const { requireAuth } = require('./middleware/auth.middleware');
+const specimenRoutes = require('./modules/specimens/specimen.routes');
+const resultRoutes = require('./modules/results/result.routes');
 const app = express();
 
 // Trust Render's reverse proxy in production.
@@ -56,6 +58,8 @@ app.use('/api/v1/auth', authRoutes);
 // Register patient API routes.
 app.use('/api/v1/patients', patientRoutes);
 
+app.use('/api/v1/results', resultRoutes);
+
 
 
 // Register laboratory test catalog API routes.
@@ -65,6 +69,7 @@ app.use('/api/v1/test-catalog', testCatalogRoutes);
 // Register laboratory request API routes.
 app.use('/api/v1/lab-requests', labRequestRoutes);
 
+app.use('/api/v1/specimens', specimenRoutes);
 
 // Initial API health-check endpoint.
 app.get('/api/v1/health', (req, res) => {

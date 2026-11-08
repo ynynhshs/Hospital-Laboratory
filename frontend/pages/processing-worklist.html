@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Processing Worklist | MediLink</title>
-
-    <!-- Load theme early -->
     <script src="../js/theme.js"></script>
-
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/components.css">
@@ -86,21 +83,18 @@
                 </div>
                 <div class="topbar-right">
                     <div class="topbar-user">
-                        <div class="user-avatar">U</div>
+                        <div class="user-avatar" id="userAvatar">U</div>
                         <div class="user-details">
-                            <p class="user-name">System User</p>
-                            <p class="user-role">Laboratory Technologist</p>
+                            <p class="user-name" id="userName">Loading...</p>
+                            <p class="user-role" id="userRole">Checking account...</p>
                         </div>
                     </div>
-
-                    <!-- Theme Toggle -->
                     <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
                         <span class="theme-toggle-icon-wrapper" aria-hidden="true">
                             <span class="theme-toggle-sun">☀</span>
                             <span class="theme-toggle-moon">☾</span>
                         </span>
                     </button>
-
                     <button type="button" class="btn btn-outline btn-small" id="logoutButton">Logout</button>
                 </div>
             </header>
@@ -114,21 +108,13 @@
                     <button type="button" class="btn btn-primary" id="refreshWorklistButton">↻ Refresh Worklist</button>
                 </div>
 
-                <div class="alert alert-info processing-notice">
-                    <span>ⓘ</span>
-                    <div>
-                        <strong>Processing Worklist Setup</strong>
-                        <p>Processing records will be loaded from the database when the Laboratory Processing backend module is implemented.</p>
-                    </div>
-                </div>
-
                 <section class="content-section">
                     <h2 class="processing-section-title">Processing Overview</h2>
                     <div class="processing-summary-grid">
                         <article class="card processing-summary-card">
                             <div class="processing-summary-icon">▤</div>
                             <div>
-                                <p class="summary-label">Total Processing Records</p>
+                                <p class="summary-label">Total Tests</p>
                                 <h2 class="summary-value" id="totalProcessingCount">—</h2>
                             </div>
                         </article>
@@ -153,13 +139,6 @@
                                 <h2 class="summary-value" id="completedProcessingCount">—</h2>
                             </div>
                         </article>
-                        <article class="card processing-summary-card">
-                            <div class="processing-summary-icon processing-hold">!</div>
-                            <div>
-                                <p class="summary-label">On Hold</p>
-                                <h2 class="summary-value" id="onHoldProcessingCount">—</h2>
-                            </div>
-                        </article>
                     </div>
                 </section>
 
@@ -175,7 +154,7 @@
                         <div class="processing-toolbar">
                             <div class="processing-search">
                                 <label for="processingSearch">Search Processing Records</label>
-                                <input type="search" id="processingSearch" class="form-control" placeholder="Search request, patient, test, or specimen...">
+                                <input type="search" id="processingSearch" class="form-control" placeholder="Search request, patient, or test...">
                             </div>
                             <div class="processing-filter">
                                 <label for="processingStatusFilter">Processing Status</label>
@@ -184,16 +163,6 @@
                                     <option value="Pending">Pending</option>
                                     <option value="In Progress">In Progress</option>
                                     <option value="Completed">Completed</option>
-                                    <option value="On Hold">On Hold</option>
-                                </select>
-                            </div>
-                            <div class="processing-filter">
-                                <label for="processingPriorityFilter">Request Priority</label>
-                                <select id="processingPriorityFilter" class="form-control">
-                                    <option value="">All Priorities</option>
-                                    <option value="Routine">Routine</option>
-                                    <option value="Urgent">Urgent</option>
-                                    <option value="STAT">STAT</option>
                                 </select>
                             </div>
                             <button type="button" class="btn btn-secondary" id="resetProcessingFiltersButton">Reset Filters</button>
@@ -207,8 +176,6 @@
                                         <th>Patient</th>
                                         <th>Laboratory Test</th>
                                         <th>Specimen Code</th>
-                                        <th>Assigned Personnel</th>
-                                        <th>Started At</th>
                                         <th>Priority</th>
                                         <th>Processing Status</th>
                                         <th>Actions</th>
@@ -216,11 +183,11 @@
                                 </thead>
                                 <tbody id="processingTableBody">
                                     <tr>
-                                        <td colspan="9">
+                                        <td colspan="7">
                                             <div class="empty-state">
                                                 <div class="empty-state-icon">⚙</div>
-                                                <h3 class="empty-state-title">No processing records available</h3>
-                                                <p class="empty-state-description">Accepted specimens ready for laboratory processing will appear here.</p>
+                                                <h3 class="empty-state-title">Loading processing records...</h3>
+                                                <p class="empty-state-description">Fetching data from the database.</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -229,7 +196,7 @@
                         </div>
 
                         <div class="processing-table-footer">
-                            <p id="processingRecordCount">No processing records available.</p>
+                            <p id="processingRecordCount">Loading...</p>
                         </div>
                     </article>
                 </section>
@@ -241,6 +208,34 @@
         </main>
     </div>
 
+    <!-- Update Status Modal -->
+    <div class="modal-overlay" id="statusModal" hidden>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Update Test Status</h2>
+                <button type="button" class="btn-close" id="closeStatusModalBtn">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 15px; color: #333;">Update the processing status for <strong id="modalTestName"></strong>.</p>
+                <div class="form-group">
+                    <label>New Status</label>
+                    <select id="modalStatusSelect" class="form-control">
+                        <option value="pending">Pending</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelStatusModalBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveStatusBtn">Update Status</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/api/api.js"></script>
+    <script src="../js/auth/auth.js"></script>
     <script src="../js/pages/processing-worklist.js"></script>
 </body>
 </html>

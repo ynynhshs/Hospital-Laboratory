@@ -584,17 +584,14 @@ function canRegisterPatients() {
     // 12. REGISTRATION FORM VISIBILITY
     // ==========================================
 
-    function configureRegistrationAccess(user) {
-        const authorizedRoles = [
-            'lab_admin',
-            'lab_receptionist'
-        ];
-
-        const canRegister = authorizedRoles.includes(user.role);
-
-        addPatientButton.hidden = !canRegister;
-
-        if (!canRegister) {
+        function configureRegistrationAccess(user) {
+        // Patient registration is handled by the main MediAdmit subsystem.
+        // The Laboratory subsystem only views and searches patients.
+        if (addPatientButton) {
+            addPatientButton.hidden = true;
+        }
+        
+        if (registrationSection) {
             registrationSection.hidden = true;
         }
     }
