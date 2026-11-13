@@ -13,6 +13,7 @@ const labRequestRoutes = require('./modules/lab-requests/laboratory-request.rout
 const { requireAuth } = require('./middleware/auth.middleware');
 const specimenRoutes = require('./modules/specimens/specimen.routes');
 const resultRoutes = require('./modules/results/result.routes');
+const auditLogRoutes = require('./modules/audit-logs/audit-log.routes');
 const app = express();
 
 // Trust Render's reverse proxy in production.
@@ -59,6 +60,8 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/patients', patientRoutes);
 
 app.use('/api/v1/results', resultRoutes);
+
+app.use('/api/v1/audit-logs', auditLogRoutes);
 
 
 

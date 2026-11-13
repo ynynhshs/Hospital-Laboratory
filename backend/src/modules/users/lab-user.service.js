@@ -1,4 +1,4 @@
-const LabUser = require('./lab-user.model');
+const User = require('../core/user.model');
 const { hashPassword } = require('../../shared/utils/password');
 
 const ALLOWED_ROLES = [
@@ -37,7 +37,7 @@ async function createUser(userData) {
     }
 
     // Prevent duplicate usernames and email addresses.
-    const existingUser = await LabUser.findOne({
+    const existingUser = await User.findOne({
         $or: [
             { username: username.trim().toLowerCase() },
             { email: email.trim().toLowerCase() }
@@ -52,7 +52,7 @@ async function createUser(userData) {
     const passwordHash = await hashPassword(password);
 
     // Create the account as inactive by default.
-    const newUser = new LabUser({
+    const newUser = new User({
     username,
     email,
     passwordHash,

@@ -7,5 +7,6 @@ const { requireAuth, authorizeRoles } = require('../../middleware/auth.middlewar
 router.post('/', requireAuth, authorizeRoles('lab_admin', 'lab_technologist'), resultController.createResult);
 router.get('/', requireAuth, authorizeRoles('lab_admin', 'lab_technologist', 'result_verifier'), resultController.getAllResults);
 router.get('/awaiting', requireAuth, authorizeRoles('lab_admin', 'lab_technologist'), resultController.getAwaitingResults);
+router.patch('/:resultId/verify', requireAuth, authorizeRoles('lab_admin', 'result_verifier'), resultController.verifyResult);
 
 module.exports = router;

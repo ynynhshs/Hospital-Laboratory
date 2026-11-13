@@ -129,10 +129,6 @@
                         <form id="patientRegistrationForm">
                             <div class="patient-form-grid">
                                 <div class="form-group">
-                                    <label class="form-label" for="patientCode">Patient Code *</label>
-                                    <input type="text" id="patientCode" name="patientCode" class="form-control" maxlength="30" placeholder="Enter patient code" required>
-                                </div>
-                                <div class="form-group">
                                     <label class="form-label" for="firstName">First Name *</label>
                                     <input type="text" id="firstName" name="firstName" class="form-control" maxlength="60" placeholder="Enter first name" required>
                                 </div>
@@ -149,22 +145,20 @@
                                     <input type="text" id="suffix" name="suffix" class="form-control" maxlength="15" placeholder="e.g. Jr., Sr., III">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="dateOfBirth">Date of Birth *</label>
-                                    <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" required>
+                                    <label class="form-label" for="birthDate">Date of Birth *</label>
+                                    <input type="date" id="birthDate" name="birthDate" class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="sex">Sex *</label>
                                     <select id="sex" name="sex" class="form-control" required>
                                         <option value="">Select sex</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="other">Other</option>
-                                        <option value="unknown">Unknown</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="contactNumber">Contact Number</label>
-                                    <input type="tel" id="contactNumber" name="contactNumber" class="form-control" maxlength="25" placeholder="Enter contact number">
+                                    <label class="form-label" for="contactNo">Contact Number</label>
+                                    <input type="tel" id="contactNo" name="contactNo" class="form-control" maxlength="25" placeholder="Enter contact number">
                                 </div>
                             </div>
                             <div class="alert patient-form-message" id="patientFormMessage" role="status" aria-live="polite" hidden></div>
@@ -187,7 +181,7 @@
                         <form class="patients-toolbar" id="patientSearchForm">
                             <div class="patients-search">
                                 <label for="patientSearch">Search Patient</label>
-                                <input type="search" id="patientSearch" name="search" class="form-control" placeholder="Search by patient code, name, or contact number..." required>
+                                <input type="search" id="patientSearch" name="search" class="form-control" placeholder="Search by patient ID, name, or contact number..." required>
                             </div>
                             <button type="submit" class="btn btn-primary" id="searchPatientsButton">Search</button>
                             <button type="button" class="btn btn-secondary" id="resetPatientSearchButton">Reset</button>
@@ -197,7 +191,7 @@
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Patient Code</th>
+                                        <th>Patient ID</th>
                                         <th>Full Name</th>
                                         <th>Date of Birth</th>
                                         <th>Sex</th>
@@ -211,7 +205,7 @@
                                             <div class="empty-state">
                                                 <div class="empty-state-icon">P</div>
                                                 <h3 class="empty-state-title">Search for Patients</h3>
-                                                <p class="empty-state-description">Enter a patient code, name, or contact number to find registered patient records.</p>
+                                                <p class="empty-state-description">Enter a patient ID, name, or contact number to find registered patient records.</p>
                                             </div>
                                         </td>
                                     </tr>

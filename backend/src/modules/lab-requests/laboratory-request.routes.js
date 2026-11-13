@@ -6,7 +6,7 @@ const {
     getLaboratoryRequestByIdController,
     updateDraftRequestController,
     submitLaboratoryRequestController,
-    updateTestStatus // <-- ADDED THIS
+    updateTestStatus
 } = require('./laboratory-request.controller');
 
 const {
@@ -24,10 +24,6 @@ const router = express.Router();
 // ==========================================
 // 1. GET AND SEARCH LABORATORY REQUESTS
 // ==========================================
-
-// All authorized laboratory roles may view requests.
-// Requesting clinicians are restricted to their own
-// requests by the service access filter.
 
 router.get(
     '/',
@@ -112,7 +108,7 @@ router.patch(
     '/:requestId/tests/:testId/status',
     requireAuth,
     authorizeRoles('lab_admin', 'lab_technologist'),
-    updateTestStatus // <-- FIXED THIS
+    updateTestStatus
 );
 
 module.exports = router;

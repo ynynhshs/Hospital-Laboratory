@@ -1,4 +1,4 @@
-const LabUser = require('../users/lab-user.model');
+const User = require('../core/user.model');
 const { verifyPassword } = require('../../shared/utils/password');
 
 const INVALID_CREDENTIALS_MESSAGE = 'Invalid username/email or password.';
@@ -17,8 +17,7 @@ async function authenticateUser(identifier, password) {
     const normalizedIdentifier = identifier.trim().toLowerCase();
 
     // Find the account using either its username or email.
-    // Password hash is explicitly selected because the model hides it by default.
-    const user = await LabUser.findOne({
+    const user = await User.findOne({
         $or: [
             { username: normalizedIdentifier },
             { email: normalizedIdentifier }
@@ -35,7 +34,8 @@ async function authenticateUser(identifier, password) {
         user.passwordHash
     );
 
-    if (!passwordIsValid || user.accountStatus !== 'active') {
+    // FIXED: Changed accountStatus to status, and 'active' to 'Active'
+    if (!passwordIsValid || user.status !== 'Active') {
         throw new Error(INVALID_CREDENTIALS_MESSAGE);
     }
 
@@ -51,7 +51,7 @@ async function authenticateUser(identifier, password) {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
-        accountStatus: user.accountStatus,
+        status: user.status, // FIXED
         lastLoginAt: user.lastLoginAt
     };
 }

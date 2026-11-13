@@ -1,99 +1,66 @@
+const User = require('../modules/core/user.model');
 
-const LabUser = require('../modules/users/lab-user.model');
-
-// =========================================
-// 1. AUTHENTICATION MIDDLEWARE
-// =========================================
-
-// Verify that the request has a valid authenticated session.
+// Middleware to ensure the user is authenticated
 async function requireAuth(req, res, next) {
     try {
-        // Check whether the session contains an authenticated user ID.
+        // Check if session exists and has a userId
         if (!req.session || !req.session.userId) {
+            return res.status(401).json({
+                success: false,
+                message: 'Unauthorized. Please log in.'
+            });
+        }
 
-    // Redirect protected frontend pages to the login page.
-    if (req.authRedirect) {
-        return res.redirect(req.authRedirect);
-    }
+        // Find the user using the new unified User model
+        const user = await User.findById(req.session.userId);
 
-    // Keep the existing JSON response for API requests.
-    return res.status(401).json({
-        success: false,
-        message: 'Authentication required. Please log in.'
-    });
-}
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: 'User account no longer exists.'
+            });
+        }
 
-        // Retrieve the user from MongoDB using the session user ID.
-        const user = await LabUser.findById(req.session.userId)
-            .select(
-                '_id username email firstName lastName role accountStatus'
-            );
+        // Check if account is active
+        if (user.status !== 'Active') {
+            return res.status(403).json({
+                success: false,
+                message: 'Your account is not active.'
+            });
+        }
 
-        // Reject missing or inactive accounts.
-        if (!user || user.accountStatus !== 'active') {
-
-    // Redirect protected frontend pages to the login page.
-    if (req.authRedirect) {
-        return res.redirect(req.authRedirect);
-    }
-
-    // Keep the existing JSON response for API requests.
-    return res.status(401).json({
-        success: false,
-        message: 'Your session is no longer valid. Please log in again.'
-    });
-}
-
-        // Attach safe user information to the request.
-        req.user = {
-            id: user._id.toString(),
-            username: user.username,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            role: user.role,
-            accountStatus: user.accountStatus
-        };
-
-        // Continue to the next middleware or route handler.
-        return next();
-
+        // Attach user to the request object
+        req.user = user;
+        next();
     } catch (error) {
-        return next(error);
+        console.error('Auth middleware error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error during authentication.'
+        });
     }
 }
 
-// =========================================
-// 2. ROLE-BASED AUTHORIZATION MIDDLEWARE
-// =========================================
-
-// Restrict access to users with specified roles.
+// Middleware to check if user has a specific role
 function authorizeRoles(...allowedRoles) {
-    return function (req, res, next) {
-
-        // A user must be authenticated first.
+    return (req, res, next) => {
         if (!req.user) {
             return res.status(401).json({
                 success: false,
-                message: 'Authentication required. Please log in.'
+                message: 'Unauthorized.'
             });
         }
 
-        // Check whether the user's role is permitted.
         if (!allowedRoles.includes(req.user.role)) {
             return res.status(403).json({
                 success: false,
-                message: 'You do not have permission to access this resource.'
+                message: 'Forbidden. You do not have permission to perform this action.'
             });
         }
 
-        return next();
+        next();
     };
 }
-
-// =========================================
-// 3. EXPORT MIDDLEWARE FUNCTIONS
-// =========================================
 
 module.exports = {
     requireAuth,

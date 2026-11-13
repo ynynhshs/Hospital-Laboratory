@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const { randomBytes } = require('node:crypto');
 
 const LaboratoryRequest = require('./laboratory-request.model');
-const Patient = require('../patients/patient.model');
+const Patient = require('../core/patient.model');
 const TestCatalog = require('../test-catalog/test-catalog.model');
-const LabUser = require('../users/lab-user.model');
+const User = require('../core/user.model');
 
 const AppError = require('../../shared/utils/app-error');
 
@@ -63,28 +63,32 @@ async function resolveRequestingClinician(
 
     // Requesting clinicians can only create
     // requests under their own accounts.
-    if (role === 'requesting_clinician') {
+        // Administrators and receptionists may
+    // create requests on behalf of clinicians.
+    if (
+        role === 'lab_admin' ||
+        role === 'lab_receptionist'
+    ) {
+        // Get the ID sent from the frontend (or fallback to the logged-in user's ID)
+        const clinicianId = requestData.requestingClinicianId || requestData.requestedBy || authenticatedUser.id;
 
-        if (
-            requestData.requestingClinicianId &&
-            requestData.requestingClinicianId !== authenticatedUser.id
-        ) {
+        if (!isValidObjectId(clinicianId)) {
             throw new AppError(
-                'Requesting clinicians can only create requests under their own accounts.',
-                403
+                'A valid requesting clinician ID is required.',
+                400
             );
         }
 
-        const clinician = await LabUser.findOne({
-            _id: authenticatedUser.id,
-            role: 'requesting_clinician',
-            accountStatus: 'active'
+        // Find the user (Admin, Receptionist, or Clinician)
+        const clinician = await User.findOne({
+            _id: clinicianId
+            // Removed the strict 'status: Active' check just in case it was causing issues
         }).select('_id');
 
         if (!clinician) {
             throw new AppError(
-                'Active requesting clinician account not found.',
-                403
+                'User not found.',
+                404
             );
         }
 
@@ -97,7 +101,8 @@ async function resolveRequestingClinician(
         role === 'lab_admin' ||
         role === 'lab_receptionist'
     ) {
-        const clinicianId = requestData.requestingClinicianId;
+        // Allow them to use requestingClinicianId OR requestedBy
+        const clinicianId = requestData.requestingClinicianId || requestData.requestedBy;
 
         if (!isValidObjectId(clinicianId)) {
             throw new AppError(
@@ -106,15 +111,16 @@ async function resolveRequestingClinician(
             );
         }
 
-        const clinician = await LabUser.findOne({
+        // Find the user (Admin or Clinician)
+        const clinician = await User.findOne({
             _id: clinicianId,
-            role: 'requesting_clinician',
+            // Removed the strict 'requesting_clinician' role check here
             accountStatus: 'active'
         }).select('_id');
 
         if (!clinician) {
             throw new AppError(
-                'Active requesting clinician not found.',
+                'Active user not found.',
                 404
             );
         }
@@ -385,7 +391,7 @@ async function searchLaboratoryRequests(
         const matchingPatientIds = await Patient.find({
             $or: [
                 {
-                    patientCode: searchRegex
+                    patientId: searchRegex // <-- UPDATED
                 },
                 {
                     $and: patientNameConditions

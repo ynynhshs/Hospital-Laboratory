@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
@@ -157,7 +156,7 @@ const requestActivitySchema = new Schema(
         // Reference to the user responsible for the activity.
         performedBy: {
             type: Schema.Types.ObjectId,
-            ref: 'LabUser',
+            ref: 'User', // <-- FIXED: Changed from LabUser to User
             required: true
         },
 
@@ -194,21 +193,21 @@ const laboratoryRequestSchema = new Schema(
         // User who requested the laboratory examination.
         requestedBy: {
             type: Schema.Types.ObjectId,
-            ref: 'LabUser',
+            ref: 'User', // <-- FIXED: Changed from LabUser to User
             required: true
         },
 
         // User who created the request in the system.
         createdBy: {
             type: Schema.Types.ObjectId,
-            ref: 'LabUser',
+            ref: 'User', // <-- FIXED: Changed from LabUser to User
             required: true
         },
 
         // User who last updated the request.
         updatedBy: {
             type: Schema.Types.ObjectId,
-            ref: 'LabUser',
+            ref: 'User', // <-- FIXED: Changed from LabUser to User
             default: null
         },
 
@@ -283,8 +282,6 @@ const laboratoryRequestSchema = new Schema(
 // ==========================================
 // 6. DATABASE INDEXES
 // ==========================================
-
-
 
 // Improve searching by patient and request date.
 laboratoryRequestSchema.index({

@@ -1,96 +1,43 @@
+const { createTest, searchTests, getTestById } = require('./test-catalog.service');
 
-const {
-    createTest,
-    getTestById,
-    searchTests
-} = require('./test-catalog.service');
-
-// ==========================================
-// MEDILINK LABORATORY
-// TEST CATALOG CONTROLLER
-// ==========================================
-
-// 1. REGISTER LABORATORY TEST
-
-async function registerTest(req, res, next) {
+// 1. Create Test Controller
+exports.createTestController = async (req, res, next) => {
     try {
         const test = await createTest(req.body);
-
-        return res.status(201).json({
+        res.status(201).json({
             success: true,
             message: 'Laboratory test registered successfully.',
-            data: {
-                test
-            }
+            data: { test }
         });
-
     } catch (error) {
-        return next(error);
+        next(error);
     }
-}
-
-// 2. GET LABORATORY TEST BY ID
-
-async function getTestByIdController(req, res, next) {
-    try {
-        const test = await getTestById(req.params.testId);
-
-        if (!test) {
-            return res.status(404).json({
-                success: false,
-                message: 'Laboratory test not found.'
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: 'Laboratory test retrieved successfully.',
-            data: {
-                test
-            }
-        });
-
-    } catch (error) {
-        return next(error);
-    }
-}
-
-// 3. SEARCH AND FILTER LABORATORY TESTS
-
-async function searchTestsController(req, res, next) {
-    try {
-        const {
-            search,
-            category,
-            status,
-            page,
-            limit
-        } = req.query;
-
-        const result = await searchTests({
-            search,
-            category,
-            status,
-            page,
-            limit
-        });
-
-        return res.status(200).json({
-            success: true,
-            message: 'Laboratory test records retrieved successfully.',
-            data: result
-        });
-
-    } catch (error) {
-        return next(error);
-    }
-}
-
-// 4. EXPORT CONTROLLER FUNCTIONS
-
-module.exports = {
-    registerTest,
-    getTestByIdController,
-    searchTestsController
 };
 
+// 2. Search Tests Controller
+exports.searchTestsController = async (req, res, next) => {
+    try {
+        const result = await searchTests(req.query);
+        res.status(200).json({
+            success: true,
+            message: 'Laboratory tests retrieved successfully.',
+            data: result
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// 3. Get Test By ID Controller
+exports.getTestByIdController = async (req, res, next) => {
+    try {
+        const test = await getTestById(req.params.testId);
+        res.status(200).json({
+            success: true,
+            message: 'Laboratory test retrieved successfully.',
+            data: { test }
+        });
+    } catch (error) {
+        next(error);
+    }
+};

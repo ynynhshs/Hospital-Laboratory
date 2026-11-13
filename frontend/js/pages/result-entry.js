@@ -153,6 +153,7 @@
             submitResultButton.textContent = 'Saving...';
 
             try {
+                
                 await window.MediLinkAPI.request('/results', {
                     method: 'POST',
                     body: {
@@ -160,6 +161,7 @@
                         testId: selectedTestData.testId,
                         testName: selectedTestData.testName,
                         patientId: selectedTestData.patientId,
+                        specimenId: selectedTestData.specimenId, // <-- ADD THIS
                         resultValue: resultVal,
                         unit: resultUnit.value,
                         referenceRange: resultReferenceRange.value,

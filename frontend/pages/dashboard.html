@@ -236,7 +236,7 @@
 
                             <div>
                                 <p class="stat-label">Total Requests</p>
-                                <h3 class="stat-value">—</h3>
+                                <h3 class="stat-value" id="totalRequests">—</h3>
                             </div>
                         </article>
 
@@ -245,7 +245,7 @@
 
                             <div>
                                 <p class="stat-label">Pending Requests</p>
-                                <h3 class="stat-value">—</h3>
+                                <h3 class="stat-value" id="pendingRequests">—</h3>
                             </div>
                         </article>
 
@@ -254,7 +254,7 @@
 
                             <div>
                                 <p class="stat-label">In Progress</p>
-                                <h3 class="stat-value">—</h3>
+                                <h3 class="stat-value" id="inProgressRequests">—</h3>
                             </div>
                         </article>
 
@@ -263,7 +263,7 @@
 
                             <div>
                                 <p class="stat-label">Awaiting Verification</p>
-                                <h3 class="stat-value">—</h3>
+                                <h3 class="stat-value" id="awaitingVerification">—</h3>
                             </div>
                         </article>
 
@@ -272,7 +272,7 @@
 
                             <div>
                                 <p class="stat-label">Completed Requests</p>
-                                <h3 class="stat-value">—</h3>
+                                <h3 class="stat-value" id="completedRequests">—</h3>
                             </div>
                         </article>
 
@@ -412,7 +412,7 @@
                                     </tr>
                                 </thead>
 
-                                <tbody>
+                                <tbody id="recentRequestsTableBody">
                                     <tr>
                                         <td colspan="6">
                                             <div class="empty-state">

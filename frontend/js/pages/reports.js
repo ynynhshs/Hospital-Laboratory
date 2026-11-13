@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     // =========================================
     // 1. ELEMENT REFERENCES
@@ -6,301 +5,257 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const sidebarToggle = document.getElementById("sidebarToggle");
     const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const logoutButton = document.getElementById("logoutButton");
 
     const reportsNotice = document.querySelector(".reports-notice");
-    const noticeTitle = reportsNotice?.querySelector("strong");
-    const noticeMessage = reportsNotice?.querySelector("p");
-
     const reportTypeFilter = document.getElementById("reportTypeFilter");
     const reportStartDate = document.getElementById("reportStartDate");
     const reportEndDate = document.getElementById("reportEndDate");
     const reportStatusFilter = document.getElementById("reportStatusFilter");
 
-    const resetReportFiltersButton = document.getElementById(
-        "resetReportFiltersButton"
-    );
-
+    const resetReportFiltersButton = document.getElementById("resetReportFiltersButton");
+    const generateReportButton = document.getElementById("generateReportButton");
     const reportSearchInput = document.getElementById("reportSearchInput");
-    const refreshReportsButton = document.getElementById(
-        "refreshReportsButton"
-    );
+    const refreshReportsButton = document.getElementById("refreshReportsButton");
 
     const reportsTableBody = document.getElementById("reportsTableBody");
     const reportRecordCount = document.getElementById("reportRecordCount");
 
-    // =========================================
-    // 2. NOTICE MESSAGE
-    // =========================================
-
-    function updateNotice(title, message) {
-        if (noticeTitle) {
-            noticeTitle.textContent = title;
-        }
-
-        if (noticeMessage) {
-            noticeMessage.textContent = message;
-        }
-    }
+    // Chart Elements
+    const popularTestsEmpty = document.getElementById("popularTestsEmpty");
+    const requestTrendsEmpty = document.getElementById("requestTrendsEmpty");
+    let popularTestsChartInstance = null;
+    let requestTrendsChartInstance = null;
 
     // =========================================
-    // 3. MOBILE SIDEBAR
+    // 2. FETCH AND RENDER DATA
     // =========================================
 
-    function openSidebar() {
-        document.body.classList.add("sidebar-open");
+    let allRequests = [];
 
-        if (sidebarToggle) {
-            sidebarToggle.setAttribute("aria-expanded", "true");
-            sidebarToggle.setAttribute("aria-label", "Close navigation menu");
+    async function loadReportData() {
+        reportsTableBody.innerHTML = '<tr><td colspan="7" class="empty-table-message">Loading report data...</td></tr>';
+        
+        // Hide the notice since we are now connected
+        if (reportsNotice) reportsNotice.hidden = true;
+
+        try {
+            const response = await window.MediLinkAPI.request('/lab-requests?limit=100', { method: 'GET' });
+            allRequests = response.data.requests || [];
+
+            calculateMetrics();
+            renderTable();
+            renderCharts();
+
+            if (generateReportButton) generateReportButton.disabled = false;
+
+        } catch (error) {
+            console.error('Failed to load report data:', error);
+            reportsTableBody.innerHTML = `<tr><td colspan="7" class="empty-table-message" style="color:red;">Error: ${error.message}</td></tr>`;
         }
-    }
-
-    function closeSidebar() {
-        document.body.classList.remove("sidebar-open");
-
-        if (sidebarToggle) {
-            sidebarToggle.setAttribute("aria-expanded", "false");
-            sidebarToggle.setAttribute("aria-label", "Open navigation menu");
-        }
-    }
-
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener("click", () => {
-            const isOpen = document.body.classList.contains("sidebar-open");
-
-            if (isOpen) {
-                closeSidebar();
-            } else {
-                openSidebar();
-            }
-        });
-    }
-
-    if (sidebarOverlay) {
-        sidebarOverlay.addEventListener("click", closeSidebar);
-    }
-
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-            closeSidebar();
-        }
-    });
-
-    // Close the mobile sidebar when returning to desktop width.
-    window.addEventListener("resize", () => {
-        if (window.innerWidth > 768) {
-            closeSidebar();
-        }
-    });
-
-    // =========================================
-    // 4. REPORT DATE VALIDATION
-    // =========================================
-
-    function validateReportDateRange() {
-        if (!reportStartDate || !reportEndDate) {
-            return true;
-        }
-
-        const startDate = reportStartDate.value;
-        const endDate = reportEndDate.value;
-
-        const isInvalid = Boolean(
-            startDate && endDate && startDate > endDate
-        );
-
-        reportStartDate.setAttribute(
-            "aria-invalid",
-            String(isInvalid)
-        );
-
-        reportEndDate.setAttribute(
-            "aria-invalid",
-            String(isInvalid)
-        );
-
-        return !isInvalid;
-    }
-
-    if (reportStartDate) {
-        reportStartDate.addEventListener(
-            "change",
-            validateReportDateRange
-        );
-    }
-
-    if (reportEndDate) {
-        reportEndDate.addEventListener(
-            "change",
-            validateReportDateRange
-        );
     }
 
     // =========================================
-    // 5. REPORT TABLE SEARCH
+    // 3. CALCULATE METRICS
     // =========================================
 
-    function getReportRows() {
-    if (!reportsTableBody) {
-        return [];
-    }
+    function calculateMetrics() {
+        const total = allRequests.length;
+        const completed = allRequests.filter(r => r.status === 'completed').length;
+        const pending = allRequests.filter(r => ['submitted', 'accepted', 'in_progress', 'partially_completed'].includes(r.status)).length;
 
-    return Array.from(
-        reportsTableBody.querySelectorAll("tr")
-    ).filter((row) => {
-        const isEmptyPlaceholder = row.querySelector(
-            ".empty-table-message"
-        );
+        document.getElementById('totalRequestsMetric').textContent = total;
+        document.getElementById('completedRequestsMetric').textContent = completed;
+        document.getElementById('pendingRequestsMetric').textContent = pending;
 
-        return (
-            !isEmptyPlaceholder &&
-            row.dataset.searchEmptyRow !== "true"
-        );
-    });
-}
-
-    function removeSearchEmptyMessage() {
-        const emptyMessage = reportsTableBody?.querySelector(
-            '[data-search-empty-row="true"]'
-        );
-
-        if (emptyMessage) {
-            emptyMessage.remove();
-        }
-    }
-
-    function showSearchEmptyMessage() {
-        if (!reportsTableBody) {
-            return;
-        }
-
-        removeSearchEmptyMessage();
-
-        const row = document.createElement("tr");
-        row.dataset.searchEmptyRow = "true";
-
-        const cell = document.createElement("td");
-        cell.colSpan = 7;
-        cell.className = "empty-table-message";
-        cell.textContent = "No report records match your search.";
-
-        row.appendChild(cell);
-        reportsTableBody.appendChild(row);
-    }
-
-    function updateReportRecordCount(visibleCount, totalCount) {
-        if (!reportRecordCount) {
-            return;
-        }
-
-        const searchTerm = reportSearchInput?.value.trim() || "";
-
-        if (searchTerm) {
-            reportRecordCount.textContent =
-                `${visibleCount} of ${totalCount} report records`;
+        const completedRequestsWithDates = allRequests.filter(r => r.status === 'completed' && r.completedAt && r.createdAt);
+        if (completedRequestsWithDates.length > 0) {
+            let totalHours = 0;
+            completedRequestsWithDates.forEach(r => {
+                const diffMs = new Date(r.completedAt) - new Date(r.createdAt);
+                totalHours += diffMs / (1000 * 60 * 60);
+            });
+            const avgHours = (totalHours / completedRequestsWithDates.length).toFixed(1);
+            document.getElementById('averageTurnaroundMetric').textContent = `${avgHours} hrs`;
         } else {
-            reportRecordCount.textContent =
-                `${totalCount} report records`;
+            document.getElementById('averageTurnaroundMetric').textContent = `N/A`;
         }
     }
 
-    function filterReportRows() {
-        if (!reportsTableBody) {
+    // =========================================
+    // 4. RENDER CHARTS
+    // =========================================
+
+    function renderCharts() {
+        // --- BAR CHART: Most Requested Tests ---
+        const testCounts = {};
+        allRequests.forEach(req => {
+            req.tests.forEach(test => {
+                const testName = test.testSnapshot.testName;
+                testCounts[testName] = (testCounts[testName] || 0) + 1;
+            });
+        });
+
+        const testLabels = Object.keys(testCounts);
+        const testData = Object.values(testCounts);
+
+        if (popularTestsEmpty) popularTestsEmpty.style.display = testLabels.length > 0 ? 'none' : 'flex';
+
+        if (testLabels.length > 0) {
+            const ctxBar = document.getElementById('popularTestsChart').getContext('2d');
+            if (popularTestsChartInstance) popularTestsChartInstance.destroy();
+            
+            popularTestsChartInstance = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: testLabels,
+                    datasets: [{
+                        label: 'Number of Requests',
+                        data: testData,
+                        backgroundColor: '#6b7589',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+        }
+
+        // --- LINE CHART: Request Trends ---
+        const dateCounts = {};
+        allRequests.forEach(req => {
+            const dateStr = new Date(req.createdAt).toLocaleDateString();
+            dateCounts[dateStr] = (dateCounts[dateStr] || 0) + 1;
+        });
+
+        // Sort dates
+        const sortedDates = Object.keys(dateCounts).sort((a, b) => new Date(a) - new Date(b));
+        const dateData = sortedDates.map(date => dateCounts[date]);
+
+        if (requestTrendsEmpty) requestTrendsEmpty.style.display = sortedDates.length > 0 ? 'none' : 'flex';
+
+        if (sortedDates.length > 0) {
+            const ctxLine = document.getElementById('requestTrendsChart').getContext('2d');
+            if (requestTrendsChartInstance) requestTrendsChartInstance.destroy();
+
+            requestTrendsChartInstance = new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: sortedDates,
+                    datasets: [{
+                        label: 'Requests Created',
+                        data: dateData,
+                        borderColor: '#6b7589',
+                        backgroundColor: 'rgba(107, 117, 137, 0.2)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+        }
+    }
+
+    // =========================================
+    // 5. RENDER TABLE
+    // =========================================
+
+    function renderTable() {
+        const searchTerm = reportSearchInput?.value.toLowerCase() || '';
+        
+        const filtered = allRequests.filter(req => {
+            const patientName = req.patient ? `${req.patient.firstName} ${req.patient.lastName}` : '';
+            return req.requestNumber.toLowerCase().includes(searchTerm) || patientName.toLowerCase().includes(searchTerm);
+        });
+
+        reportsTableBody.innerHTML = '';
+
+        if (filtered.length === 0) {
+            reportsTableBody.innerHTML = '<tr><td colspan="7" class="empty-table-message">No report records match your search.</td></tr>';
+            if (reportRecordCount) reportRecordCount.textContent = `0 report records`;
             return;
         }
 
-        removeSearchEmptyMessage();
+        filtered.forEach(req => {
+            const tr = document.createElement('tr');
+            const dateStr = new Date(req.createdAt).toLocaleDateString();
+            const patientName = req.patient ? `${req.patient.firstName} ${req.patient.lastName}` : 'Unknown';
+            const requestedBy = req.requestedBy ? `${req.requestedBy.firstName} ${req.requestedBy.lastName}` : 'Unknown';
+            const statusLabel = req.status.replace('_', ' ').toUpperCase();
 
-        const rows = getReportRows();
-        const searchTerm = reportSearchInput?.value
-            .trim()
-            .toLowerCase() || "";
-
-        let visibleCount = 0;
-
-        rows.forEach((row) => {
-            const rowText = row.textContent.toLowerCase();
-            const matches = rowText.includes(searchTerm);
-
-            row.hidden = !matches;
-
-            if (matches) {
-                visibleCount++;
-            }
+            tr.innerHTML = `
+                <td>${req.requestNumber}</td>
+                <td>Lab Request</td>
+                <td>${dateStr}</td>
+                <td>${requestedBy}</td>
+                <td>${patientName}</td>
+                <td><span class="badge badge-${req.status === 'completed' ? 'success' : 'pending'}">${statusLabel}</span></td>
+                <td><button class="btn btn-secondary btn-small" onclick="window.print()">Print</button></td>
+            `;
+            reportsTableBody.appendChild(tr);
         });
 
-        if (rows.length > 0 && visibleCount === 0) {
-            showSearchEmptyMessage();
-        }
-
-        updateReportRecordCount(visibleCount, rows.length);
-    }
-
-    if (reportSearchInput) {
-        reportSearchInput.addEventListener("input", filterReportRows);
+        if (reportRecordCount) reportRecordCount.textContent = `${filtered.length} report records`;
     }
 
     // =========================================
-    // 6. RESET REPORT FILTERS
+    // 6. EVENT LISTENERS
     // =========================================
+
+    if (reportSearchInput) reportSearchInput.addEventListener("input", renderTable);
+    if (refreshReportsButton) refreshReportsButton.addEventListener("click", loadReportData);
+    if (generateReportButton) generateReportButton.addEventListener("click", () => window.print());
 
     if (resetReportFiltersButton) {
         resetReportFiltersButton.addEventListener("click", () => {
-            if (reportTypeFilter) {
-                reportTypeFilter.value = "all";
-            }
-
-            if (reportStartDate) {
-                reportStartDate.value = "";
-                reportStartDate.removeAttribute("aria-invalid");
-            }
-
-            if (reportEndDate) {
-                reportEndDate.value = "";
-                reportEndDate.removeAttribute("aria-invalid");
-            }
-
-            if (reportStatusFilter) {
-                reportStatusFilter.value = "all";
-            }
-
-            if (reportSearchInput) {
-                reportSearchInput.value = "";
-            }
-
-            filterReportRows();
-
-            updateNotice(
-                "Backend connection pending",
-                "Report filters have been reset. Actual report data will be available after backend integration."
-            );
+            if (reportTypeFilter) reportTypeFilter.value = "all";
+            if (reportStartDate) reportStartDate.value = "";
+            if (reportEndDate) reportEndDate.value = "";
+            if (reportStatusFilter) reportStatusFilter.value = "all";
+            if (reportSearchInput) reportSearchInput.value = "";
+            renderTable();
         });
     }
 
-    // =========================================
-    // 7. REFRESH REPORTS
-    // =========================================
-
-    if (refreshReportsButton) {
-        refreshReportsButton.addEventListener("click", () => {
-            filterReportRows();
-
-            updateNotice(
-                "Backend connection pending",
-                "The report interface has been refreshed. Database records cannot be loaded until the reports API is implemented."
-            );
+    // Logout Logic
+    if (logoutButton) {
+        logoutButton.addEventListener("click", async () => {
+            const confirmed = window.confirm('Are you sure you want to log out of MediLink?');
+            if (!confirmed) return;
+            logoutButton.disabled = true;
+            logoutButton.textContent = 'Logging Out...';
+            try {
+                await window.MediLinkAuth.logout();
+                window.location.replace('login.html');
+            } catch (error) {
+                console.error('Logout failed:', error);
+                logoutButton.disabled = false;
+                logoutButton.textContent = 'Logout';
+            }
         });
     }
 
-    // =========================================
-    // 8. INITIAL PAGE STATE
-    // =========================================
+    // Mobile Sidebar
+    function openSidebar() { document.body.classList.add("sidebar-open"); }
+    function closeSidebar() { document.body.classList.remove("sidebar-open"); }
+    if (sidebarToggle) sidebarToggle.addEventListener("click", () => { document.body.classList.contains("sidebar-open") ? closeSidebar() : openSidebar(); });
+    if (sidebarOverlay) sidebarOverlay.addEventListener("click", closeSidebar);
 
+    // =========================================
+    // 7. INITIALIZATION
+    // =========================================
+    
     closeSidebar();
-    filterReportRows();
+    loadReportData();
 
-    updateNotice(
-        "Backend connection pending",
-        "Report figures and charts will be displayed after the reports and analytics functions are connected to the database."
-    );
 });

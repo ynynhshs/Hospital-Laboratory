@@ -290,3 +290,48 @@
         transform: none;
     }
 }
+
+/* ==========================================
+   MODAL OVERRIDES (Fix Layout)
+   ========================================== */
+
+/* Force the patient display box to align left */
+#selectedPatientDisplay {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    text-align: left !important;
+    gap: 8px;
+}
+
+/* Force the test list items to align properly */
+#modalTestList label {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+#modalTestList label:hover {
+    background-color: #f3f4f6;
+}
+
+#modalTestList input[type="checkbox"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+#modalTestList .test-text {
+    flex-grow: 1;
+    text-align: left;
+    line-height: 1.4;
+    font-size: 14px;
+    word-break: break-word;
+}

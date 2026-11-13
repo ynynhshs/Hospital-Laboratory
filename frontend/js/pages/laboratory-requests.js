@@ -739,21 +739,22 @@
 
                 testListContainer.innerHTML = ''; // Clear loading text
                 
-                tests.forEach(test => {
+                                tests.forEach(test => {
                     const label = document.createElement('label');
-                    label.style.display = 'flex';
-                    label.style.alignItems = 'center';
-                    label.style.gap = '8px';
-                    label.style.marginBottom = '8px';
-                    label.style.cursor = 'pointer';
-
+                    
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.value = test._id;
                     checkbox.className = 'modal-test-checkbox';
 
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'test-text';
+                    const tCode = test.testCode || test.code || 'N/A';
+                    const tName = test.testName || test.name || 'Unknown Test';
+                    textSpan.textContent = `${tCode} - ${tName}`;
+
                     label.appendChild(checkbox);
-                    label.appendChild(document.createTextNode(`${test.code} - ${test.name}`));
+                    label.appendChild(textSpan);
                     
                     testListContainer.appendChild(label);
                 });
@@ -793,7 +794,7 @@
                     return;
                 }
 
-                patients.forEach(patient => {
+                               patients.forEach(patient => {
                     const btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = 'btn btn-outline';
@@ -801,12 +802,17 @@
                     btn.style.width = '100%';
                     btn.style.marginBottom = '5px';
                     btn.style.textAlign = 'left';
-                    btn.textContent = `${patient.patientCode} - ${patient.firstName} ${patient.lastName}`;
+                    
+                    // UPDATED to patientId
+                    btn.textContent = `${patient.patientId} - ${patient.firstName} ${patient.lastName}`;
                     
                     btn.addEventListener('click', () => {
                         selectedPatientId = patient._id;
-                        selectedPatientName.textContent = `${patient.firstName} ${patient.lastName}`;
-                        selectedPatientCode.textContent = patient.patientCode;
+                        selectedPatientName.textContent = `${patient.firstName} ${patient.lastName} `;
+                        
+                        // UPDATED to patientId
+                        selectedPatientCode.textContent = `(${patient.patientId})`;
+                        
                         selectedPatientDisplay.hidden = false;
                         submitRequestBtn.disabled = false;
                     });
@@ -838,11 +844,14 @@
 
             try {
                 // We are now passing the array of selected test IDs!
+                                
                 const payload = {
                     patientId: selectedPatientId,
                     priority: document.getElementById('modalPriority').value,
                     clinicalNotes: document.getElementById('modalNotes').value,
-                    tests: selectedTests 
+                    testIds: selectedTests, 
+                    requestingClinicianId: currentUser._id || currentUser.id, 
+                    createdBy: currentUser._id || currentUser.id
                 };
 
                 await window.MediLinkAPI.request('/lab-requests', {

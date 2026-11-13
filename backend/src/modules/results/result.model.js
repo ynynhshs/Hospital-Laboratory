@@ -21,6 +21,11 @@ const resultSchema = new Schema(
             ref: 'Patient',
             required: true
         },
+        // Add the specimen reference so we can populate it!
+        specimenId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Specimen'
+        },
         resultValue: {
             type: String,
             required: true,
@@ -40,8 +45,16 @@ const resultSchema = new Schema(
         },
         enteredBy: {
             type: Schema.Types.ObjectId,
-            ref: 'LabUser',
+            ref: 'User', // <-- FIXED: Changed from LabUser to User
             required: true
+        },
+        // Add the verification fields!
+        verifiedBy: {
+            type: Schema.Types.ObjectId,
+            ref: 'User' // <-- FIXED: Changed from LabUser to User
+        },
+        verifiedAt: {
+            type: Date
         },
         status: {
             type: String,

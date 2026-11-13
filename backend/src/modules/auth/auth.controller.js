@@ -1,4 +1,5 @@
 const { authenticateUser } = require('./auth.service');
+const { logActivity } = require('../audit-logs/audit-log.service'); // <-- ADDED IMPORT
 
 const SESSION_COOKIE_NAME = 'medilink.sid';
 
@@ -12,7 +13,6 @@ function runSessionOperation(operation) {
             if (error) {
                 return reject(error);
             }
-
             resolve();
         });
     });
@@ -25,6 +25,18 @@ async function login(req, res, next) {
 
         // Verify the user's credentials.
         const user = await authenticateUser(identifier, password);
+
+        // ----------------------------------------------------
+        // ADDED: Log the successful login to the database
+        // ----------------------------------------------------
+        await logActivity(
+            user.username, 
+            user.role, 
+            'LOGIN', 
+            'Authentication', 
+            'User logged in successfully', 
+            req.ip
+        );
 
         // Regenerate the session ID after successful authentication.
         await runSessionOperation((callback) => {
@@ -49,6 +61,19 @@ async function login(req, res, next) {
 
     } catch (error) {
         if (error.message === INVALID_CREDENTIALS_MESSAGE) {
+            
+            // ----------------------------------------------------
+            // ADDED: Log the failed login attempt
+            // ----------------------------------------------------
+            await logActivity(
+                req.body.identifier || 'Unknown', 
+                'Unknown', 
+                'LOGIN_FAILED', 
+                'Authentication', 
+                'Invalid credentials provided', 
+                req.ip
+            );
+
             return res.status(401).json({
                 success: false,
                 message: INVALID_CREDENTIALS_MESSAGE

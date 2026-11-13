@@ -1,4 +1,3 @@
-
 // ==========================================
 // MEDILINK LABORATORY
 // PATIENT RECORDS JAVASCRIPT
@@ -88,10 +87,10 @@
     let currentTotalPages = 0;
 
     // Verify whether the current user can register patients.
-function canRegisterPatients() {
-    return currentUser &&
-        ['lab_admin', 'lab_receptionist'].includes(currentUser.role);
-}
+    function canRegisterPatients() {
+        return currentUser &&
+            ['lab_admin', 'lab_receptionist'].includes(currentUser.role);
+    }
 
     // ==========================================
     // 3. FORMAT USER INFORMATION
@@ -167,8 +166,7 @@ function canRegisterPatients() {
 
     function formatSex(sex) {
         if (!sex) return 'Not provided';
-
-        return sex.charAt(0).toUpperCase() + sex.slice(1);
+        return sex; 
     }
 
     function getPatientFullName(patient) {
@@ -228,7 +226,7 @@ function canRegisterPatients() {
             const row = document.createElement('tr');
 
             row.appendChild(
-                createTableCell(patient.patientCode)
+                createTableCell(patient.patientId)
             );
 
             row.appendChild(
@@ -236,7 +234,7 @@ function canRegisterPatients() {
             );
 
             row.appendChild(
-                createTableCell(formatDate(patient.dateOfBirth))
+                createTableCell(formatDate(patient.birthDate))
             );
 
             row.appendChild(
@@ -244,7 +242,7 @@ function canRegisterPatients() {
             );
 
             row.appendChild(
-                createTableCell(patient.contactNumber)
+                createTableCell(patient.contactNo)
             );
 
             const actionCell = document.createElement('td');
@@ -275,21 +273,6 @@ function canRegisterPatients() {
 
     async function loadPatients(searchTerm, page = 1) {
         const search = searchTerm.trim();
-
-        if (!search) {
-            displayTableMessage(
-                'Enter a patient code, name, or contact number.'
-            );
-
-            patientRecordCount.textContent =
-                'No search performed yet.';
-
-            paginationContainer.replaceChildren();
-            currentSearch = '';
-            currentTotalPages = 0;
-
-            return;
-        }
 
         currentSearch = search;
         currentPage = page;
@@ -426,35 +409,32 @@ function canRegisterPatients() {
     // ==========================================
 
     async function registerPatient(event) {
-    event.preventDefault();
+        event.preventDefault();
 
-    // Prevent unauthorized patient registration.
-    if (!canRegisterPatients()) {
-        registrationSection.hidden = true;
+        if (!canRegisterPatients()) {
+            registrationSection.hidden = true;
 
-        showFormMessage(
-            'You do not have permission to register patients.',
-            'danger'
-        );
+            showFormMessage(
+                'You do not have permission to register patients.',
+                'danger'
+            );
 
-        return;
-    }
+            return;
+        }
 
-    hideFormMessage();
+        hideFormMessage();
 
         const formData = new FormData(registrationForm);
+        const patientData = Object.fromEntries(formData.entries());
 
-        const patientData = Object.fromEntries(
-            formData.entries()
-        );
-
-        const dateOfBirth = new Date(
-            patientData.dateOfBirth + 'T00:00:00'
+        // Validate Birth Date
+        const birthDate = new Date(
+            patientData.birthDate + 'T00:00:00'
         );
 
         if (
-            Number.isNaN(dateOfBirth.getTime()) ||
-            dateOfBirth > new Date()
+            Number.isNaN(birthDate.getTime()) ||
+            birthDate > new Date()
         ) {
             showFormMessage(
                 'Please provide a valid date of birth.',
@@ -484,10 +464,11 @@ function canRegisterPatients() {
 
             registrationForm.reset();
 
-            // Automatically display the newly registered patient.
-            searchInput.value = patient.patientCode;
+            // The backend returns the newly generated patientId (e.g., PAT-001)
+            // We use it to automatically search and display the new record.
+            searchInput.value = patient.patientId;
 
-            await loadPatients(patient.patientCode, 1);
+            await loadPatients(patient.patientId, 1);
 
         } catch (error) {
             console.error('Patient registration failed:', error);
@@ -550,7 +531,7 @@ function canRegisterPatients() {
 
             detailsContent.replaceChildren();
 
-            addPatientDetail('Patient Code', patient.patientCode);
+            addPatientDetail('Patient ID', patient.patientId);
             addPatientDetail('Full Name', getPatientFullName(patient));
             addPatientDetail('First Name', patient.firstName);
             addPatientDetail('Middle Name', patient.middleName);
@@ -558,10 +539,10 @@ function canRegisterPatients() {
             addPatientDetail('Suffix', patient.suffix);
             addPatientDetail(
                 'Date of Birth',
-                formatDate(patient.dateOfBirth)
+                formatDate(patient.birthDate)
             );
             addPatientDetail('Sex', formatSex(patient.sex));
-            addPatientDetail('Contact Number', patient.contactNumber);
+            addPatientDetail('Contact Number', patient.contactNo);
             addPatientDetail(
                 'Date Registered',
                 formatDate(patient.createdAt)
@@ -584,40 +565,37 @@ function canRegisterPatients() {
     // 12. REGISTRATION FORM VISIBILITY
     // ==========================================
 
-        function configureRegistrationAccess(user) {
-        // Patient registration is handled by the main MediAdmit subsystem.
-        // The Laboratory subsystem only views and searches patients.
+    function configureRegistrationAccess(user) {
+        // TEMPORARY: Show the button for testing purposes
         if (addPatientButton) {
-            addPatientButton.hidden = true;
+            addPatientButton.hidden = false; 
         }
         
         if (registrationSection) {
-            registrationSection.hidden = true;
+            registrationSection.hidden = true; 
         }
     }
 
     if (addPatientButton) {
-    addPatientButton.addEventListener('click', () => {
+        addPatientButton.addEventListener('click', () => {
 
-        // Reject unauthorized users.
-        if (!canRegisterPatients()) {
-            registrationSection.hidden = true;
-            return;
-        }
+            if (!canRegisterPatients()) {
+                registrationSection.hidden = true;
+                return;
+            }
 
-        registrationSection.hidden =
-            !registrationSection.hidden;
+            registrationSection.hidden = !registrationSection.hidden;
 
-        if (!registrationSection.hidden) {
-            hideFormMessage();
+            if (!registrationSection.hidden) {
+                hideFormMessage();
 
-            registrationSection.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-}
+                registrationSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    }
 
     if (cancelPatientButton) {
         cancelPatientButton.addEventListener('click', () => {
@@ -646,16 +624,10 @@ function canRegisterPatients() {
         currentPage = 1;
         currentTotalPages = 0;
 
-        patientsTableBody.replaceChildren();
-
-        displayTableMessage('Enter a patient code, name, or contact number.');
-
-        patientRecordCount.textContent =
-            'No search performed yet.';
-
-        paginationContainer.replaceChildren();
-
         detailsSection.hidden = true;
+        
+        // Reload all patients instead of showing a blank screen
+        loadPatients('', 1); 
     });
 
     // ==========================================
@@ -681,30 +653,19 @@ function canRegisterPatients() {
 
     function openSidebar() {
         appLayout.classList.add('sidebar-open');
-
         sidebarToggle.setAttribute('aria-expanded', 'true');
-        sidebarToggle.setAttribute(
-            'aria-label',
-            'Close navigation'
-        );
+        sidebarToggle.setAttribute('aria-label', 'Close navigation');
     }
 
     function closeSidebar() {
         appLayout.classList.remove('sidebar-open');
-
         sidebarToggle.setAttribute('aria-expanded', 'false');
-        sidebarToggle.setAttribute(
-            'aria-label',
-            'Open navigation'
-        );
+        sidebarToggle.setAttribute('aria-label', 'Open navigation');
     }
 
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', () => {
-            const isOpen = appLayout.classList.contains(
-                'sidebar-open'
-            );
-
+            const isOpen = appLayout.classList.contains('sidebar-open');
             isOpen ? closeSidebar() : openSidebar();
         });
     }
@@ -740,14 +701,10 @@ function canRegisterPatients() {
 
         try {
             await window.MediLinkAuth.logout();
-
             window.location.replace('login.html');
-
         } catch (error) {
             console.error('Logout failed:', error);
-
             alert(error.message || 'Unable to log out.');
-
             logoutButton.disabled = false;
             logoutButton.textContent = 'Logout';
         }
@@ -760,10 +717,11 @@ function canRegisterPatients() {
     async function initializePatientPage() {
         try {
             currentUser = await window.MediLinkAuth.getCurrentUser();
-
             displayUserInformation(currentUser);
-
             configureRegistrationAccess(currentUser);
+            
+            // NEW: Automatically load all patients when the page opens
+            await loadPatients('', 1);
 
         } catch (error) {
             console.error(

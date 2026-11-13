@@ -1,80 +1,43 @@
-
 require('dotenv').config();
-
 const mongoose = require('mongoose');
+const User = require('../src/modules/core/user.model');
+const { hashPassword } = require('../src/shared/utils/password');
 
-const connectDB = require('../src/config/database');
-const { createUser } = require('../src/modules/users/lab-user.service');
-
-async function main() {
-
-    // Prevent accidental execution outside development.
-    if (process.env.NODE_ENV !== 'development') {
-        throw new Error(
-            'This script can only run in development mode.'
-        );
-    }
-
-    const {
-        LAB_ADMIN_USERNAME,
-        LAB_ADMIN_EMAIL,
-        LAB_ADMIN_PASSWORD,
-        LAB_ADMIN_FIRST_NAME,
-        LAB_ADMIN_LAST_NAME
-    } = process.env;
-
-    // Check required environment variables.
-    if (
-        !LAB_ADMIN_USERNAME ||
-        !LAB_ADMIN_EMAIL ||
-        !LAB_ADMIN_PASSWORD ||
-        !LAB_ADMIN_FIRST_NAME ||
-        !LAB_ADMIN_LAST_NAME
-    ) {
-        throw new Error(
-            'Missing administrator test account information. Set all LAB_ADMIN environment variables.'
-        );
-    }
-
+async function createAdmin() {
     try {
-        await connectDB();
+        // Explicitly connect to medilink_lab_dev
+        const dbName = process.env.MONGODB_DB_NAME || 'medilink_lab_dev';
+        await mongoose.connect(process.env.MONGODB_URI, { dbName: dbName });
+        console.log(`Connected to database: ${dbName}...`);
 
-        // Create the development administrator account.
-        const user = await createUser({
-            username: LAB_ADMIN_USERNAME,
-            email: LAB_ADMIN_EMAIL,
-            password: LAB_ADMIN_PASSWORD,
-            firstName: LAB_ADMIN_FIRST_NAME,
-            lastName: LAB_ADMIN_LAST_NAME,
-            role: 'lab_admin'
-        });
+        const adminData = {
+            employeeId: 'EMP-00001',
+            firstName: 'Development',
+            lastName: 'Administrator',
+            username: 'admin',
+            email: 'admin@medilink.com',
+            passwordHash: await hashPassword('admin123'),
+            role: 'lab_admin',
+            status: 'Active'
+        };
 
-        // Activate the development administrator account.
-        user.accountStatus = 'active';
-        await user.save();
-
-        console.log('==========================================');
-        console.log(' Development Administrator Account Created');
-        console.log('==========================================');
-        console.log(`Username: ${user.username}`);
-        console.log(`Email: ${user.email}`);
-        console.log(`Role: ${user.role}`);
-        console.log(`Account Status: ${user.accountStatus}`);
-        console.log('Password: Securely hashed using Argon2id');
-        console.log('==========================================');
-
-    } finally {
-        if (mongoose.connection.readyState !== 0) {
-            await mongoose.disconnect();
+        // Check if admin already exists
+        const existingAdmin = await User.findOne({ username: 'admin' });
+        if (existingAdmin) {
+            console.log('Admin account already exists!');
+            process.exit(0);
         }
+
+        await User.create(adminData);
+        console.log('✅ Admin account created successfully in medilink_lab_dev!');
+        console.log('Username: admin');
+        console.log('Password: admin123');
+        process.exit(0);
+
+    } catch (error) {
+        console.error('Error creating admin:', error);
+        process.exit(1);
     }
 }
 
-main().catch((error) => {
-    console.error(
-        'Administrator account creation failed:',
-        error.message
-    );
-
-    process.exitCode = 1;
-});
+createAdmin();

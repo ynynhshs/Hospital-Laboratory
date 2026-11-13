@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     // =========================================
     // 1. ELEMENT REFERENCES
@@ -19,44 +18,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const auditStartDate = document.getElementById("auditStartDate");
     const auditEndDate = document.getElementById("auditEndDate");
 
-    const applyFiltersButton = document.getElementById(
-        "applyAuditFiltersButton"
-    );
-
-    const resetFiltersButton = document.getElementById(
-        "resetAuditFiltersButton"
-    );
-
-    const refreshButton = document.getElementById(
-        "refreshAuditLogsButton"
-    );
-
-    const exportButton = document.getElementById(
-        "exportAuditLogsButton"
-    );
+    const applyFiltersButton = document.getElementById("applyAuditFiltersButton");
+    const resetFiltersButton = document.getElementById("resetAuditFiltersButton");
+    const refreshButton = document.getElementById("refreshAuditLogsButton");
+    const exportButton = document.getElementById("exportAuditLogsButton");
 
     const tableBody = document.getElementById("auditLogsTableBody");
     const recordCount = document.getElementById("auditRecordCount");
 
     const paginationInfo = document.getElementById("auditPaginationInfo");
     const currentPageLabel = document.getElementById("auditCurrentPage");
+    const previousPageButton = document.getElementById("auditPreviousPageButton");
+    const nextPageButton = document.getElementById("auditNextPageButton");
 
-    const previousPageButton = document.getElementById(
-        "auditPreviousPageButton"
-    );
-
-    const nextPageButton = document.getElementById(
-        "auditNextPageButton"
-    );
-
-    const clearSelectionButton = document.getElementById(
-        "clearAuditSelectionButton"
-    );
-
+    const clearSelectionButton = document.getElementById("clearAuditSelectionButton");
     const detailsPanel = document.getElementById("auditDetailsPanel");
-    const closeDetailsButton = document.getElementById(
-        "closeAuditDetailsButton"
-    );
+    const closeDetailsButton = document.getElementById("closeAuditDetailsButton");
 
     // =========================================
     // 2. PAGE STATE
@@ -67,143 +44,134 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentPage = 1;
     let filteredRows = [];
     let selectedRow = null;
+    let allLogs = [];
 
     // =========================================
-    // 3. NOTICE MESSAGE
+    // 3. FETCH DATA FROM BACKEND
     // =========================================
 
-    function updateNotice(title, message) {
-        if (noticeTitle) {
-            noticeTitle.textContent = title;
-        }
+    async function fetchAuditLogs() {
+        tableBody.innerHTML = '<tr><td colspan="8" class="empty-table-message">Loading audit records...</td></tr>';
+        
+        try {
+            const response = await window.MediLinkAPI.request('/audit-logs', { method: 'GET' });
+            allLogs = response.data.logs || [];
+            
+            renderLogsToTable();
+            updateSummaryMetrics();
+            applyAuditFilters(); // Trigger the filter logic
+            
+            // Hide the notice since we are now loading real data
+            document.querySelector('.audit-notice').hidden = true;
 
-        if (noticeMessage) {
-            noticeMessage.textContent = message;
-        }
-    }
-
-    // =========================================
-    // 4. MOBILE SIDEBAR
-    // =========================================
-
-    function openSidebar() {
-        document.body.classList.add("sidebar-open");
-
-        if (sidebarToggle) {
-            sidebarToggle.setAttribute("aria-expanded", "true");
-            sidebarToggle.setAttribute(
-                "aria-label",
-                "Close navigation menu"
-            );
+        } catch (error) {
+            console.error('Failed to load audit logs:', error);
+            tableBody.innerHTML = `<tr><td colspan="8" class="empty-table-message" style="color:red;">Error: ${error.message}</td></tr>`;
         }
     }
 
-    function closeSidebar() {
-        document.body.classList.remove("sidebar-open");
+    // =========================================
+    // 4. RENDER LOGS TO TABLE
+    // =========================================
 
-        if (sidebarToggle) {
-            sidebarToggle.setAttribute("aria-expanded", "false");
-            sidebarToggle.setAttribute(
-                "aria-label",
-                "Open navigation menu"
-            );
+    function renderLogsToTable() {
+        tableBody.innerHTML = '';
+        
+        if (allLogs.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="8" class="empty-table-message">No audit records available.</td></tr>';
+            return;
         }
-    }
 
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener("click", () => {
-            const isOpen = document.body.classList.contains(
-                "sidebar-open"
-            );
+        allLogs.forEach(log => {
+            const row = document.createElement('tr');
+            
+            // Format date
+            const dateObj = new Date(log.createdAt);
+            const dateStr = dateObj.toLocaleString('en-PH', { 
+                year: 'numeric', month: 'short', day: 'numeric', 
+                hour: '2-digit', minute: '2-digit' 
+            });
 
-            if (isOpen) {
-                closeSidebar();
-            } else {
-                openSidebar();
-            }
+            // Determine outcome based on action (for filtering)
+            const outcome = log.action.includes('FAILED') || log.action.includes('ERROR') ? 'Failed' : 'Success';
+
+            // Set dataset attributes so your existing filters work!
+            row.dataset.auditDate = log.createdAt;
+            row.dataset.auditUser = log.username;
+            row.dataset.auditAction = log.action;
+            row.dataset.auditModule = log.module;
+            row.dataset.auditReference = log.details || '—';
+            row.dataset.auditIpAddress = log.ip || '—';
+            row.dataset.auditOutcome = outcome;
+            row.dataset.auditDescription = log.details || 'No description provided.';
+            row.dataset.auditId = log._id;
+
+            row.innerHTML = `
+                <td>${dateStr}</td>
+                <td>${log.username} <br><small>(${log.role || 'User'})</small></td>
+                <td><span class="badge badge-${outcome === 'Failed' ? 'danger' : 'info'}">${log.action}</span></td>
+                <td>${log.module}</td>
+                <td>${log.details || '—'}</td>
+                <td>${log.ip || '—'}</td>
+                <td>${outcome}</td>
+                <td><button class="btn btn-secondary btn-small audit-view-button" data-action="view-audit">View</button></td>
+            `;
+            
+            tableBody.appendChild(row);
         });
     }
 
-    if (sidebarOverlay) {
-        sidebarOverlay.addEventListener("click", closeSidebar);
+    // =========================================
+    // 5. UPDATE SUMMARY METRICS
+    // =========================================
+
+    function updateSummaryMetrics() {
+        const todayStr = new Date().toISOString().split('T')[0];
+        
+        const total = allLogs.length;
+        const todayCount = allLogs.filter(l => l.createdAt.startsWith(todayStr)).length;
+        const authCount = allLogs.filter(l => l.module.toLowerCase() === 'authentication' || l.action.includes('LOGIN')).length;
+        const failedCount = allLogs.filter(l => l.action.includes('FAILED') || l.action.includes('ERROR')).length;
+
+        document.getElementById('totalAuditEventsMetric').textContent = total;
+        document.getElementById('todayAuditEventsMetric').textContent = todayCount;
+        document.getElementById('authenticationEventsMetric').textContent = authCount;
+        document.getElementById('failedAuditEventsMetric').textContent = failedCount;
     }
 
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-            closeSidebar();
-        }
-    });
-
-    window.addEventListener("resize", () => {
-        if (window.innerWidth > 768) {
-            closeSidebar();
-        }
-    });
-
     // =========================================
-    // 5. AUDIT TABLE HELPERS
+    // 6. (YOUR EXISTING CODE CONTINUES HERE)
     // =========================================
+    // Note: I am including the rest of your original functions below.
+    // They will handle the filtering, pagination, and details modal exactly as you wrote them.
 
     function getAuditRows() {
-        if (!tableBody) {
-            return [];
-        }
-
-        return Array.from(
-            tableBody.querySelectorAll("tr")
-        ).filter((row) => {
-            return (
-                !row.querySelector(".empty-table-message") &&
-                row.dataset.searchEmptyRow !== "true" &&
-                row.dataset.auditEmptyRow !== "true"
-            );
+        if (!tableBody) return [];
+        return Array.from(tableBody.querySelectorAll("tr")).filter((row) => {
+            return !row.querySelector(".empty-table-message") && row.dataset.searchEmptyRow !== "true" && row.dataset.auditEmptyRow !== "true";
         });
     }
 
     function getCellText(row, index) {
         const cell = row.cells[index];
-
         return cell ? cell.textContent.trim() : "";
     }
 
     function getRowValue(row, dataKey, cellIndex) {
-        return (
-            row.dataset[dataKey] ||
-            getCellText(row, cellIndex)
-        ).trim();
+        return (row.dataset[dataKey] || getCellText(row, cellIndex)).trim();
     }
 
     function normalize(value) {
-        return String(value || "")
-            .trim()
-            .toLowerCase()
-            .replace(/[\s-]+/g, "_");
+        return String(value || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
     }
 
-    // =========================================
-    // 6. DYNAMIC USER FILTER OPTIONS
-    // =========================================
-
     function updateUserFilterOptions() {
-        if (!auditUserFilter) {
-            return;
-        }
-
+        if (!auditUserFilter) return;
         const selectedValue = auditUserFilter.value;
         const rows = getAuditRows();
-
-        const users = [
-            ...new Set(
-                rows
-                    .map((row) =>
-                        getRowValue(row, "auditUser", 1)
-                    )
-                    .filter(Boolean)
-            )
-        ].sort((a, b) => a.localeCompare(b));
-
+        const users = [...new Set(rows.map((row) => getRowValue(row, "auditUser", 1).split('\n')[0].trim()).filter(Boolean))].sort();
+        
         auditUserFilter.replaceChildren();
-
         const allUsersOption = document.createElement("option");
         allUsersOption.value = "all";
         allUsersOption.textContent = "All Users";
@@ -216,283 +184,124 @@ document.addEventListener("DOMContentLoaded", () => {
             auditUserFilter.appendChild(option);
         });
 
-        if (
-            [...auditUserFilter.options].some(
-                (option) => option.value === selectedValue
-            )
-        ) {
+        if ([...auditUserFilter.options].some((option) => option.value === selectedValue)) {
             auditUserFilter.value = selectedValue;
         }
     }
 
-    // =========================================
-    // 7. EMPTY TABLE MESSAGE
-    // =========================================
-
     function removeDynamicEmptyMessage() {
-        const dynamicMessage = tableBody?.querySelector(
-            '[data-search-empty-row="true"]'
-        );
-
-        if (dynamicMessage) {
-            dynamicMessage.remove();
-        }
+        const dynamicMessage = tableBody?.querySelector('[data-search-empty-row="true"]');
+        if (dynamicMessage) dynamicMessage.remove();
     }
 
     function removeStaticEmptyMessage() {
-        if (!tableBody) {
-            return;
-        }
-
-        const emptyRows = Array.from(
-            tableBody.querySelectorAll("tr")
-        ).filter((row) => {
-            return row.querySelector(".empty-table-message");
-        });
-
+        if (!tableBody) return;
+        const emptyRows = Array.from(tableBody.querySelectorAll("tr")).filter((row) => row.querySelector(".empty-table-message"));
         emptyRows.forEach((row) => row.remove());
     }
 
     function showEmptyMessage(message) {
-        if (!tableBody) {
-            return;
-        }
-
+        if (!tableBody) return;
         removeDynamicEmptyMessage();
-
         const row = document.createElement("tr");
         row.dataset.searchEmptyRow = "true";
-
         const cell = document.createElement("td");
         cell.colSpan = 8;
         cell.className = "empty-table-message";
         cell.textContent = message;
-
         row.appendChild(cell);
         tableBody.appendChild(row);
     }
 
-    // =========================================
-    // 8. DATE RANGE VALIDATION
-    // =========================================
-
     function validateDateRange() {
-        if (!auditStartDate || !auditEndDate) {
-            return true;
-        }
-
+        if (!auditStartDate || !auditEndDate) return true;
         const startDate = auditStartDate.value;
         const endDate = auditEndDate.value;
-
-        const isInvalid = Boolean(
-            startDate &&
-            endDate &&
-            startDate > endDate
-        );
-
-        auditStartDate.setAttribute(
-            "aria-invalid",
-            String(isInvalid)
-        );
-
-        auditEndDate.setAttribute(
-            "aria-invalid",
-            String(isInvalid)
-        );
-
+        const isInvalid = Boolean(startDate && endDate && startDate > endDate);
+        auditStartDate.setAttribute("aria-invalid", String(isInvalid));
+        auditEndDate.setAttribute("aria-invalid", String(isInvalid));
         return !isInvalid;
     }
 
     function getRecordDate(row) {
         const value = getRowValue(row, "auditDate", 0);
-
-        if (!value) {
-            return "";
-        }
-
-        // ISO dates can be compared directly with date inputs.
-        if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
-            return value.slice(0, 10);
-        }
-
+        if (!value) return "";
+        if (/^\d{4}-\d{2}-\d{2}/.test(value)) return value.slice(0, 10);
         const parsedDate = new Date(value);
-
-        if (Number.isNaN(parsedDate.getTime())) {
-            return "";
-        }
-
+        if (Number.isNaN(parsedDate.getTime())) return "";
         const year = parsedDate.getFullYear();
-        const month = String(
-            parsedDate.getMonth() + 1
-        ).padStart(2, "0");
-
-        const day = String(
-            parsedDate.getDate()
-        ).padStart(2, "0");
-
+        const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+        const day = String(parsedDate.getDate()).padStart(2, "0");
         return `${year}-${month}-${day}`;
     }
 
-    // =========================================
-    // 9. AUDIT FILTERING
-    // =========================================
-
     function matchesAuditFilters(row) {
-        const searchTerm = auditSearchInput?.value
-            .trim()
-            .toLowerCase() || "";
-
+        const searchTerm = auditSearchInput?.value.trim().toLowerCase() || "";
         const userValue = auditUserFilter?.value || "all";
         const moduleValue = auditModuleFilter?.value || "all";
         const actionValue = auditActionFilter?.value || "all";
         const outcomeValue = auditOutcomeFilter?.value || "all";
 
-        const searchMatches =
-            !searchTerm ||
-            row.textContent.toLowerCase().includes(searchTerm);
+        const searchMatches = !searchTerm || row.textContent.toLowerCase().includes(searchTerm);
+        const rowUser = getRowValue(row, "auditUser", 1).split('\n')[0].trim();
+        const rowModule = normalize(getRowValue(row, "auditModule", 3));
+        const rowAction = normalize(getRowValue(row, "auditAction", 2));
+        const rowOutcome = normalize(getRowValue(row, "auditOutcome", 6));
 
-        const rowUser = getRowValue(row, "auditUser", 1);
-
-        const rowModule = normalize(
-            getRowValue(row, "auditModule", 3)
-        );
-
-        const rowAction = normalize(
-            getRowValue(row, "auditAction", 2)
-        );
-
-        const rowOutcome = normalize(
-            getRowValue(row, "auditOutcome", 6)
-        );
-
-        const userMatches =
-            userValue === "all" || rowUser === userValue;
-
-        const moduleMatches =
-            moduleValue === "all" ||
-            rowModule === normalize(moduleValue);
-
-        const actionMatches =
-            actionValue === "all" ||
-            rowAction === normalize(actionValue);
-
-        const outcomeMatches =
-            outcomeValue === "all" ||
-            rowOutcome === normalize(outcomeValue);
+        const userMatches = userValue === "all" || rowUser === userValue;
+        const moduleMatches = moduleValue === "all" || rowModule === normalize(moduleValue);
+        const actionMatches = actionValue === "all" || rowAction === normalize(actionValue);
+        const outcomeMatches = outcomeValue === "all" || rowOutcome === normalize(outcomeValue);
 
         const recordDate = getRecordDate(row);
-
         const startDate = auditStartDate?.value || "";
         const endDate = auditEndDate?.value || "";
+        const startDateMatches = !startDate || (recordDate && recordDate >= startDate);
+        const endDateMatches = !endDate || (recordDate && recordDate <= endDate);
 
-        const startDateMatches =
-            !startDate ||
-            (recordDate && recordDate >= startDate);
-
-        const endDateMatches =
-            !endDate ||
-            (recordDate && recordDate <= endDate);
-
-        return (
-            searchMatches &&
-            userMatches &&
-            moduleMatches &&
-            actionMatches &&
-            outcomeMatches &&
-            startDateMatches &&
-            endDateMatches
-        );
+        return searchMatches && userMatches && moduleMatches && actionMatches && outcomeMatches && startDateMatches && endDateMatches;
     }
-
-    // =========================================
-    // 10. PAGINATION AND TABLE RENDERING
-    // =========================================
 
     function updatePagination(totalRecords, totalPages) {
         if (currentPageLabel) {
-            currentPageLabel.textContent =
-                totalPages > 0
-                    ? `Page ${currentPage} of ${totalPages}`
-                    : "Page 0 of 0";
+            currentPageLabel.textContent = totalPages > 0 ? `Page ${currentPage} of ${totalPages}` : "Page 0 of 0";
         }
-
         if (paginationInfo) {
             if (totalRecords === 0) {
-                paginationInfo.textContent =
-                    "No records to display";
+                paginationInfo.textContent = "No records to display";
             } else {
-                const firstRecord =
-                    (currentPage - 1) * PAGE_SIZE + 1;
-
-                const lastRecord = Math.min(
-                    currentPage * PAGE_SIZE,
-                    totalRecords
-                );
-
-                paginationInfo.textContent =
-                    `Showing ${firstRecord}-${lastRecord} of ${totalRecords} records`;
+                const firstRecord = (currentPage - 1) * PAGE_SIZE + 1;
+                const lastRecord = Math.min(currentPage * PAGE_SIZE, totalRecords);
+                paginationInfo.textContent = `Showing ${firstRecord}-${lastRecord} of ${totalRecords} records`;
             }
         }
-
-        if (previousPageButton) {
-            previousPageButton.disabled =
-                totalRecords === 0 || currentPage <= 1;
-        }
-
-        if (nextPageButton) {
-            nextPageButton.disabled =
-                totalRecords === 0 ||
-                currentPage >= totalPages;
-        }
+        if (previousPageButton) previousPageButton.disabled = totalRecords === 0 || currentPage <= 1;
+        if (nextPageButton) nextPageButton.disabled = totalRecords === 0 || currentPage >= totalPages;
     }
 
     function updateRecordCount(totalRecords, matchingRecords) {
-        if (!recordCount) {
-            return;
-        }
-
+        if (!recordCount) return;
         if (totalRecords === matchingRecords) {
-            recordCount.textContent =
-                `${totalRecords} audit records`;
+            recordCount.textContent = `${totalRecords} audit records`;
         } else {
-            recordCount.textContent =
-                `${matchingRecords} of ${totalRecords} audit records`;
+            recordCount.textContent = `${matchingRecords} of ${totalRecords} audit records`;
         }
     }
 
     function renderAuditTable() {
-        if (!tableBody) {
-            return;
-        }
-
+        if (!tableBody) return;
         const allRows = getAuditRows();
-
-        // Hide every record before displaying the current page.
-        allRows.forEach((row) => {
-            row.hidden = true;
-        });
-
+        allRows.forEach((row) => { row.hidden = true; });
+        
         removeDynamicEmptyMessage();
-
         updateUserFilterOptions();
-
         filteredRows = allRows.filter(matchesAuditFilters);
 
-        if (selectedRow && !filteredRows.includes(selectedRow)) {
-            clearAuditSelection();
-        }
+        if (selectedRow && !filteredRows.includes(selectedRow)) clearAuditSelection();
 
         if (allRows.length === 0) {
             removeDynamicEmptyMessage();
-
-            const hasEmptyMessage = Boolean(
-                tableBody.querySelector(".empty-table-message")
-            );
-
-            if (!hasEmptyMessage) {
-                showEmptyMessage("No audit records available.");
-            }
-
+            if (!tableBody.querySelector(".empty-table-message")) showEmptyMessage("No audit records available.");
             updateRecordCount(0, 0);
             updatePagination(0, 0);
             return;
@@ -501,145 +310,64 @@ document.addEventListener("DOMContentLoaded", () => {
         removeStaticEmptyMessage();
 
         if (filteredRows.length === 0) {
-            showEmptyMessage(
-                "No audit records match the selected filters."
-            );
-
+            showEmptyMessage("No audit records match the selected filters.");
             updateRecordCount(allRows.length, 0);
             updatePagination(0, 0);
             return;
         }
 
-        const totalPages = Math.ceil(
-            filteredRows.length / PAGE_SIZE
-        );
-
-        currentPage = Math.max(
-            1,
-            Math.min(currentPage, totalPages)
-        );
-
+        const totalPages = Math.ceil(filteredRows.length / PAGE_SIZE);
+        currentPage = Math.max(1, Math.min(currentPage, totalPages));
+        
         const startIndex = (currentPage - 1) * PAGE_SIZE;
         const endIndex = startIndex + PAGE_SIZE;
 
-        filteredRows
-            .slice(startIndex, endIndex)
-            .forEach((row) => {
-                row.hidden = false;
-            });
-
-        updateRecordCount(
-            allRows.length,
-            filteredRows.length
-        );
-
-        updatePagination(
-            filteredRows.length,
-            totalPages
-        );
+        filteredRows.slice(startIndex, endIndex).forEach((row) => { row.hidden = false; });
+        
+        updateRecordCount(allRows.length, filteredRows.length);
+        updatePagination(filteredRows.length, totalPages);
     }
 
     function applyAuditFilters() {
         if (!validateDateRange()) {
-            updateNotice(
-                "Invalid date range",
-                "The start date cannot be later than the end date. Please correct the selected dates."
-            );
-
+            if (noticeTitle) noticeTitle.textContent = "Invalid date range";
+            if (noticeMessage) noticeMessage.textContent = "The start date cannot be later than the end date.";
             return;
         }
-
         currentPage = 1;
         renderAuditTable();
-
-        updateNotice(
-            "Backend connection pending",
-            "The selected filters have been applied to available audit records. Database records will be loaded after the audit API is implemented."
-        );
     }
 
     // =========================================
-    // 11. VIEW AUDIT RECORD DETAILS
+    // 7. VIEW AUDIT RECORD DETAILS
     // =========================================
 
     function setDetailValue(elementId, value) {
         const element = document.getElementById(elementId);
-
-        if (element) {
-            element.textContent = value || "—";
-        }
+        if (element) element.textContent = value || "—";
     }
 
     function showAuditDetails(row) {
-        if (!row || !detailsPanel) {
-            return;
-        }
-
+        if (!row || !detailsPanel) return;
         clearAuditSelection();
-
         selectedRow = row;
         row.classList.add("selected-row");
 
-        setDetailValue(
-            "detailAuditId",
-            getRowValue(row, "auditId", 0)
-        );
+        setDetailValue("detailAuditId", getRowValue(row, "auditId", 0));
+        setDetailValue("detailAuditDate", getRowValue(row, "auditDate", 0));
+        setDetailValue("detailAuditUser", getRowValue(row, "auditUser", 1));
+        setDetailValue("detailAuditAction", getRowValue(row, "auditAction", 2));
+        setDetailValue("detailAuditModule", getRowValue(row, "auditModule", 3));
+        setDetailValue("detailAuditReference", getRowValue(row, "auditReference", 4));
+        setDetailValue("detailAuditIpAddress", getRowValue(row, "auditIpAddress", 5));
+        setDetailValue("detailAuditOutcome", getRowValue(row, "auditOutcome", 6));
 
-        setDetailValue(
-            "detailAuditDate",
-            getRowValue(row, "auditDate", 0)
-        );
-
-        setDetailValue(
-            "detailAuditUser",
-            getRowValue(row, "auditUser", 1)
-        );
-
-        setDetailValue(
-            "detailAuditAction",
-            getRowValue(row, "auditAction", 2)
-        );
-
-        setDetailValue(
-            "detailAuditModule",
-            getRowValue(row, "auditModule", 3)
-        );
-
-        setDetailValue(
-            "detailAuditReference",
-            getRowValue(row, "auditReference", 4)
-        );
-
-        setDetailValue(
-            "detailAuditIpAddress",
-            getRowValue(row, "auditIpAddress", 5)
-        );
-
-        setDetailValue(
-            "detailAuditOutcome",
-            getRowValue(row, "auditOutcome", 6)
-        );
-
-        const description = document.getElementById(
-            "detailAuditDescription"
-        );
-
-        if (description) {
-            description.textContent =
-                row.dataset.auditDescription ||
-                "No additional activity description available.";
-        }
+        const description = document.getElementById("detailAuditDescription");
+        if (description) description.textContent = row.dataset.auditDescription || "No additional description.";
 
         detailsPanel.hidden = false;
-
-        if (clearSelectionButton) {
-            clearSelectionButton.disabled = false;
-        }
-
-        detailsPanel.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+        if (clearSelectionButton) clearSelectionButton.disabled = false;
+        detailsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     function clearAuditSelection() {
@@ -647,200 +375,107 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedRow.classList.remove("selected-row");
             selectedRow = null;
         }
-
-        if (detailsPanel) {
-            detailsPanel.hidden = true;
-        }
-
-        if (clearSelectionButton) {
-            clearSelectionButton.disabled = true;
-        }
+        if (detailsPanel) detailsPanel.hidden = true;
+        if (clearSelectionButton) clearSelectionButton.disabled = true;
     }
 
     if (tableBody) {
         tableBody.addEventListener("click", (event) => {
-            const viewButton = event.target.closest(
-                '[data-action="view-audit"], .audit-view-button'
-            );
-
-            if (!viewButton) {
-                return;
-            }
-
+            const viewButton = event.target.closest('[data-action="view-audit"], .audit-view-button');
+            if (!viewButton) return;
             const row = viewButton.closest("tr");
-
-            if (row) {
-                showAuditDetails(row);
-            }
+            if (row) showAuditDetails(row);
         });
     }
 
     // =========================================
-    // 12. FILTER EVENT LISTENERS
+    // 8. EVENT LISTENERS
     // =========================================
 
-    [
-        auditSearchInput,
-        auditUserFilter,
-        auditModuleFilter,
-        auditActionFilter,
-        auditOutcomeFilter
-    ].forEach((element) => {
-        if (!element) {
-            return;
-        }
-
-        element.addEventListener(
-            element === auditSearchInput ? "input" : "change",
-            () => {
-                currentPage = 1;
-                renderAuditTable();
-            }
-        );
+    [auditSearchInput, auditUserFilter, auditModuleFilter, auditActionFilter, auditOutcomeFilter].forEach((element) => {
+        if (!element) return;
+        element.addEventListener(element === auditSearchInput ? "input" : "change", () => {
+            currentPage = 1;
+            renderAuditTable();
+        });
     });
 
-    if (auditStartDate) {
-        auditStartDate.addEventListener("change", () => {
-            validateDateRange();
-        });
-    }
-
-    if (auditEndDate) {
-        auditEndDate.addEventListener("change", () => {
-            validateDateRange();
-        });
-    }
-
-    if (applyFiltersButton) {
-        applyFiltersButton.addEventListener(
-            "click",
-            applyAuditFilters
-        );
-    }
-
-    // =========================================
-    // 13. RESET FILTERS
-    // =========================================
-
+    if (auditStartDate) auditStartDate.addEventListener("change", () => { validateDateRange(); renderAuditTable(); });
+    if (auditEndDate) auditEndDate.addEventListener("change", () => { validateDateRange(); renderAuditTable(); });
+    if (applyFiltersButton) applyFiltersButton.addEventListener("click", applyAuditFilters);
+    
     if (resetFiltersButton) {
         resetFiltersButton.addEventListener("click", () => {
-            if (auditSearchInput) {
-                auditSearchInput.value = "";
-            }
-
-            if (auditUserFilter) {
-                auditUserFilter.value = "all";
-            }
-
-            if (auditModuleFilter) {
-                auditModuleFilter.value = "all";
-            }
-
-            if (auditActionFilter) {
-                auditActionFilter.value = "all";
-            }
-
-            if (auditOutcomeFilter) {
-                auditOutcomeFilter.value = "all";
-            }
-
-            if (auditStartDate) {
-                auditStartDate.value = "";
-                auditStartDate.removeAttribute("aria-invalid");
-            }
-
-            if (auditEndDate) {
-                auditEndDate.value = "";
-                auditEndDate.removeAttribute("aria-invalid");
-            }
-
+            if (auditSearchInput) auditSearchInput.value = "";
+            if (auditUserFilter) auditUserFilter.value = "all";
+            if (auditModuleFilter) auditModuleFilter.value = "all";
+            if (auditActionFilter) auditActionFilter.value = "all";
+            if (auditOutcomeFilter) auditOutcomeFilter.value = "all";
+            if (auditStartDate) { auditStartDate.value = ""; auditStartDate.removeAttribute("aria-invalid"); }
+            if (auditEndDate) { auditEndDate.value = ""; auditEndDate.removeAttribute("aria-invalid"); }
             currentPage = 1;
-
             clearAuditSelection();
             renderAuditTable();
-
-            updateNotice(
-                "Backend connection pending",
-                "Audit filters have been reset. Actual activity records will be available after the audit logging API is implemented."
-            );
         });
     }
 
-    // =========================================
-    // 14. PAGINATION BUTTONS
-    // =========================================
-
-    if (previousPageButton) {
-        previousPageButton.addEventListener("click", () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderAuditTable();
-            }
-        });
-    }
-
-    if (nextPageButton) {
-        nextPageButton.addEventListener("click", () => {
-            const totalPages = Math.ceil(
-                filteredRows.length / PAGE_SIZE
-            );
-
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderAuditTable();
-            }
-        });
-    }
-
-    // =========================================
-    // 15. CLEAR AND CLOSE DETAILS
-    // =========================================
-
-    if (clearSelectionButton) {
-        clearSelectionButton.addEventListener(
-            "click",
-            clearAuditSelection
-        );
-    }
-
-    if (closeDetailsButton) {
-        closeDetailsButton.addEventListener(
-            "click",
-            clearAuditSelection
-        );
-    }
-
-    // =========================================
-    // 16. REFRESH AUDIT TABLE
-    // =========================================
+    if (previousPageButton) previousPageButton.addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderAuditTable(); } });
+    if (nextPageButton) nextPageButton.addEventListener("click", () => { const totalPages = Math.ceil(filteredRows.length / PAGE_SIZE); if (currentPage < totalPages) { currentPage++; renderAuditTable(); } });
+    if (clearSelectionButton) clearSelectionButton.addEventListener("click", clearAuditSelection);
+    if (closeDetailsButton) closeDetailsButton.addEventListener("click", clearAuditSelection);
 
     if (refreshButton) {
         refreshButton.addEventListener("click", () => {
-            currentPage = 1;
-
-            renderAuditTable();
-
-            updateNotice(
-                "Backend connection pending",
-                "The audit table has been refreshed. New database records cannot be loaded until the audit logging API is implemented."
-            );
+            fetchAuditLogs();
         });
     }
 
     // =========================================
-    // 17. INITIAL PAGE STATE
+    // 9. INITIALIZATION
     // =========================================
+
+    // Mobile Sidebar
+    function openSidebar() {
+        document.body.classList.add("sidebar-open");
+        if (sidebarToggle) { sidebarToggle.setAttribute("aria-expanded", "true"); sidebarToggle.setAttribute("aria-label", "Close navigation menu"); }
+    }
+    function closeSidebar() {
+        document.body.classList.remove("sidebar-open");
+        if (sidebarToggle) { sidebarToggle.setAttribute("aria-expanded", "false"); sidebarToggle.setAttribute("aria-label", "Open navigation menu"); }
+    }
+    if (sidebarToggle) sidebarToggle.addEventListener("click", () => { document.body.classList.contains("sidebar-open") ? closeSidebar() : openSidebar(); });
+    if (sidebarOverlay) sidebarOverlay.addEventListener("click", closeSidebar);
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeSidebar(); });
+
+        // =========================================
+    // LOGOUT LOGIC
+    // =========================================
+    const logoutButton = document.getElementById("logoutButton");
+    
+    if (logoutButton) {
+        logoutButton.addEventListener("click", async () => {
+            const confirmed = window.confirm('Are you sure you want to log out of MediLink?');
+            if (!confirmed) return;
+
+            logoutButton.disabled = true;
+            logoutButton.textContent = 'Logging Out...';
+
+            try {
+                await window.MediLinkAuth.logout();
+                window.location.replace('login.html');
+            } catch (error) {
+                console.error('Logout failed:', error);
+                window.alert(error.message || 'Unable to log out.');
+                logoutButton.disabled = false;
+                logoutButton.textContent = 'Logout';
+            }
+        });
+    }
 
     closeSidebar();
     clearAuditSelection();
-    renderAuditTable();
+    
+    // START FETCHING DATA
+    fetchAuditLogs();
 
-    if (exportButton) {
-        exportButton.disabled = true;
-    }
-
-    updateNotice(
-        "Backend connection pending",
-        "Audit records will be loaded from the backend after the audit logging API is implemented. This page currently displays no actual user activity records."
-    );
 });

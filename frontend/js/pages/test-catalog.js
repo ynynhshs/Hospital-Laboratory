@@ -518,7 +518,7 @@
             registrationForm.reset();
 
             // Display the newly created test.
-            testSearch.value = test.testCode;
+            testSearch.value = '';
             categoryFilter.value = '';
             statusFilter.value = '';
 

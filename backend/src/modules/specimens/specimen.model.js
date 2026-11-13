@@ -27,7 +27,7 @@ const specimenSchema = new Schema(
         },
         collectedBy: {
             type: Schema.Types.ObjectId,
-            ref: 'LabUser'
+            ref: 'User' // <-- FIXED: Changed from LabUser to User
         },
         collectedAt: {
             type: Date
