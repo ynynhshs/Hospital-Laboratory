@@ -97,9 +97,7 @@
                             <p class="user-role" id="userRole">Checking account...</p>
                         </div>
                     </div>
-                    <!-- Theme Toggle -->
-                    <button type="button" class="theme-toggle" id="themeToggle"
-                            aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
+                    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
                         <span class="theme-toggle-icon-wrapper" aria-hidden="true">
                             <span class="theme-toggle-sun">☀</span>
                             <span class="theme-toggle-moon">☾</span>
@@ -127,6 +125,9 @@
                             </div>
                         </div>
                         <form id="patientRegistrationForm">
+                            
+                            <!-- Personal Info -->
+                            <h3 class="form-section-title" style="margin-top: 10px; margin-bottom: 15px; color: var(--color-text);">Personal Information</h3>
                             <div class="patient-form-grid">
                                 <div class="form-group">
                                     <label class="form-label" for="firstName">First Name *</label>
@@ -141,10 +142,6 @@
                                     <input type="text" id="lastName" name="lastName" class="form-control" maxlength="60" placeholder="Enter last name" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="suffix">Name Suffix</label>
-                                    <input type="text" id="suffix" name="suffix" class="form-control" maxlength="15" placeholder="e.g. Jr., Sr., III">
-                                </div>
-                                <div class="form-group">
                                     <label class="form-label" for="birthDate">Date of Birth *</label>
                                     <input type="date" id="birthDate" name="birthDate" class="form-control" required>
                                 </div>
@@ -157,12 +154,107 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="contactNo">Contact Number</label>
-                                    <input type="tel" id="contactNo" name="contactNo" class="form-control" maxlength="25" placeholder="Enter contact number">
+                                    <label class="form-label" for="civilStatus">Civil Status</label>
+                                    <select id="civilStatus" name="civilStatus" class="form-control">
+                                        <option value="">Select status</option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Widowed">Widowed</option>
+                                        <option value="Separated">Separated</option>
+                                    </select>
                                 </div>
                             </div>
+
+                            <!-- Contact Info -->
+                            <h3 class="form-section-title" style="margin-top: 20px; margin-bottom: 15px; color: var(--color-text);">Contact Information</h3>
+                            <div class="patient-form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="address">Address (Street & Barangay)</label>
+                                    <input type="text" id="address" name="address" class="form-control" placeholder="Enter address">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="city">City / Municipality</label>
+                                    <input type="text" id="city" name="city" class="form-control" placeholder="Enter city">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="contactNo">Contact Number</label>
+                                    <input type="tel" id="contactNo" name="contactNo" class="form-control" maxlength="25" placeholder="Mobile or phone number">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="email">Email Address</label>
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address">
+                                </div>
+                            </div>
+
+                            <!-- Emergency Contact -->
+                            <h3 class="form-section-title" style="margin-top: 20px; margin-bottom: 15px; color: var(--color-text);">Emergency Contact</h3>
+                            <div class="patient-form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="emergencyContact.name">Contact Name</label>
+                                    <input type="text" id="emergencyContact.name" name="emergencyContact.name" class="form-control" placeholder="Full name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="emergencyContact.relationship">Relationship</label>
+                                    <input type="text" id="emergencyContact.relationship" name="emergencyContact.relationship" class="form-control" placeholder="e.g. Spouse, Parent">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="emergencyContact.contactNo">Emergency Contact No.</label>
+                                    <input type="tel" id="emergencyContact.contactNo" name="emergencyContact.contactNo" class="form-control" placeholder="Mobile or phone number">
+                                </div>
+                            </div>
+
+                            <!-- Medical Info -->
+                            <h3 class="form-section-title" style="margin-top: 20px; margin-bottom: 15px; color: var(--color-text);">Medical Information</h3>
+                            <div class="patient-form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="medical.bloodType">Blood Type</label>
+                                    <input type="text" id="medical.bloodType" name="medical.bloodType" class="form-control" placeholder="e.g. A+, O-">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="medical.heightCm">Height (cm)</label>
+                                    <input type="number" id="medical.heightCm" name="medical.heightCm" class="form-control" placeholder="e.g. 170">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="medical.weightKg">Weight (kg)</label>
+                                    <input type="number" id="medical.weightKg" name="medical.weightKg" class="form-control" placeholder="e.g. 65">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="medical.allergies">Allergies</label>
+                                    <input type="text" id="medical.allergies" name="medical.allergies" class="form-control" placeholder="Any known allergies">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="medical.conditions">Existing Conditions</label>
+                                    <input type="text" id="medical.conditions" name="medical.conditions" class="form-control" placeholder="e.g. Hypertension, Diabetes">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="medical.medications">Current Medications</label>
+                                    <input type="text" id="medical.medications" name="medical.medications" class="form-control" placeholder="List of medications">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="medical.surgeries">Past Surgeries</label>
+                                    <input type="text" id="medical.surgeries" name="medical.surgeries" class="form-control" placeholder="Any past surgeries">
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                                    <input type="checkbox" id="medical.smoker" name="medical.smoker" style="width: 20px; height: 20px;">
+                                    <label class="form-label" for="medical.smoker" style="margin-bottom: 0;">Patient is a Smoker</label>
+                                </div>
+                            </div>
+
+                            <!-- Insurance Info -->
+                            <h3 class="form-section-title" style="margin-top: 20px; margin-bottom: 15px; color: var(--color-text);">Insurance Details</h3>
+                            <div class="patient-form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="insurance.provider">Insurance Provider</label>
+                                    <input type="text" id="insurance.provider" name="insurance.provider" class="form-control" placeholder="e.g. PhilHealth, Maxicare">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="insurance.memberNo">Member Number</label>
+                                    <input type="text" id="insurance.memberNo" name="insurance.memberNo" class="form-control" placeholder="Insurance member ID">
+                                </div>
+                            </div>
+
                             <div class="alert patient-form-message" id="patientFormMessage" role="status" aria-live="polite" hidden></div>
-                            <div class="patient-form-actions">
+                            <div class="patient-form-actions" style="margin-top: 20px;">
                                 <button type="button" class="btn btn-secondary" id="cancelPatientButton">Cancel</button>
                                 <button type="submit" class="btn btn-primary" id="savePatientButton">Save Patient</button>
                             </div>

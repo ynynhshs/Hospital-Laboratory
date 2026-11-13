@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const TestCatalog = require('./test-catalog.model');
 const AppError = require('../../shared/utils/app-error');
 
@@ -19,14 +20,12 @@ async function generateNextTestCode(category) {
     const prefix = getCategoryPrefix(category);
     const regex = new RegExp(`^${prefix}-\\d+$`);
     
-    // Find the latest test with this prefix
     const lastTest = await TestCatalog.findOne({ testCode: regex }).sort({ testCode: -1 });
 
     if (!lastTest || !lastTest.testCode) {
-        return `${prefix}-001`; // Start at 001
+        return `${prefix}-001`;
     }
 
-    // Extract number and increment
     const match = lastTest.testCode.match(new RegExp(`${prefix}-(\\d+)`));
     if (!match) return `${prefix}-001`;
 
@@ -36,12 +35,8 @@ async function generateNextTestCode(category) {
 
 // 1. Create a new test
 async function createTest(testData) {
-    // Generate the code automatically based on the category
     const newTestCode = await generateNextTestCode(testData.category);
-    
-    // Override whatever code was sent from the frontend
     testData.testCode = newTestCode;
-
     const test = await TestCatalog.create(testData);
     return test;
 }
@@ -62,13 +57,8 @@ async function searchTests(query) {
         ];
     }
 
-    if (query.category) {
-        filter.category = query.category;
-    }
-
-    if (query.status) {
-        filter.status = query.status;
-    }
+    if (query.category) filter.category = query.category;
+    if (query.status) filter.status = query.status;
 
     const [tests, total] = await Promise.all([
         TestCatalog.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
@@ -88,6 +78,9 @@ async function searchTests(query) {
 
 // 3. Get a single test by ID
 async function getTestById(testId) {
+    if (!mongoose.isValidObjectId(testId)) {
+        throw new AppError('Invalid test ID.', 400);
+    }
     const test = await TestCatalog.findById(testId);
     if (!test) {
         throw new AppError('Laboratory test not found.', 404);
@@ -95,8 +88,31 @@ async function getTestById(testId) {
     return test;
 }
 
+// 4. Update an existing test
+async function updateTest(testId, updateData) {
+    if (!mongoose.isValidObjectId(testId)) {
+        throw new AppError('Invalid test ID.', 400);
+    }
+
+    // Prevent the testCode from being changed on edit
+    delete updateData.testCode;
+
+    const updatedTest = await TestCatalog.findByIdAndUpdate(
+        testId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+    );
+
+    if (!updatedTest) {
+        throw new AppError('Laboratory test not found.', 404);
+    }
+
+    return updatedTest;
+}
+
 module.exports = {
     createTest,
     searchTests,
-    getTestById
+    getTestById,
+    updateTest // <-- Export the new function
 };

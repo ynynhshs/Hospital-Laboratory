@@ -148,9 +148,36 @@ async function searchPatients(searchTerm = '', options = {}) {
 // 5. EXPORT SERVICE FUNCTIONS
 // =========================================
 
+// =========================================
+// 6. UPDATE PATIENT
+// =========================================
+
+async function updatePatient(patientId, updateData) {
+    if (typeof patientId !== 'string' || !patientId) {
+        throw new AppError('A valid patient ID is required.', 400);
+    }
+
+    // Ensure patientId cannot be changed
+    delete updateData.patientId;
+
+    const updatedPatient = await Patient.findByIdAndUpdate(
+        patientId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+    );
+
+    if (!updatedPatient) {
+        throw new AppError('Patient not found.', 404);
+    }
+
+    return updatedPatient;
+}
+
+
 module.exports = {
     createPatient,
     getPatientByCode,
     getPatientById,
-    searchPatients
+    searchPatients,
+    updatePatient 
 };

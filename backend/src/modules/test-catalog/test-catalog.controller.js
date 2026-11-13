@@ -1,4 +1,4 @@
-const { createTest, searchTests, getTestById } = require('./test-catalog.service');
+const { createTest, searchTests, getTestById, updateTest } = require('./test-catalog.service');
 
 // 1. Create Test Controller
 exports.createTestController = async (req, res, next) => {
@@ -35,6 +35,20 @@ exports.getTestByIdController = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: 'Laboratory test retrieved successfully.',
+            data: { test }
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// 4. Update Test Controller
+exports.updateTestController = async (req, res, next) => {
+    try {
+        const test = await updateTest(req.params.testId, req.body);
+        res.status(200).json({
+            success: true,
+            message: 'Laboratory test updated successfully.',
             data: { test }
         });
     } catch (error) {

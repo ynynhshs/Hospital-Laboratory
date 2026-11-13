@@ -17,6 +17,9 @@
     const userRoleElement = document.getElementById('userRole');
     const userAvatarElement = document.getElementById('userAvatar');
 
+    // Chart instance state
+    let statusChartInstance = null;
+
     // 2. Display Current Date
     function displayDashboardDate() {
         if (!dashboardDate) return;
@@ -50,7 +53,63 @@
         if (userAvatarElement) userAvatarElement.textContent = fullName.charAt(0).toUpperCase();
     }
 
-    // 4. Load Live Dashboard Data
+    // 4. Render Doughnut Chart
+    function renderStatusChart(pending, inProgress, awaiting, completed) {
+        const canvas = document.getElementById('requestStatusChart');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+
+        // Destroy existing chart if refreshing
+        if (statusChartInstance) {
+            statusChartInstance.destroy();
+        }
+
+        statusChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pending', 'In Progress', 'Awaiting Verification', 'Completed'],
+                datasets: [{
+                    data: [pending, inProgress, awaiting, completed],
+                    backgroundColor: [
+                        '#f59e0b', // Amber (Pending)
+                        '#3b82f6', // Blue (In Progress)
+                        '#f43f5e', // Rose (Awaiting Verification)
+                        '#10b981'  // Emerald (Completed)
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff', // White borders between slices
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%', // Makes it a nice ring shape
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#64748b', // Slate gray text
+                            padding: 20,
+                            font: { family: 'inherit', size: 13 },
+                            usePointStyle: true,
+                            boxWidth: 8
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleFont: { size: 14 },
+                        bodyFont: { size: 14 },
+                        padding: 12,
+                        displayColors: true
+                    }
+                }
+            }
+        });
+    }
+
+    // 5. Load Live Dashboard Data
     async function loadDashboardData() {
         try {
             // Hide the development preview notice since data is now live
@@ -79,6 +138,9 @@
             if (document.getElementById('awaitingVerification')) document.getElementById('awaitingVerification').textContent = awaitingVerificationCount;
             if (document.getElementById('completedRequests')) document.getElementById('completedRequests').textContent = completedCount;
 
+            // Render the Chart
+            renderStatusChart(pendingCount, inProgressCount, awaitingVerificationCount, completedCount);
+
             // Populate the Recent Requests Table (top 5 only)
             populateRecentTable(allRequests.slice(0, 5));
 
@@ -87,7 +149,7 @@
         }
     }
 
-    // 5. Populate Recent Requests Table
+    // 6. Populate Recent Requests Table
     function populateRecentTable(requests) {
         const tbody = document.getElementById('recentRequestsTableBody');
         if (!tbody) return;
@@ -133,7 +195,7 @@
         });
     }
 
-    // 6. Verify Session & Initialize
+    // 7. Verify Session & Initialize
     async function verifyDashboardSession() {
         try {
             const user = await window.MediLinkAuth.getCurrentUser();
@@ -152,7 +214,7 @@
         }
     }
 
-    // 7. Sidebar Logic
+    // 8. Sidebar Logic
     function openSidebar() {
         if (!appLayout || !sidebarToggle) return;
         appLayout.classList.add('sidebar-open');
@@ -178,7 +240,7 @@
     document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeSidebar(); });
     document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => link.addEventListener('click', closeSidebar));
 
-    // 8. Logout Logic
+    // 9. Logout Logic
     if (logoutButton) {
         logoutButton.addEventListener('click', async () => {
             const confirmLogout = window.confirm('Are you sure you want to log out of MediLink?');

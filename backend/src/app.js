@@ -26,7 +26,19 @@ if (process.env.NODE_ENV === 'production') {
 app.disable('x-powered-by');
 
 // Apply security-related HTTP headers.
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            imgSrc: ["'self'", "data:"],
+            connectSrc: ["'self'", "https://cdn.jsdelivr.net"], // <-- ADDED HERE
+        },
+    },
+    crossOriginEmbedderPolicy: false,
+}));
 
 // Allow the API to receive JSON request bodies.
 app.use(express.json({ limit: '1mb' }));

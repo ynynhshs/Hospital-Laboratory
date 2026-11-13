@@ -1,11 +1,11 @@
-
 const express = require('express');
 
 const {
     registerPatient,
     getPatientByCodeController,
     getPatientByIdController,
-    searchPatientsController
+    searchPatientsController,
+    updatePatientController // <-- ADDED THIS IMPORT
 } = require('./patient.controller');
 
 const {
@@ -19,7 +19,6 @@ const router = express.Router();
 // 1. PATIENT REGISTRATION
 // =========================================
 
-// Only administrators and receptionists can register patients.
 router.post(
     '/',
     requireAuth,
@@ -31,7 +30,6 @@ router.post(
 // 2. SEARCH AND LIST PATIENTS
 // =========================================
 
-// All authenticated laboratory roles can search patients.
 router.get(
     '/',
     requireAuth,
@@ -77,6 +75,17 @@ router.get(
         'requesting_clinician'
     ),
     getPatientByIdController
+);
+
+// =========================================
+// 5. UPDATE PATIENT (Added this route)
+// =========================================
+
+router.patch(
+    '/:patientId',
+    requireAuth,
+    authorizeRoles('lab_admin', 'lab_receptionist'),
+    updatePatientController
 );
 
 module.exports = router;

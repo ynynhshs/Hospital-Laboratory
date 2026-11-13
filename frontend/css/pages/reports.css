@@ -521,3 +521,8 @@
         transform: none;
     }
 }
+
+/* Add this at the very bottom of reports.css */
+.reports-notice[hidden] {
+    display: none !important;
+}

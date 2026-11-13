@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const patientSchema = new Schema({
-    patientId: { type: String, required: true, unique: true }, // e.g., PT-2026-00001
+    patientId: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
     middleName: { type: String },
     lastName: { type: String, required: true },
@@ -12,11 +12,11 @@ const patientSchema = new Schema({
     address: { type: String },
     city: { type: String },
     contactNo: { type: String },
-    email: { type: String, unique: true, sparse: true },
+    email: { type: String },
     emergencyContact: {
         name: { type: String },
         relationship: { type: String },
-        contactNo: { type: String }
+        contactNo: { type: String } // Using contactNo for consistency
     },
     medical: {
         bloodType: { type: String },
@@ -26,7 +26,7 @@ const patientSchema = new Schema({
         conditions: { type: String },
         medications: { type: String },
         surgeries: { type: String },
-        smoker: { type: Boolean }
+        smoker: { type: Boolean, default: false }
     },
     insurance: {
         provider: { type: String },

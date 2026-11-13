@@ -3,7 +3,8 @@ const {
     createPatient,
     getPatientByCode,
     getPatientById,
-    searchPatients
+    searchPatients,
+    updatePatient
 } = require('./patient.service');
 
 // =========================================
@@ -115,6 +116,20 @@ async function searchPatientsController(req, res, next) {
     }
 }
 
+// 6. UPDATE PATIENT
+async function updatePatientController(req, res, next) {
+    try {
+        const patient = await updatePatient(req.params.patientId, req.body);
+        return res.status(200).json({
+            success: true,
+            message: 'Patient updated successfully.',
+            data: { patient }
+        });
+    } catch (error) {
+        return next(error);
+    }
+}
+
 // =========================================
 // 5. EXPORT CONTROLLER FUNCTIONS
 // =========================================
@@ -123,5 +138,6 @@ module.exports = {
     registerPatient,
     getPatientByCodeController,
     getPatientByIdController,
-    searchPatientsController
+    searchPatientsController,
+    updatePatientController
 };

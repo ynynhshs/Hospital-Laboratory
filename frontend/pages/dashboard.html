@@ -8,6 +8,9 @@
 
     <!-- Load theme.js early to apply theme before CSS renders -->
     <script src="../js/theme.js"></script>
+    
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Global Stylesheets -->
     <link rel="stylesheet" href="../css/base.css">
@@ -298,17 +301,8 @@
                             </div>
                         </div>
 
-                        <div class="chart-placeholder" id="requestStatusChartArea">
-
-                            <div class="chart-placeholder-icon">◔</div>
-
-                            <h3>Request Status Chart</h3>
-
-                            <p>
-                                The doughnut chart will display actual
-                                request data when the analytics API is ready.
-                            </p>
-
+                        <div class="chart-container" style="position: relative; height: 300px; width: 100%; padding: 10px;">
+                            <canvas id="requestStatusChart"></canvas>
                         </div>
 
                     </article>
