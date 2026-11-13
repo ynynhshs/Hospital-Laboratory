@@ -21,7 +21,6 @@ const resultSchema = new Schema(
             ref: 'Patient',
             required: true
         },
-        // Add the specimen reference so we can populate it!
         specimenId: {
             type: Schema.Types.ObjectId,
             ref: 'Specimen'
@@ -45,20 +44,25 @@ const resultSchema = new Schema(
         },
         enteredBy: {
             type: Schema.Types.ObjectId,
-            ref: 'User', // <-- FIXED: Changed from LabUser to User
+            ref: 'User',
             required: true
         },
-        // Add the verification fields!
         verifiedBy: {
             type: Schema.Types.ObjectId,
-            ref: 'User' // <-- FIXED: Changed from LabUser to User
+            ref: 'User'
         },
         verifiedAt: {
             type: Date
         },
+        // ADDED: To store the reason for returning
+        verificationRemarks: {
+            type: String,
+            trim: true
+        },
         status: {
             type: String,
-            enum: ['draft', 'pending_verification', 'verified', 'released'],
+            // ADDED: 'returned_for_correction' to the list
+            enum: ['draft', 'pending_verification', 'verified', 'released', 'returned_for_correction'],
             default: 'pending_verification'
         }
     },

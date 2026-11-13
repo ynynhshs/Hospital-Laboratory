@@ -59,9 +59,6 @@ const REQUEST_ACTIVITY_ACTIONS = [
 // 2. LABORATORY TEST SNAPSHOT SCHEMA
 // ==========================================
 
-// Preserves the test information when the
-// laboratory catalog is updated in the future.
-
 const testSnapshotSchema = new Schema(
     {
         testCode: {
@@ -98,6 +95,17 @@ const testSnapshotSchema = new Schema(
             type: String,
             required: true,
             trim: true
+        },
+        
+        // ADDED THESE TWO FIELDS
+        unit: {
+            type: String,
+            trim: true
+        },
+
+        referenceRange: {
+            type: String,
+            trim: true
         }
     },
     {
@@ -111,20 +119,17 @@ const testSnapshotSchema = new Schema(
 
 const requestedTestSchema = new Schema(
     {
-        // Reference to the existing laboratory_tests document.
         test: {
             type: Schema.Types.ObjectId,
             ref: 'TestCatalog',
             required: true
         },
 
-        // Historical information about the selected test.
         testSnapshot: {
             type: testSnapshotSchema,
             required: true
         },
 
-        // Individual processing status of this test.
         status: {
             type: String,
             enum: TEST_ITEM_STATUSES,
@@ -153,10 +158,9 @@ const requestActivitySchema = new Schema(
             maxlength: 500
         },
 
-        // Reference to the user responsible for the activity.
         performedBy: {
             type: Schema.Types.ObjectId,
-            ref: 'User', // <-- FIXED: Changed from LabUser to User
+            ref: 'User',
             required: true
         },
 
@@ -174,7 +178,6 @@ const requestActivitySchema = new Schema(
 
 const laboratoryRequestSchema = new Schema(
     {
-        // Unique laboratory request number.
         requestNumber: {
             type: String,
             required: true,
@@ -183,35 +186,30 @@ const laboratoryRequestSchema = new Schema(
             uppercase: true
         },
 
-        // Reference to the existing Patient document.
         patient: {
             type: Schema.Types.ObjectId,
             ref: 'Patient',
             required: true
         },
 
-        // User who requested the laboratory examination.
         requestedBy: {
             type: Schema.Types.ObjectId,
-            ref: 'User', // <-- FIXED: Changed from LabUser to User
+            ref: 'User',
             required: true
         },
 
-        // User who created the request in the system.
         createdBy: {
             type: Schema.Types.ObjectId,
-            ref: 'User', // <-- FIXED: Changed from LabUser to User
+            ref: 'User',
             required: true
         },
 
-        // User who last updated the request.
         updatedBy: {
             type: Schema.Types.ObjectId,
-            ref: 'User', // <-- FIXED: Changed from LabUser to User
+            ref: 'User',
             default: null
         },
 
-        // Priority of the laboratory request.
         priority: {
             type: String,
             enum: REQUEST_PRIORITIES,
@@ -219,7 +217,6 @@ const laboratoryRequestSchema = new Schema(
             required: true
         },
 
-        // Additional clinical information.
         clinicalNotes: {
             type: String,
             trim: true,
@@ -227,7 +224,6 @@ const laboratoryRequestSchema = new Schema(
             default: ''
         },
 
-        // Overall laboratory request status.
         status: {
             type: String,
             enum: REQUEST_STATUSES,
@@ -235,43 +231,21 @@ const laboratoryRequestSchema = new Schema(
             required: true
         },
 
-        // Laboratory tests included in this request.
         tests: {
             type: [requestedTestSchema],
             default: []
         },
 
-        // Request-specific activity history.
         activities: {
             type: [requestActivitySchema],
             default: []
         },
 
-        // Important request workflow timestamps.
-        submittedAt: {
-            type: Date,
-            default: null
-        },
-
-        acceptedAt: {
-            type: Date,
-            default: null
-        },
-
-        startedAt: {
-            type: Date,
-            default: null
-        },
-
-        completedAt: {
-            type: Date,
-            default: null
-        },
-
-        cancelledAt: {
-            type: Date,
-            default: null
-        }
+        submittedAt: { type: Date, default: null },
+        acceptedAt: { type: Date, default: null },
+        startedAt: { type: Date, default: null },
+        completedAt: { type: Date, default: null },
+        cancelledAt: { type: Date, default: null }
     },
     {
         timestamps: true,
@@ -283,23 +257,9 @@ const laboratoryRequestSchema = new Schema(
 // 6. DATABASE INDEXES
 // ==========================================
 
-// Improve searching by patient and request date.
-laboratoryRequestSchema.index({
-    patient: 1,
-    createdAt: -1
-});
-
-// Improve filtering by request status.
-laboratoryRequestSchema.index({
-    status: 1,
-    createdAt: -1
-});
-
-// Improve searching by requesting user.
-laboratoryRequestSchema.index({
-    requestedBy: 1,
-    createdAt: -1
-});
+laboratoryRequestSchema.index({ patient: 1, createdAt: -1 });
+laboratoryRequestSchema.index({ status: 1, createdAt: -1 });
+laboratoryRequestSchema.index({ requestedBy: 1, createdAt: -1 });
 
 // ==========================================
 // 7. CREATE MONGOOSE MODEL
@@ -307,18 +267,9 @@ laboratoryRequestSchema.index({
 
 const LaboratoryRequest =
     mongoose.models.LaboratoryRequest ||
-    mongoose.model(
-        'LaboratoryRequest',
-        laboratoryRequestSchema,
-        'laboratory_requests'
-    );
-
-// ==========================================
-// 8. EXPORT MODEL AND CONSTANTS
-// ==========================================
+    mongoose.model('LaboratoryRequest', laboratoryRequestSchema, 'laboratory_requests');
 
 module.exports = LaboratoryRequest;
-
 module.exports.REQUEST_STATUSES = REQUEST_STATUSES;
 module.exports.REQUEST_PRIORITIES = REQUEST_PRIORITIES;
 module.exports.TEST_CATEGORIES = TEST_CATEGORIES;

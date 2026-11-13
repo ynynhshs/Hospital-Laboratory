@@ -45,7 +45,6 @@ function isValidObjectId(value) {
 async function resolveRequestingClinician(requestData, authenticatedUser) {
     const role = authenticatedUser.role;
 
-    // Administrators and receptionists may create requests on behalf of clinicians.
     if (role === 'lab_admin' || role === 'lab_receptionist') {
         const clinicianId = requestData.requestingClinicianId || requestData.requestedBy || authenticatedUser.id;
 
@@ -64,7 +63,6 @@ async function resolveRequestingClinician(requestData, authenticatedUser) {
         return clinician._id;
     }
 
-    // Requesting clinicians can only create requests under their own accounts.
     if (role === 'requesting_clinician') {
         if (requestData.requestingClinicianId && requestData.requestingClinicianId !== authenticatedUser.id) {
             throw new AppError('Requesting clinicians can only create requests under their own accounts.', 403);
@@ -199,7 +197,7 @@ async function searchLaboratoryRequests(options = {}, authenticatedUser) {
         LaboratoryRequest.find(filter)
             .populate(
                 'patient',
-                'patientId firstName middleName lastName suffix birthDate sex contactNo' // <-- UPDATED FIELDS
+                'patientId firstName middleName lastName suffix birthDate sex contactNo'
             )
             .populate(
                 'requestedBy',
@@ -242,7 +240,7 @@ async function getLaboratoryRequestById(requestId, authenticatedUser) {
         .findOne(filter)
         .populate(
             'patient',
-            'patientId firstName middleName lastName suffix birthDate sex contactNo' // <-- UPDATED FIELDS
+            'patientId firstName middleName lastName suffix birthDate sex contactNo'
         )
         .populate(
             'requestedBy',
@@ -344,7 +342,7 @@ async function updateDraftRequest(requestId, updateData, authenticatedUser) {
             const selectedTests = await TestCatalog.find({
                 _id: { $in: normalizedTestIds },
                 status: 'active'
-            }).select('testCode testName category specimenType testingMethod turnaroundTime');
+            }).select('testCode testName category specimenType testingMethod turnaroundTime unit referenceRange');
 
             if (selectedTests.length !== normalizedTestIds.length) {
                 throw new AppError('One or more selected laboratory tests do not exist or are inactive.', 400);
@@ -362,7 +360,9 @@ async function updateDraftRequest(requestId, updateData, authenticatedUser) {
                         category: test.category,
                         specimenType: test.specimenType,
                         testingMethod: test.testingMethod,
-                        turnaroundTime: test.turnaroundTime
+                        turnaroundTime: test.turnaroundTime,
+                        unit: test.unit,
+                        referenceRange: test.referenceRange
                     },
                     status: 'pending'
                 };
@@ -453,7 +453,7 @@ async function createDraftRequest(requestData, authenticatedUser) {
         const selectedTests = await TestCatalog.find({
             _id: { $in: normalizedTestIds },
             status: 'active'
-        }).select('testCode testName category specimenType testingMethod turnaroundTime');
+        }).select('testCode testName category specimenType testingMethod turnaroundTime unit referenceRange');
 
         if (selectedTests.length !== normalizedTestIds.length) {
             throw new AppError('One or more selected laboratory tests do not exist or are inactive.', 400);
@@ -471,7 +471,9 @@ async function createDraftRequest(requestData, authenticatedUser) {
                     category: test.category,
                     specimenType: test.specimenType,
                     testingMethod: test.testingMethod,
-                    turnaroundTime: test.turnaroundTime
+                    turnaroundTime: test.turnaroundTime,
+                    unit: test.unit,
+                    referenceRange: test.referenceRange
                 },
                 status: 'pending'
             };

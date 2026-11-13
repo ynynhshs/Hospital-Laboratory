@@ -73,12 +73,15 @@
 
         filtered.forEach(row => {
             const tr = document.createElement('tr');
-            tr.dataset.resultRow = 'true';
-            tr.dataset.requestId = row.requestId;
-            tr.dataset.testId = row.testId;
-            tr.dataset.patientId = row.patientId;
-            tr.dataset.testName = row.testName;
-            tr.dataset.specimenType = row.specimenType;
+            
+            // Highlight returned rows in red
+            if (row.isReturned) {
+                tr.style.backgroundColor = 'rgba(239, 68, 68, 0.05)';
+            }
+
+            const statusBadge = row.isReturned 
+                ? `<span class="badge badge-danger">CORRECTION</span>`
+                : `<span class="badge badge-pending">AWAITING ENTRY</span>`;
 
             tr.innerHTML = `
                 <td>${row.requestNumber}</td>
@@ -86,11 +89,10 @@
                 <td>${row.testName}</td>
                 <td>${row.specimenType}</td>
                 <td>${new Date().toLocaleDateString()}</td>
-                <td><span class="badge badge-pending">AWAITING ENTRY</span></td>
-                <td><button class="btn btn-secondary btn-small enter-result-btn">Enter Result</button></td>
+                <td>${statusBadge}</td>
+                <td><button class="btn btn-secondary btn-small enter-result-btn">${row.isReturned ? 'Correct' : 'Enter Result'}</button></td>
             `;
 
-            // Click handler for the button inside the row
             tr.querySelector('.enter-result-btn').addEventListener('click', () => {
                 selectRow(row);
             });
@@ -104,7 +106,7 @@
     // 4. Update Summary Counts
     function updateSummaryCounts() {
         document.getElementById('awaitingResultCount').textContent = awaitingResults.length;
-        document.getElementById('draftResultCount').textContent = '0'; // Can be wired up later
+        document.getElementById('draftResultCount').textContent = '0'; 
         document.getElementById('pendingVerificationCount').textContent = '0';
         document.getElementById('releasedResultCount').textContent = '0';
     }
@@ -120,16 +122,44 @@
         resultUnit.value = row.unit || '';
         resultReferenceRange.value = row.referenceRange || '';
 
+        // Show correction warning if returned
+        let warningBox = document.getElementById('correctionWarning');
+        if (row.isReturned) {
+            if (!warningBox) {
+                warningBox = document.createElement('div');
+                warningBox.id = 'correctionWarning';
+                warningBox.className = 'alert alert-danger';
+                warningBox.style.marginBottom = '20px';
+                warningBox.style.color = '#991b1b';
+                warningBox.style.backgroundColor = '#fee2e2';
+                warningBox.style.padding = '15px';
+                warningBox.style.borderRadius = '8px';
+                warningBox.style.border = '1px solid #f87171';
+                
+                // Insert it right above the form grid
+                const formSection = resultEntryForm.querySelector('.result-form-section');
+                resultEntryForm.insertBefore(warningBox, formSection);
+            }
+            warningBox.innerHTML = `
+                <strong>Returned for Correction!</strong><br>
+                <strong>Verifier Remarks:</strong> ${row.verificationRemarks}<br>
+                <small>Previous Value: ${row.previousValue}</small>
+            `;
+            resultValue.value = row.previousValue; 
+        } else {
+            if (warningBox) warningBox.remove();
+            resultValue.value = ''; 
+        }
+
         // Enable fields
         resultValue.disabled = false;
         resultRemarks.disabled = false;
         resultGeneralNotes.disabled = false;
         submitResultButton.disabled = false;
 
-        resultFormStatus.textContent = 'Entering Result';
-        resultFormStatus.className = 'badge badge-info';
+        resultFormStatus.textContent = row.isReturned ? 'Correction Required' : 'Entering Result';
+        resultFormStatus.className = row.isReturned ? 'badge badge-danger' : 'badge badge-info';
 
-        // Scroll to form
         document.querySelector('.result-entry-card').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -153,7 +183,6 @@
             submitResultButton.textContent = 'Saving...';
 
             try {
-                
                 await window.MediLinkAPI.request('/results', {
                     method: 'POST',
                     body: {
@@ -161,7 +190,7 @@
                         testId: selectedTestData.testId,
                         testName: selectedTestData.testName,
                         patientId: selectedTestData.patientId,
-                        specimenId: selectedTestData.specimenId, // <-- ADD THIS
+                        specimenId: selectedTestData.specimenId,
                         resultValue: resultVal,
                         unit: resultUnit.value,
                         referenceRange: resultReferenceRange.value,
@@ -169,9 +198,9 @@
                     }
                 });
 
-                alert('Result submitted for verification successfully!');
+                alert(selectedTestData.isReturned ? 'Corrected result resubmitted successfully!' : 'Result submitted successfully!');
                 clearForm();
-                await loadAwaitingResults(); // Reload table
+                await loadAwaitingResults(); 
 
             } catch (error) {
                 alert('Failed to save result: ' + error.message);
@@ -186,6 +215,10 @@
     function clearForm() {
         if (resultEntryForm) resultEntryForm.reset();
         selectedTestData = null;
+        
+        const warningBox = document.getElementById('correctionWarning');
+        if (warningBox) warningBox.remove();
+
         resultValue.disabled = true;
         resultRemarks.disabled = true;
         resultGeneralNotes.disabled = true;
@@ -221,7 +254,7 @@
     // Initialize
     async function init() {
         try {
-            await window.MediLinkAuth.getCurrentUser(); // Verify auth
+            await window.MediLinkAuth.getCurrentUser();
             clearForm();
             await loadAwaitingResults();
         } catch (error) {

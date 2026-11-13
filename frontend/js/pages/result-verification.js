@@ -24,6 +24,7 @@
     
     const verifyResultButton = document.getElementById('verifyResultButton');
     const releaseResultButton = document.getElementById('releaseResultButton');
+    const returnResultButton = document.getElementById('returnResultButton');
 
     // State
     let pendingResults = [];
@@ -102,7 +103,6 @@
     // 4. Update Summary Cards
     function updateSummaryCounts() {
         document.getElementById('pendingVerificationCount').textContent = pendingResults.length;
-        // Other counts can be wired up later
     }
 
     // 5. Select a Row and Populate Form
@@ -119,14 +119,31 @@
         reviewEnteredBy.value = enteredBy;
         reviewSubmittedDate.value = new Date(res.createdAt).toLocaleString();
 
-        // Populate the Result Value row
+        // --- FLAG CALCULATION LOGIC ---
+        let flag = '—';
+        let flagColor = 'inherit';
+        const val = parseFloat(res.resultValue);
+        
+        if (!isNaN(val) && res.referenceRange) {
+            const rangeParts = res.referenceRange.split('-');
+            if (rangeParts.length === 2) {
+                const min = parseFloat(rangeParts[0]);
+                const max = parseFloat(rangeParts[1]);
+                if (!isNaN(min) && !isNaN(max)) {
+                    if (val < min) { flag = 'Low'; flagColor = '#3b82f6'; } // Blue
+                    else if (val > max) { flag = 'High'; flagColor = '#ef4444'; } // Red
+                    else { flag = 'Normal'; flagColor = '#10b981'; } // Green
+                }
+            }
+        }
+
         reviewResultComponentsBody.innerHTML = `
             <tr>
                 <td>${res.testName}</td>
                 <td><strong>${res.resultValue}</strong></td>
                 <td>${res.unit || '—'}</td>
                 <td>${res.referenceRange || '—'}</td>
-                <td>—</td>
+                <td><span style="color: ${flagColor}; font-weight: 700;">${flag}</span></td>
             </tr>
         `;
 
@@ -134,8 +151,8 @@
         verificationRemarks.disabled = false;
         verifyResultButton.disabled = false;
         releaseResultButton.disabled = false;
+        if (returnResultButton) returnResultButton.disabled = false;
 
-        // Scroll to form
         document.querySelector('.verification-review-card').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -148,6 +165,7 @@
 
         verifyResultButton.disabled = true;
         releaseResultButton.disabled = true;
+        if (returnResultButton) returnResultButton.disabled = true;
         verifyResultButton.textContent = 'Processing...';
 
         try {
@@ -157,20 +175,59 @@
 
             alert('Result verified and released successfully!');
             clearForm();
-            await loadResults(); // Refresh table
+            await loadResults();
 
         } catch (error) {
             alert('Failed to verify result: ' + error.message);
             verifyResultButton.disabled = false;
             releaseResultButton.disabled = false;
+            if (returnResultButton) returnResultButton.disabled = false;
             verifyResultButton.textContent = 'Verify Result';
         }
     }
 
     if (verifyResultButton) verifyResultButton.addEventListener('click', verifyAndRelease);
-    if (releaseResultButton) releaseResultButton.addEventListener('click', verifyAndRelease); // Same action
+    if (releaseResultButton) releaseResultButton.addEventListener('click', verifyAndRelease);
 
-    // 7. Clear Form
+    // 7. Return for Correction Action
+    if (returnResultButton) {
+        returnResultButton.addEventListener('click', async () => {
+            if (!selectedResultId) return;
+
+            const remarks = verificationRemarks.value.trim();
+            if (!remarks) {
+                alert('Please enter a reason in the Review Remarks box before returning the result.');
+                return;
+            }
+
+            const confirmReturn = window.confirm("Are you sure you want to return this result to the technologist for correction?");
+            if (!confirmReturn) return;
+
+            returnResultButton.disabled = true;
+            verifyResultButton.disabled = true;
+            releaseResultButton.disabled = true;
+            returnResultButton.textContent = 'Returning...';
+
+            try {
+                await window.MediLinkAPI.request(`/results/${selectedResultId}/return`, {
+                    method: 'PATCH',
+                    body: { remarks }
+                });
+
+                alert('Result returned for correction successfully.');
+                clearForm();
+                await loadResults();
+            } catch (error) {
+                alert('Failed to return result: ' + error.message);
+                returnResultButton.disabled = false;
+                verifyResultButton.disabled = false;
+                releaseResultButton.disabled = false;
+                returnResultButton.textContent = 'Return for Correction';
+            }
+        });
+    }
+
+    // 8. Clear Form
     function clearForm() {
         selectedResultId = null;
         reviewRequestNumber.value = '';
@@ -185,6 +242,10 @@
         
         verifyResultButton.disabled = true;
         releaseResultButton.disabled = true;
+        if (returnResultButton) {
+            returnResultButton.disabled = true;
+            returnResultButton.textContent = 'Return for Correction';
+        }
         verifyResultButton.textContent = 'Verify Result';
     }
 
@@ -207,7 +268,7 @@
     // Initialize
     async function init() {
         try {
-            await window.MediLinkAuth.getCurrentUser(); // Verify auth
+            await window.MediLinkAuth.getCurrentUser();
             clearForm();
             await loadResults();
         } catch (error) {

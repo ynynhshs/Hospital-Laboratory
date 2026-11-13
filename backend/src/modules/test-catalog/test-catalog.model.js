@@ -35,6 +35,17 @@ const testCatalogSchema = new Schema(
             required: true,
             trim: true
         },
+        // ADDED THESE TWO FIELDS
+        unit: {
+            type: String,
+            trim: true,
+            default: ''
+        },
+        referenceRange: {
+            type: String,
+            trim: true,
+            default: ''
+        },
         status: {
             type: String,
             enum: ['active', 'inactive'],

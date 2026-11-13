@@ -6,6 +6,7 @@ const {
     searchPatients,
     updatePatient
 } = require('./patient.service');
+const { logActivity } = require('../audit-logs/audit-log.service');
 
 // =========================================
 // 1. REGISTER PATIENT
@@ -14,6 +15,8 @@ const {
 async function registerPatient(req, res, next) {
     try {
         const patient = await createPatient(req.body);
+
+        await logActivity(req.user.username, req.user.role, 'CREATE_PATIENT', 'Patient Records', `Registered patient ${patient.firstName} ${patient.lastName} (${patient.patientId})`, req.ip);
 
         return res.status(201).json({
             success: true,
@@ -120,6 +123,8 @@ async function searchPatientsController(req, res, next) {
 async function updatePatientController(req, res, next) {
     try {
         const patient = await updatePatient(req.params.patientId, req.body);
+        await logActivity(req.user.username, req.user.role, 'UPDATE_PATIENT', 'Patient Records', `Updated patient ${patient.firstName} ${patient.lastName} (${patient.patientId})`, req.ip);
+        
         return res.status(200).json({
             success: true,
             message: 'Patient updated successfully.',

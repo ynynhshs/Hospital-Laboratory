@@ -8,6 +8,7 @@ const {
 } = require('./laboratory-request.service');
 
 const LaboratoryRequest = require('./laboratory-request.model');
+const { logActivity } = require('../audit-logs/audit-log.service');
 
 // ==========================================
 // MEDILINK LABORATORY
@@ -24,6 +25,8 @@ async function createDraftRequestController(req, res, next) {
             req.body,
             req.user
         );
+
+        await logActivity(req.user.username, req.user.role, 'CREATE_REQUEST', 'Laboratory Requests', `Created lab request ${laboratoryRequest.requestNumber}`, req.ip)
 
         return res.status(201).json({
             success: true,
@@ -123,6 +126,7 @@ async function submitLaboratoryRequestController(req, res, next) {
             req.user
         );
 
+        await logActivity(req.user.username, req.user.role, 'SUBMIT_REQUEST', 'Laboratory Requests', `Submitted lab request ${laboratoryRequest.requestNumber}`, req.ip);
         return res.status(200).json({
             success: true,
             message: 'Laboratory request submitted successfully.',
@@ -180,6 +184,8 @@ const updateTestStatus = async (req, res, next) => {
         }
 
         await request.save();
+
+         await logActivity(req.user.username, req.user.role, 'UPDATE_PROCESSING', 'Laboratory Processing', `Updated test status to ${status} for request ${request.requestNumber}`, req.ip);
 
         res.status(200).json({
             success: true,

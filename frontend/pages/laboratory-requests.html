@@ -241,13 +241,15 @@
             <div class="modal-body">
                 <!-- Patient Search -->
                 <div class="form-group">
-                    <label>1. Search Patient (from MediAdmit)</label>
+                    <label>1. Search Patient</label>
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                        <input type="text" id="modalPatientSearch" class="form-control" placeholder="Enter Patient ID or Name...">
+                        <!-- ADDED autocomplete="off" HERE -->
+                        <input type="text" id="modalPatientSearch" class="form-control" placeholder="Enter Patient ID or Name..." autocomplete="off">
                         <button type="button" class="btn btn-secondary" id="modalSearchPatientBtn">Search</button>
                     </div>
-                    <div id="modalPatientResults" class="patient-search-results" style="max-height: 150px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; border-radius: 4px;">
-                        <p style="color: #888;">Search to find a patient...</p>
+                    <!-- REMOVED BORDER AND PADDING HERE -->
+                    <div id="modalPatientResults" class="patient-search-results" style="max-height: 150px; overflow-y: auto;">
+                        <p style="color: #888; margin: 0; font-size: 13px;">Search results will appear here...</p>
                     </div>
                 </div>
 

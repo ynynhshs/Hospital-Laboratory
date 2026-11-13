@@ -1,4 +1,5 @@
 const { createTest, searchTests, getTestById, updateTest } = require('./test-catalog.service');
+const { logActivity } = require('../audit-logs/audit-log.service');
 
 // 1. Create Test Controller
 exports.createTestController = async (req, res, next) => {
@@ -9,6 +10,7 @@ exports.createTestController = async (req, res, next) => {
             message: 'Laboratory test registered successfully.',
             data: { test }
         });
+        await logActivity(req.user.username, req.user.role, 'CREATE_TEST', 'Test Catalog', `Created new laboratory test: ${test.testName}`, req.ip);
     } catch (error) {
         next(error);
     }
@@ -51,6 +53,7 @@ exports.updateTestController = async (req, res, next) => {
             message: 'Laboratory test updated successfully.',
             data: { test }
         });
+        await logActivity(req.user.username, req.user.role, 'UPDATE_TEST', 'Test Catalog', `Updated laboratory test: ${test.testName}`, req.ip);
     } catch (error) {
         next(error);
     }

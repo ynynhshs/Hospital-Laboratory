@@ -49,7 +49,7 @@ app.use(express.urlencoded({ extended: false, limit: '1mb' }));
 // Limit repeated API requests.
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    limit: 100,
+    limit: 1000,
     standardHeaders: true,
     legacyHeaders: false,
     message: {
