@@ -8,6 +8,7 @@ const userSchema = new Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
+    passwordVersion: { type: Number, default: 0 },
     role: { type: String, required: true }, // lab_admin, requesting_clinician, etc.
     status: { type: String, enum: ['Pending', 'Active', 'Inactive'], default: 'Active' }
 }, { timestamps: true, collection: 'users' });

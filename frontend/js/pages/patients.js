@@ -25,6 +25,10 @@
     const patientFormMessage = document.getElementById('patientFormMessage');
     const savePatientButton = document.getElementById('savePatientButton');
     const cancelPatientButton = document.getElementById('cancelPatientButton');
+    const previousPatientStepButton = document.getElementById('previousPatientStepButton');
+    const nextPatientStepButton = document.getElementById('nextPatientStepButton');
+    const registrationSteps = Array.from(document.querySelectorAll('.patient-registration-step'));
+    const registrationProgressItems = Array.from(document.querySelectorAll('#patientRegistrationProgress li'));
 
     const searchForm = document.getElementById('patientSearchForm');
     const searchInput = document.getElementById('patientSearch');
@@ -48,6 +52,7 @@
     let currentSearch = '';
     let currentUser = null;
     let currentTotalPages = 0;
+    let currentRegistrationStep = 0;
 
     function canRegisterPatients() {
         return currentUser && ['lab_admin', 'lab_receptionist'].includes(currentUser.role);
@@ -56,6 +61,45 @@
     // ==========================================
     // 3. HELPERS
     // ==========================================
+
+    function showRegistrationStep(stepIndex, focusFirstField = false) {
+        currentRegistrationStep = stepIndex;
+
+        registrationSteps.forEach((step, index) => {
+            step.hidden = index !== currentRegistrationStep;
+        });
+
+        registrationProgressItems.forEach((item, index) => {
+            const isCurrent = index === currentRegistrationStep;
+            item.classList.toggle('active', isCurrent);
+            item.classList.toggle('complete', index < currentRegistrationStep);
+            if (isCurrent) {
+                item.setAttribute('aria-current', 'step');
+            } else {
+                item.removeAttribute('aria-current');
+            }
+        });
+
+        previousPatientStepButton.hidden = currentRegistrationStep === 0;
+        nextPatientStepButton.hidden = currentRegistrationStep === registrationSteps.length - 1;
+        savePatientButton.hidden = currentRegistrationStep !== registrationSteps.length - 1;
+
+        if (focusFirstField) {
+            const firstField = registrationSteps[currentRegistrationStep].querySelector('input, select, textarea');
+            if (firstField) firstField.focus();
+        }
+    }
+
+    function validateCurrentRegistrationStep() {
+        const invalidField = Array.from(registrationSteps[currentRegistrationStep].querySelectorAll('input, select, textarea'))
+            .find((field) => !field.validity.valid);
+
+        if (invalidField) {
+            invalidField.reportValidity();
+            return false;
+        }
+        return true;
+    }
 
     function formatUserRole(role) {
         const roleNames = {
@@ -210,6 +254,7 @@
         document.getElementById('insurance.provider').value = patient.insurance?.provider || '';
         document.getElementById('insurance.memberNo').value = patient.insurance?.memberNo || '';
 
+        showRegistrationStep(0);
         registrationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -286,6 +331,13 @@
 
         async function registerPatient(event) {
         event.preventDefault();
+        if (currentRegistrationStep < registrationSteps.length - 1) {
+            if (validateCurrentRegistrationStep()) {
+                showRegistrationStep(currentRegistrationStep + 1, true);
+            }
+            return;
+        }
+
         if (!canRegisterPatients()) {
             registrationSection.hidden = true;
             showFormMessage('You do not have permission to manage patients.', 'danger');
@@ -362,6 +414,7 @@
             
             // Reset form and remove editing state
             registrationForm.reset();
+            showRegistrationStep(0);
             delete registrationForm.dataset.editingId;
             savePatientButton.textContent = 'Save Patient';
             
@@ -463,15 +516,31 @@
             }
             registrationSection.hidden = !registrationSection.hidden;
             if (!registrationSection.hidden) {
+                showRegistrationStep(0);
                 hideFormMessage();
                 registrationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
     }
 
+    if (previousPatientStepButton) {
+        previousPatientStepButton.addEventListener('click', () => {
+            if (currentRegistrationStep > 0) showRegistrationStep(currentRegistrationStep - 1, true);
+        });
+    }
+
+    if (nextPatientStepButton) {
+        nextPatientStepButton.addEventListener('click', () => {
+            hideFormMessage();
+            if (!validateCurrentRegistrationStep()) return;
+            showRegistrationStep(currentRegistrationStep + 1, true);
+        });
+    }
+
         if (cancelPatientButton) {
         cancelPatientButton.addEventListener('click', () => {
             registrationForm.reset();
+            showRegistrationStep(0);
             delete registrationForm.dataset.editingId; // Remove edit state
             savePatientButton.textContent = 'Save Patient';
             hideFormMessage();
@@ -495,6 +564,7 @@
     });
 
     closeDetailsButton.addEventListener('click', () => { detailsSection.hidden = true; });
+    showRegistrationStep(0);
     registrationForm.addEventListener('submit', registerPatient);
 
     if (sidebarToggle) sidebarToggle.addEventListener('click', () => appLayout.classList.toggle('sidebar-open'));

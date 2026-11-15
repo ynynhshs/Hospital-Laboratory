@@ -34,6 +34,19 @@
         return response.data.user;
     }
 
+    async function changePassword(currentPassword, newPassword) {
+        return await window.MediLinkAPI.request(
+            '/auth/password',
+            {
+                method: 'PUT',
+                body: {
+                    currentPassword,
+                    newPassword
+                }
+            }
+        );
+    }
+
     // End the current authenticated session.
     async function logout() {
         return await window.MediLinkAPI.request(
@@ -47,6 +60,7 @@
     // Make authentication functions available to other scripts.
     window.MediLinkAuth = {
         login,
+        changePassword,
         getCurrentUser,
         logout
     };

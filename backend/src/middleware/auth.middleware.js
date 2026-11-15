@@ -29,6 +29,16 @@ async function requireAuth(req, res, next) {
             });
         }
 
+        if (
+            (req.session.passwordVersion || 0) !==
+            (user.passwordVersion || 0)
+        ) {
+            return res.status(401).json({
+                success: false,
+                message: 'Your password was changed. Please sign in again.'
+            });
+        }
+
         // Attach user to the request object
         req.user = user;
         next();

@@ -1,4 +1,7 @@
-const { authenticateUser } = require('./auth.service');
+const {
+    authenticateUser,
+    changePassword: updatePassword
+} = require('./auth.service');
 const { logActivity } = require('../audit-logs/audit-log.service'); // <-- ADDED IMPORT
 
 const SESSION_COOKIE_NAME = 'medilink.sid';
@@ -45,6 +48,7 @@ async function login(req, res, next) {
 
         // Store only the authenticated user's ID in the session.
         req.session.userId = user.id;
+        req.session.passwordVersion = user.passwordVersion;
 
         // Save the new session before responding.
         await runSessionOperation((callback) => {
@@ -80,6 +84,34 @@ async function login(req, res, next) {
             });
         }
 
+        return next(error);
+    }
+}
+
+async function changePassword(req, res, next) {
+    try {
+        const { currentPassword, newPassword } = req.body || {};
+        const user = await updatePassword(
+            req.user._id.toString(),
+            currentPassword,
+            newPassword
+        );
+
+        await logActivity(
+            user.username,
+            user.role,
+            'PASSWORD_CHANGED',
+            'Authentication',
+            'User changed their password',
+            req.ip
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: 'Password updated. Please sign in again.',
+            data: null
+        });
+    } catch (error) {
         return next(error);
     }
 }
@@ -132,6 +164,7 @@ function getCurrentUser(req, res) {
 
 module.exports = {
     login,
+    changePassword,
     logout,
     getCurrentUser
 };
