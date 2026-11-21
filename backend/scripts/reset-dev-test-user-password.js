@@ -4,7 +4,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 const connectDB = require('../src/config/database');
-const LabUser = require('../src/modules/users/lab-user.model');
+const User = require('../src/modules/core/user.model');
 const { hashPassword } = require('../src/shared/utils/password');
 
 async function main() {
@@ -24,7 +24,7 @@ async function main() {
     try {
         await connectDB();
 
-        const user = await LabUser.findOne({
+        const user = await User.findOne({
             username: LAB_TEST_USERNAME.trim().toLowerCase()
         });
 
@@ -33,7 +33,7 @@ async function main() {
         }
 
         user.passwordHash = await hashPassword(LAB_TEST_PASSWORD);
-        user.accountStatus = 'active';
+        user.status = 'Active';
 
         await user.save();
 
@@ -42,7 +42,7 @@ async function main() {
         console.log('==========================================');
         console.log(`Username: ${user.username}`);
         console.log(`Role: ${user.role}`);
-        console.log(`Account Status: ${user.accountStatus}`);
+        console.log(`Account Status: ${user.status}`);
         console.log('Password: Updated using Argon2id');
         console.log('==========================================');
 

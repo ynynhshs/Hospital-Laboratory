@@ -46,14 +46,19 @@ async function resolveRequestingClinician(requestData, authenticatedUser) {
     const role = authenticatedUser.role;
 
     if (role === 'lab_admin' || role === 'lab_receptionist') {
-        const clinicianId = requestData.requestingClinicianId || requestData.requestedBy || authenticatedUser.id;
+        // Staff creating on behalf of a clinician must name an existing,
+        // active requesting clinician. Never silently fall back to the
+        // staff member's own account.
+        const clinicianId = requestData.requestingClinicianId || requestData.requestedBy;
 
         if (!isValidObjectId(clinicianId)) {
             throw new AppError('A valid requesting clinician ID is required.', 400);
         }
 
         const clinician = await User.findOne({
-            _id: clinicianId
+            _id: clinicianId,
+            role: 'requesting_clinician',
+            status: 'Active'
         }).select('_id');
 
         if (!clinician) {

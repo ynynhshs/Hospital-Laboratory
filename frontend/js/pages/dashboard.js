@@ -19,6 +19,7 @@
 
     // Chart instance state
     let statusChartInstance = null;
+    let currentUser = null;
 
     // 2. Display Current Date
     function displayDashboardDate() {
@@ -111,42 +112,57 @@
 
     // 5. Load Live Dashboard Data
     async function loadDashboardData() {
+        // Hide the stale development preview notice.
+        const notice = document.querySelector('.dashboard-notice');
+        if (notice) notice.style.display = 'none';
+
+        let allRequests = [];
+        let totalRequests = 0;
+        let awaitingVerificationCount = null;
+
+        // Requests are readable by all laboratory roles.
         try {
-            // Hide the development preview notice since data is now live
-            const notice = document.querySelector('.dashboard-notice');
-            if (notice) notice.style.display = 'none';
-
-            // Fetch Requests
             const reqResponse = await window.MediLinkAPI.request('/lab-requests?limit=100', { method: 'GET' });
-            const allRequests = reqResponse.data.requests || [];
-            const totalRequests = reqResponse.data.pagination.total;
-
-            // Fetch Results (to count Awaiting Verification)
-            const resResponse = await window.MediLinkAPI.request('/results', { method: 'GET' });
-            const allResults = resResponse.data.results || [];
-
-            // Calculate Numbers
-            const pendingCount = allRequests.filter(r => ['draft', 'submitted', 'accepted'].includes(r.status)).length;
-            const inProgressCount = allRequests.filter(r => ['in_progress', 'partially_completed'].includes(r.status)).length;
-            const completedCount = allRequests.filter(r => r.status === 'completed').length;
-            const awaitingVerificationCount = allResults.filter(r => r.status === 'pending_verification').length;
-
-            // Update the Summary Cards
-            if (document.getElementById('totalRequests')) document.getElementById('totalRequests').textContent = totalRequests;
-            if (document.getElementById('pendingRequests')) document.getElementById('pendingRequests').textContent = pendingCount;
-            if (document.getElementById('inProgressRequests')) document.getElementById('inProgressRequests').textContent = inProgressCount;
-            if (document.getElementById('awaitingVerification')) document.getElementById('awaitingVerification').textContent = awaitingVerificationCount;
-            if (document.getElementById('completedRequests')) document.getElementById('completedRequests').textContent = completedCount;
-
-            // Render the Chart
-            renderStatusChart(pendingCount, inProgressCount, awaitingVerificationCount, completedCount);
-
-            // Populate the Recent Requests Table (top 5 only)
-            populateRecentTable(allRequests.slice(0, 5));
-
+            allRequests = reqResponse.data.requests || [];
+            totalRequests = reqResponse.data.pagination?.total ?? allRequests.length;
         } catch (error) {
-            console.error('Failed to load dashboard data:', error);
+            console.error('Unable to load laboratory requests:', error);
         }
+
+        // Results are restricted to the roles that need them. A 403 here must
+        // never prevent the rest of the dashboard from rendering.
+        const resultsRoles = ['lab_technologist', 'lab_admin', 'result_verifier'];
+        if (resultsRoles.includes(currentUser && currentUser.role)) {
+            try {
+                const resResponse = await window.MediLinkAPI.request('/results', { method: 'GET' });
+                const allResults = resResponse.data.results || [];
+                awaitingVerificationCount = allResults.filter(r => r.status === 'pending_verification').length;
+            } catch (error) {
+                console.error('Unable to load result counts:', error);
+            }
+        }
+
+        // Calculate numbers from the request data we did receive.
+        const pendingCount = allRequests.filter(r => ['draft', 'submitted', 'accepted'].includes(r.status)).length;
+        const inProgressCount = allRequests.filter(r => ['in_progress', 'partially_completed'].includes(r.status)).length;
+        const completedCount = allRequests.filter(r => r.status === 'completed').length;
+
+        // Update the Summary Cards.
+        const setValue = (id, value) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value === null ? '—' : value;
+        };
+        setValue('totalRequests', totalRequests);
+        setValue('pendingRequests', pendingCount);
+        setValue('inProgressRequests', inProgressCount);
+        setValue('awaitingVerification', awaitingVerificationCount);
+        setValue('completedRequests', completedCount);
+
+        // Render the Chart (missing segments are simply zero).
+        renderStatusChart(pendingCount, inProgressCount, awaitingVerificationCount || 0, completedCount);
+
+        // Populate the Recent Requests Table (top 5 only).
+        populateRecentTable(allRequests.slice(0, 5));
     }
 
     // 6. Populate Recent Requests Table
@@ -198,9 +214,9 @@
     // 7. Verify Session & Initialize
     async function verifyDashboardSession() {
         try {
-            const user = await window.MediLinkAuth.getCurrentUser();
-            displayUserInformation(user);
-            
+            currentUser = await window.MediLinkAuth.getCurrentUser();
+            displayUserInformation(currentUser);
+
             // Load the data after verifying the user
             await loadDashboardData();
 

@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
-const LabUser = require('../src/modules/users/lab-user.model');
+const User = require('../src/modules/core/user.model');
 const { createUser } = require('../src/modules/users/lab-user.service');
 const { verifyPassword } = require('../src/shared/utils/password');
 
@@ -18,112 +18,68 @@ const validUserData = {
     role: 'lab_technologist'
 };
 
-// Start a temporary MongoDB database before the tests.
 before(async () => {
     mongoServer = await MongoMemoryServer.create();
-
-    await mongoose.connect(mongoServer.getUri(), {
-        dbName: 'medilink_lab_test'
-    });
-
-    await LabUser.init();
+    await mongoose.connect(mongoServer.getUri(), { dbName: 'medilink_lab_test' });
+    await User.init();
 });
 
-// Clear test users before each test.
 beforeEach(async () => {
-    await LabUser.deleteMany({});
+    await User.deleteMany({});
 });
 
-// Disconnect and stop the temporary database after testing.
 after(async () => {
     await mongoose.disconnect();
-
-    if (mongoServer) {
-        await mongoServer.stop();
-    }
+    if (mongoServer) await mongoServer.stop();
 });
 
-test('creates a laboratory user account successfully', async () => {
+test('creates an active user in the shared users collection', async () => {
     const user = await createUser(validUserData);
-
     assert.ok(user._id);
-    assert.strictEqual(user.username, 'labtech01');
-    assert.strictEqual(user.email, 'labtech@example.com');
-    assert.strictEqual(user.role, 'lab_technologist');
-    assert.strictEqual(user.accountStatus, 'inactive');
+    assert.match(user.employeeId, /^LAB-[0-9A-F]+$/);
+    assert.equal(user.username, 'labtech01');
+    assert.equal(user.email, 'labtech@example.com');
+    assert.equal(user.role, 'lab_technologist');
+    assert.equal(user.status, 'Active');
+    assert.equal(user.passwordVersion, 0);
+    assert.equal(User.collection.name, 'users');
 });
 
 test('stores the password as an Argon2id hash', async () => {
     const user = await createUser(validUserData);
-
-    assert.notStrictEqual(user.passwordHash, validUserData.password);
+    assert.notEqual(user.passwordHash, validUserData.password);
     assert.ok(user.passwordHash.startsWith('$argon2id$'));
-
-    const passwordIsValid = await verifyPassword(
-        validUserData.password,
-        user.passwordHash
-    );
-
-    assert.strictEqual(passwordIsValid, true);
+    assert.equal(await verifyPassword(validUserData.password, user.passwordHash), true);
 });
 
 test('rejects account creation when required fields are missing', async () => {
-    const incompleteData = {
-        ...validUserData,
-        email: ''
-    };
-
-    await assert.rejects(
-        createUser(incompleteData),
-        /All user fields are required/
-    );
+    await assert.rejects(createUser({ ...validUserData, email: '' }), /All user fields are required/);
 });
 
 test('rejects an unsupported laboratory role', async () => {
-    const invalidRoleData = {
-        ...validUserData,
-        role: 'unauthorized_role'
-    };
-
     await assert.rejects(
-        createUser(invalidRoleData),
+        createUser({ ...validUserData, role: 'unauthorized_role' }),
         /Invalid laboratory user role/
     );
 });
 
-test('rejects an already registered username', async () => {
+test('rejects a duplicate username', async () => {
     await createUser(validUserData);
-
-    const duplicateUsernameData = {
-        ...validUserData,
-        email: 'another@example.com'
-    };
-
     await assert.rejects(
-        createUser(duplicateUsernameData),
+        createUser({ ...validUserData, email: 'another@example.com' }),
         /Username or email address is already registered/
     );
 });
 
-test('rejects an already registered email address', async () => {
+test('rejects a duplicate email address', async () => {
     await createUser(validUserData);
-
-    const duplicateEmailData = {
-        ...validUserData,
-        username: 'anotheruser'
-    };
-
     await assert.rejects(
-        createUser(duplicateEmailData),
+        createUser({ ...validUserData, username: 'anotheruser' }),
         /Username or email address is already registered/
     );
 });
 
 test('does not expose the password hash in JSON output', async () => {
     const user = await createUser(validUserData);
-
-    const userJson = user.toJSON();
-
-    assert.strictEqual(userJson.passwordHash, undefined);
-    assert.strictEqual(userJson.username, 'labtech01');
+    assert.equal(user.toJSON().passwordHash, undefined);
 });

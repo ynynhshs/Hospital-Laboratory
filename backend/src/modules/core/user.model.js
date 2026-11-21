@@ -7,10 +7,19 @@ const userSchema = new Schema({
     lastName: { type: String, required: true },
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
-    passwordHash: { type: String, required: true },
+    passwordHash: { type: String, required: true, select: false },
     passwordVersion: { type: Number, default: 0 },
     role: { type: String, required: true }, // lab_admin, requesting_clinician, etc.
     status: { type: String, enum: ['Pending', 'Active', 'Inactive'], default: 'Active' }
-}, { timestamps: true, collection: 'users' });
+}, {
+    timestamps: true,
+    collection: 'users',
+    toJSON: {
+        transform(doc, ret) {
+            delete ret.passwordHash;
+            return ret;
+        }
+    }
+});
 
 module.exports = mongoose.models.User || mongoose.model('User', userSchema);

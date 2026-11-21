@@ -1,14 +1,10 @@
-
-const test = require('node:test');
+const { test } = require('node:test');
 const assert = require('node:assert/strict');
 
-const LabUser = require('../src/modules/users/lab-user.model');
-
-// =========================================
-// TEST DATA
-// =========================================
+const User = require('../src/modules/core/user.model');
 
 const validUserData = {
+    employeeId: 'EMP-TEST-01',
     username: 'labstaff01',
     email: 'labstaff01@example.com',
     passwordHash: '$argon2id$exampleHashForSchemaTesting',
@@ -17,176 +13,61 @@ const validUserData = {
     role: 'lab_technologist'
 };
 
-// =========================================
-// 1. VALID USER DATA
-// =========================================
-
-test('accepts valid laboratory user data', async () => {
-    const user = new LabUser(validUserData);
-
-    await assert.doesNotReject(user.validate());
+test('uses the shared users collection', () => {
+    assert.equal(User.collection.name, 'users');
 });
 
-// =========================================
-// 2. REQUIRED FIELDS
-// =========================================
+test('accepts valid shared user data', async () => {
+    await assert.doesNotReject(new User(validUserData).validate());
+});
 
 test('rejects a user with missing required fields', async () => {
-    const user = new LabUser({});
-
-    await assert.rejects(
-        user.validate(),
-        (error) => {
-            assert.equal(error.name, 'ValidationError');
-            assert.ok(error.errors.username);
-            assert.ok(error.errors.email);
-            assert.ok(error.errors.passwordHash);
-            assert.ok(error.errors.firstName);
-            assert.ok(error.errors.lastName);
-            assert.ok(error.errors.role);
-            return true;
+    const user = new User({});
+    await assert.rejects(user.validate(), (error) => {
+        assert.equal(error.name, 'ValidationError');
+        for (const field of ['employeeId', 'username', 'email', 'passwordHash', 'firstName', 'lastName', 'role']) {
+            assert.ok(error.errors[field], `missing error for ${field}`);
         }
-    );
-});
-
-// =========================================
-// 3. INVALID USER ROLE
-// =========================================
-
-test('rejects an unsupported laboratory role', async () => {
-    const user = new LabUser({
-        ...validUserData,
-        role: 'unauthorized_role'
+        return true;
     });
-
-    await assert.rejects(
-        user.validate(),
-        (error) => {
-            assert.equal(error.name, 'ValidationError');
-            assert.ok(error.errors.role);
-            return true;
-        }
-    );
 });
 
-// =========================================
-// 4. USERNAME NORMALIZATION
-// =========================================
-
-test('converts username to lowercase and removes surrounding spaces', async () => {
-    const user = new LabUser({
-        ...validUserData,
-        username: '  LABSTAFF01  '
-    });
-
-    await user.validate();
-
-    assert.equal(user.username, 'labstaff01');
+test('defaults account status to Active', () => {
+    const user = new User(validUserData);
+    assert.equal(user.status, 'Active');
+    assert.equal(user.passwordVersion, 0);
 });
-
-// =========================================
-// 5. EMAIL NORMALIZATION
-// =========================================
-
-test('converts email to lowercase and removes surrounding spaces', async () => {
-    const user = new LabUser({
-        ...validUserData,
-        email: '  LABSTAFF01@EXAMPLE.COM  '
-    });
-
-    await user.validate();
-
-    assert.equal(user.email, 'labstaff01@example.com');
-});
-
-// =========================================
-// 6. DEFAULT ACCOUNT STATUS
-// =========================================
-
-test('sets new user accounts to inactive by default', () => {
-    const user = new LabUser(validUserData);
-
-    assert.equal(user.accountStatus, 'inactive');
-});
-
-// =========================================
-// 7. INVALID ACCOUNT STATUS
-// =========================================
 
 test('rejects an unsupported account status', async () => {
-    const user = new LabUser({
-        ...validUserData,
-        accountStatus: 'suspended'
+    const user = new User({ ...validUserData, status: 'suspended' });
+    await assert.rejects(user.validate(), (error) => {
+        assert.ok(error.errors.status);
+        return true;
     });
-
-    await assert.rejects(
-        user.validate(),
-        (error) => {
-            assert.equal(error.name, 'ValidationError');
-            assert.ok(error.errors.accountStatus);
-            return true;
-        }
-    );
 });
 
-// =========================================
-// 8. PASSWORD HASH PROTECTION
-// =========================================
-
-test('excludes password hash from ordinary query selection', () => {
-    const passwordPath = LabUser.schema.path('passwordHash');
-
-    assert.equal(passwordPath.options.select, false);
+test('excludes the password hash from normal query selection', () => {
+    assert.equal(User.schema.path('passwordHash').options.select, false);
 });
 
-// =========================================
-// 9. PASSWORD HASH JSON PROTECTION
-// =========================================
-
-test('removes password hash when converting a user to JSON', () => {
-    const user = new LabUser(validUserData);
-
-    const userObject = user.toJSON();
-
+test('removes the password hash from JSON output', () => {
+    const userObject = new User(validUserData).toJSON();
     assert.equal(userObject.passwordHash, undefined);
     assert.equal(userObject.username, validUserData.username);
 });
 
-// =========================================
-// 10. ACCOUNT TIMESTAMPS
-// =========================================
-
-test('defines automatic account timestamps', () => {
-    const user = new LabUser(validUserData);
-
-    assert.strictEqual(LabUser.schema.options.timestamps, true);
-    assert.strictEqual(user.createdAt, undefined);
-    assert.strictEqual(user.updatedAt, undefined);
+test('defines automatic timestamps', () => {
+    assert.strictEqual(User.schema.options.timestamps, true);
 });
 
-
-// =========================================
-// 11. EXTERNAL USER REFERENCE
-// =========================================
-
-test('allows an optional external user identifier', async () => {
-    const user = new LabUser({
-        ...validUserData,
-        externalUserId: 'MEDILINK-USER-001'
-    });
-
-    await assert.doesNotReject(user.validate());
-
-    assert.equal(
-        user.externalUserId,
-        'MEDILINK-USER-001'
-    );
-});
-
-// =========================================
-// 12. USER COLLECTION
-// =========================================
-
-test('uses the lab_users MongoDB collection', () => {
-    assert.equal(LabUser.collection.name, 'lab_users');
+test('accepts laboratory roles from the shared role set', async () => {
+    for (const role of [
+        'lab_admin',
+        'lab_receptionist',
+        'lab_technologist',
+        'result_verifier',
+        'requesting_clinician'
+    ]) {
+        await assert.doesNotReject(new User({ ...validUserData, role }).validate());
+    }
 });

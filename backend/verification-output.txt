@@ -1,0 +1,104 @@
+◇ injected env (25) from .env
+==========================================
+ LIVE AUTH AND PERMISSION VERIFICATION
+==========================================
+
+---- labtechnician_test ----
+  PASS login: expected 200, got 200
+  PASS login response: no password/hash exposed
+  role from login: lab_technologist
+  PASS current-user endpoint: expected 200, got 200
+  PASS current-user endpoint: no password/hash exposed
+  PASS GET patients: expected 200, got 200
+  PASS GET lab requests: expected 200, got 200
+  PASS GET test catalog: expected 200, got 200
+  PASS POST lab request (invalid body): expected 403, got 403
+  PASS PATCH draft (unknown id): expected 403, got 403
+  PASS POST specimen (unknown request): expected 404, got 404
+  PASS POST result (invalid request id): expected 400, got 400
+  PASS PATCH verify result (unknown id): expected 403, got 403
+  PASS PATCH test catalog (unknown id): expected 403, got 403
+  PASS GET audit logs: expected 403, got 403
+  PASS GET specimens: expected 200, got 200
+  PASS GET results: expected 200, got 200
+  PASS search existing patient: expected 200, got 200
+  PASS get patient by MongoDB _id: expected 200, got 200
+  PASS logout: expected 200, got 200
+  PASS current-user after logout: expected 401, got 401
+
+---- labreceptionist_test ----
+  PASS login: expected 200, got 200
+  PASS login response: no password/hash exposed
+  role from login: lab_receptionist
+  PASS current-user endpoint: expected 200, got 200
+  PASS current-user endpoint: no password/hash exposed
+  PASS GET patients: expected 200, got 200
+  PASS GET lab requests: expected 200, got 200
+  PASS GET test catalog: expected 200, got 200
+  PASS POST lab request (invalid body): expected 400, got 400
+  PASS PATCH draft (unknown id): expected 404, got 404
+  PASS POST specimen (unknown request): expected 403, got 403
+  PASS POST result (invalid request id): expected 403, got 403
+  PASS PATCH verify result (unknown id): expected 403, got 403
+  PASS PATCH test catalog (unknown id): expected 403, got 403
+  PASS GET audit logs: expected 403, got 403
+  PASS GET specimens: expected 200, got 200
+  PASS GET results: expected 403, got 403
+  PASS search existing patient: expected 200, got 200
+  PASS get patient by MongoDB _id: expected 200, got 200
+  PASS logout: expected 200, got 200
+  PASS current-user after logout: expected 401, got 401
+
+---- labadmin_dev ----
+  PASS login: expected 200, got 200
+  PASS login response: no password/hash exposed
+  role from login: lab_admin
+  PASS current-user endpoint: expected 200, got 200
+  PASS current-user endpoint: no password/hash exposed
+  PASS GET patients: expected 200, got 200
+  PASS GET lab requests: expected 200, got 200
+  PASS GET test catalog: expected 200, got 200
+  PASS POST lab request (invalid body): expected 400, got 400
+  PASS PATCH draft (unknown id): expected 404, got 404
+  PASS POST specimen (unknown request): expected 404, got 404
+  PASS POST result (invalid request id): expected 403, got 403
+  PASS PATCH verify result (unknown id): expected 403, got 403
+  PASS PATCH test catalog (unknown id): expected 404, got 404
+  PASS GET audit logs: expected 200, got 200
+  PASS GET specimens: expected 200, got 200
+  PASS GET results: expected 200, got 200
+  PASS search existing patient: expected 200, got 200
+  PASS get patient by MongoDB _id: expected 200, got 200
+  PASS logout: expected 200, got 200
+  PASS current-user after logout: expected 401, got 401
+
+---- labclinician_dev ----
+  PASS login: expected 200, got 200
+  PASS login response: no password/hash exposed
+  role from login: requesting_clinician
+  PASS current-user endpoint: expected 200, got 200
+  PASS current-user endpoint: no password/hash exposed
+  PASS GET patients: expected 200, got 200
+  PASS GET lab requests: expected 200, got 200
+  PASS GET test catalog: expected 200, got 200
+  PASS POST lab request (invalid body): expected 400, got 400
+  PASS PATCH draft (unknown id): expected 404, got 404
+  PASS POST specimen (unknown request): expected 403, got 403
+  PASS POST result (invalid request id): expected 403, got 403
+  PASS PATCH verify result (unknown id): expected 403, got 403
+  PASS PATCH test catalog (unknown id): expected 403, got 403
+  PASS GET audit logs: expected 403, got 403
+  PASS GET specimens: expected 403, got 403
+  PASS GET results: expected 403, got 403
+  PASS search existing patient: expected 200, got 200
+  PASS get patient by MongoDB _id: expected 200, got 200
+  PASS logout: expected 200, got 200
+  PASS current-user after logout: expected 401, got 401
+
+---- Clinician ownership flow ----
+  PASS re-login clinician for ownership flow: expected 200, got 200
+  PASS create own draft request: expected 201, got 201
+  created request LAB-20261121-C2608F
+  PASS read own request: expected 200, got 200
+
+Verification complete.

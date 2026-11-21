@@ -4,8 +4,8 @@ const assert = require('node:assert/strict');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
-const Patient = require('../src/modules/patients/patient.model');
-const LabUser = require('../src/modules/users/lab-user.model');
+const Patient = require('../src/modules/core/patient.model');
+const User = require('../src/modules/core/user.model');
 const TestCatalog = require('../src/modules/test-catalog/test-catalog.model');
 const LaboratoryRequest = require('../src/modules/lab-requests/laboratory-request.model');
 
@@ -19,6 +19,18 @@ const {
 } = require('../src/modules/lab-requests/laboratory-request.service');
 
 
+
+let employeeCounter = 0;
+
+async function createTestUser(userData) {
+    const { accountStatus, ...rest } = userData;
+    employeeCounter += 1;
+    return User.create({
+        ...rest,
+        employeeId: `LAB-TEST-${String(employeeCounter).padStart(4, '0')}`,
+        status: accountStatus === 'inactive' ? 'Inactive' : 'Active'
+    });
+}
 
 let mongoServer;
 let patient;
@@ -96,7 +108,7 @@ before(async () => {
     await Promise.all([
     Patient.init(),
     TestCatalog.init(),
-    LabUser.init(),
+    User.init(),
     LaboratoryRequest.init()
 ]);
 });
@@ -108,10 +120,10 @@ beforeEach(async () => {
     LaboratoryRequest.deleteMany({}),
     Patient.deleteMany({}),
     TestCatalog.deleteMany({}),
-    LabUser.deleteMany({})
+    User.deleteMany({})
 ]);
 
-    receptionistUser = await LabUser.create({
+    receptionistUser = await createTestUser({
     username: 'receptionist_test',
     email: 'receptionist_test@example.com',
     passwordHash: 'test-password-hash',
@@ -121,7 +133,7 @@ beforeEach(async () => {
     accountStatus: 'active'
 });
 
-clinicianUser = await LabUser.create({
+clinicianUser = await createTestUser({
     username: 'clinician_test',
     email: 'clinician_test@example.com',
     passwordHash: 'test-password-hash',
@@ -137,13 +149,13 @@ authenticatedUser = {
 };
 
     patient = await Patient.create({
-        patientCode: 'PAT-000001',
+        patientId: 'PAT-000001',
         firstName: 'Juan',
         middleName: 'Santos',
         lastName: 'Dela Cruz',
-        dateOfBirth: new Date('1995-06-15'),
-        sex: 'male',
-        contactNumber: '09171234567'
+        birthDate: new Date('1995-06-15'),
+        sex: 'Male',
+        contactNo: '09171234567'
     });
 
     activeTest = await TestCatalog.create({
@@ -730,7 +742,7 @@ test('allows a receptionist to create a request for an active clinician', async 
 
 test('allows an administrator to create a request for an active clinician', async () => {
 
-    const admin = await LabUser.create({
+    const admin = await createTestUser({
         username: 'admin_test',
         email: 'admin_test@example.com',
         passwordHash: 'test-password-hash',
@@ -798,7 +810,7 @@ test('allows a requesting clinician to create their own request', async () => {
 
 test('prevents a requesting clinician from creating a request for another clinician', async () => {
 
-    const anotherClinician = await LabUser.create({
+    const anotherClinician = await createTestUser({
         username: 'another_clinician',
         email: 'another_clinician@example.com',
         passwordHash: 'test-password-hash',
@@ -848,7 +860,7 @@ test('requires a requesting clinician ID for receptionist-created requests', asy
 
 test('rejects an inactive requesting clinician', async () => {
 
-    const inactiveClinician = await LabUser.create({
+    const inactiveClinician = await createTestUser({
         username: 'inactive_clinician',
         email: 'inactive_clinician@example.com',
         passwordHash: 'test-password-hash',
@@ -968,7 +980,7 @@ test('searches laboratory requests by patient code', async () => {
 
     assert.equal(result.requests.length, 1);
     assert.equal(
-        result.requests[0].patient.patientCode,
+        result.requests[0].patient.patientId,
         'PAT-000001'
     );
 });
@@ -1258,7 +1270,7 @@ test('rejects invalid laboratory request search options', async () => {
 
 test('restricts requesting clinicians to their own laboratory requests', async () => {
 
-    const anotherClinician = await LabUser.create({
+    const anotherClinician = await createTestUser({
         username: 'another_clinician_retrieval',
         email: 'another_clinician_retrieval@example.com',
         passwordHash: 'test-password-hash',
@@ -1300,7 +1312,7 @@ test('restricts requesting clinicians to their own laboratory requests', async (
 
 test('rejects a requesting clinician accessing another clinician request', async () => {
 
-    const anotherClinician = await LabUser.create({
+    const anotherClinician = await createTestUser({
         username: 'another_clinician_access',
         email: 'another_clinician_access@example.com',
         passwordHash: 'test-password-hash',
@@ -1349,7 +1361,7 @@ test('allows authorized laboratory staff roles to search all requests', async ()
 
     for (const role of staffRoles) {
 
-        const staffUser = await LabUser.create({
+        const staffUser = await createTestUser({
             username: `${role}_retrieval_test`,
             email: `${role}_retrieval_test@example.com`,
             passwordHash: 'test-password-hash',
@@ -1451,7 +1463,7 @@ test('populates patient, clinician, creator, updater, and activity details', asy
     assert.ok(result.patient);
 
     assert.equal(
-        result.patient.patientCode,
+        result.patient.patientId,
         'PAT-000001'
     );
 
@@ -1635,7 +1647,7 @@ test('allows a requesting clinician to update their own draft', async () => {
 
 test('prevents a clinician from updating another clinician draft', async () => {
 
-    const anotherClinician = await LabUser.create({
+    const anotherClinician = await createTestUser({
         username: 'another_clinician_update',
         email: 'another_clinician_update@example.com',
         passwordHash: 'test-password-hash',
@@ -1681,7 +1693,7 @@ test('prevents a clinician from updating another clinician draft', async () => {
 
 test('allows a laboratory administrator to update a draft', async () => {
 
-    const admin = await LabUser.create({
+    const admin = await createTestUser({
         username: 'admin_update_test',
         email: 'admin_update_test@example.com',
         passwordHash: 'test-password-hash',
@@ -2268,7 +2280,7 @@ test('prevents laboratory technologists and result verifiers from submitting req
 
 test('prevents a clinician from submitting another clinician request', async () => {
 
-    const anotherClinician = await LabUser.create({
+    const anotherClinician = await createTestUser({
         username: 'another_clinician_submit',
         email: 'another_clinician_submit@example.com',
         passwordHash: 'test-password-hash',

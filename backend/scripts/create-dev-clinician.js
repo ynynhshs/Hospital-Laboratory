@@ -51,7 +51,7 @@ async function main() {
         });
 
         // Activate this development-only clinician account.
-        user.accountStatus = 'active';
+        user.status = 'active';
         await user.save();
 
         console.log('==========================================');
@@ -60,7 +60,7 @@ async function main() {
         console.log(`Username: ${user.username}`);
         console.log(`Email: ${user.email}`);
         console.log(`Role: ${user.role}`);
-        console.log(`Account Status: ${user.accountStatus}`);
+        console.log(`Account Status: ${user.status}`);
         console.log('Password: Securely hashed using Argon2id');
         console.log('==========================================');
 

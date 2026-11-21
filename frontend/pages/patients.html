@@ -111,179 +111,25 @@
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Patient Records</h1>
-                        <p class="page-description">Register, search, and view patient information for laboratory services.</p>
+                        <p class="page-description">Search and view patient information registered by the MediAdmit subsystem.</p>
                     </div>
-                    <button type="button" class="btn btn-primary" id="addPatientButton" hidden>+ Register Patient</button>
+                    <!-- REMOVED: + Register Patient Button -->
                 </div>
 
-                <section class="content-section" id="patientRegistrationSection" hidden>
-                    <article class="card patient-records-card patient-registration-card">
-                        <div class="card-header">
-                            <div>
-                                <h2 class="card-title">Register New Patient</h2>
-                                <p class="card-description">Complete each section to register the patient. Fields marked with * are required.</p>
-                            </div>
-                        </div>
-                        <ol class="patient-registration-progress" id="patientRegistrationProgress" aria-label="Registration progress">
-                            <li class="active" aria-current="step"><span class="patient-progress-number">1</span><span>Personal Info</span><span class="patient-progress-track" aria-hidden="true"></span></li>
-                            <li><span class="patient-progress-number">2</span><span>Contact &amp; Emergency</span><span class="patient-progress-track" aria-hidden="true"></span></li>
-                            <li><span class="patient-progress-number">3</span><span>Medical History</span><span class="patient-progress-track" aria-hidden="true"></span></li>
-                            <li><span class="patient-progress-number">4</span><span>Insurance</span></li>
-                        </ol>
-                        <form id="patientRegistrationForm">
-                            <section class="patient-registration-step" data-registration-step="0" aria-label="Personal information">
-                                <h3 class="form-section-title" style="margin-top: 10px; margin-bottom: 15px; color: var(--color-text);">Personal Information</h3>
-                                <div class="patient-form-grid">
-                                <div class="form-group">
-                                    <label class="form-label" for="firstName">First Name *</label>
-                                    <input type="text" id="firstName" name="firstName" class="form-control" maxlength="60" placeholder="Enter first name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="middleName">Middle Name</label>
-                                    <input type="text" id="middleName" name="middleName" class="form-control" maxlength="60" placeholder="Enter middle name">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="lastName">Last Name *</label>
-                                    <input type="text" id="lastName" name="lastName" class="form-control" maxlength="60" placeholder="Enter last name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="birthDate">Date of Birth *</label>
-                                    <input type="date" id="birthDate" name="birthDate" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="sex">Sex *</label>
-                                    <select id="sex" name="sex" class="form-control" required>
-                                        <option value="">Select sex</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="civilStatus">Civil Status</label>
-                                    <select id="civilStatus" name="civilStatus" class="form-control">
-                                        <option value="">Select status</option>
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Widowed">Widowed</option>
-                                        <option value="Separated">Separated</option>
-                                    </select>
-                                </div>
-                                </div>
-                            </section>
-
-                            <section class="patient-registration-step" data-registration-step="1" aria-label="Contact and emergency information" hidden>
-                                <h3 class="form-section-title" style="margin-top: 10px; margin-bottom: 15px; color: var(--color-text);">Contact Information</h3>
-                                <div class="patient-form-grid">
-                                <div class="form-group">
-                                    <label class="form-label" for="address">Address (Street & Barangay)</label>
-                                    <input type="text" id="address" name="address" class="form-control" placeholder="Enter address">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="city">City / Municipality</label>
-                                    <input type="text" id="city" name="city" class="form-control" placeholder="Enter city">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="contactNo">Contact Number</label>
-                                    <input type="tel" id="contactNo" name="contactNo" class="form-control" maxlength="25" placeholder="Mobile or phone number">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="email">Email Address</label>
-                                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address">
-                                </div>
-                                </div>
-
-                                <h3 class="form-section-title" style="margin-top: 20px; margin-bottom: 15px; color: var(--color-text);">Emergency Contact</h3>
-                                <div class="patient-form-grid">
-                                <div class="form-group">
-                                    <label class="form-label" for="emergencyContact.name">Contact Name</label>
-                                    <input type="text" id="emergencyContact.name" name="emergencyContact.name" class="form-control" placeholder="Full name">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="emergencyContact.relationship">Relationship</label>
-                                    <input type="text" id="emergencyContact.relationship" name="emergencyContact.relationship" class="form-control" placeholder="e.g. Spouse, Parent">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="emergencyContact.contactNo">Emergency Contact No.</label>
-                                    <input type="tel" id="emergencyContact.contactNo" name="emergencyContact.contactNo" class="form-control" placeholder="Mobile or phone number">
-                                </div>
-                                </div>
-                            </section>
-
-                            <section class="patient-registration-step" data-registration-step="2" aria-label="Medical history" hidden>
-                                <h3 class="form-section-title" style="margin-top: 10px; margin-bottom: 15px; color: var(--color-text);">Medical Information</h3>
-                                <div class="patient-form-grid">
-                                <div class="form-group">
-                                    <label class="form-label" for="medical.bloodType">Blood Type</label>
-                                    <input type="text" id="medical.bloodType" name="medical.bloodType" class="form-control" placeholder="e.g. A+, O-">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="medical.heightCm">Height (cm)</label>
-                                    <input type="number" id="medical.heightCm" name="medical.heightCm" class="form-control" placeholder="e.g. 170">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="medical.weightKg">Weight (kg)</label>
-                                    <input type="number" id="medical.weightKg" name="medical.weightKg" class="form-control" placeholder="e.g. 65">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="medical.allergies">Allergies</label>
-                                    <input type="text" id="medical.allergies" name="medical.allergies" class="form-control" placeholder="Any known allergies">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="medical.conditions">Existing Conditions</label>
-                                    <input type="text" id="medical.conditions" name="medical.conditions" class="form-control" placeholder="e.g. Hypertension, Diabetes">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="medical.medications">Current Medications</label>
-                                    <input type="text" id="medical.medications" name="medical.medications" class="form-control" placeholder="List of medications">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="medical.surgeries">Past Surgeries</label>
-                                    <input type="text" id="medical.surgeries" name="medical.surgeries" class="form-control" placeholder="Any past surgeries">
-                                </div>
-                                <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
-                                    <input type="checkbox" id="medical.smoker" name="medical.smoker" style="width: 20px; height: 20px;">
-                                    <label class="form-label" for="medical.smoker" style="margin-bottom: 0;">Patient is a Smoker</label>
-                                </div>
-                                </div>
-                            </section>
-
-                            <section class="patient-registration-step" data-registration-step="3" aria-label="Insurance details" hidden>
-                                <h3 class="form-section-title" style="margin-top: 10px; margin-bottom: 15px; color: var(--color-text);">Insurance Details</h3>
-                                <div class="patient-form-grid">
-                                <div class="form-group">
-                                    <label class="form-label" for="insurance.provider">Insurance Provider</label>
-                                    <input type="text" id="insurance.provider" name="insurance.provider" class="form-control" placeholder="e.g. PhilHealth, Maxicare">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="insurance.memberNo">Member Number</label>
-                                    <input type="text" id="insurance.memberNo" name="insurance.memberNo" class="form-control" placeholder="Insurance member ID">
-                                </div>
-                                </div>
-                            </section>
-
-                            <div class="alert patient-form-message" id="patientFormMessage" role="status" aria-live="polite" hidden></div>
-                            <div class="patient-form-actions" style="margin-top: 20px;">
-                                <button type="button" class="btn btn-secondary" id="previousPatientStepButton" hidden>← Back</button>
-                                <button type="button" class="btn btn-secondary" id="cancelPatientButton">Cancel</button>
-                                <button type="button" class="btn btn-primary" id="nextPatientStepButton">Continue →</button>
-                                <button type="submit" class="btn btn-primary" id="savePatientButton" hidden>Save Patient</button>
-                            </div>
-                        </form>
-                    </article>
-                </section>
+                <!-- REMOVED: Entire patientRegistrationSection -->
 
                 <section class="content-section">
                     <article class="card patient-records-card">
                         <div class="card-header">
                             <div>
                                 <h2 class="card-title">Registered Patients</h2>
-                                <p class="card-description">Search and view registered patient records.</p>
+                                <p class="card-description">Search and view patient records.</p>
                             </div>
                         </div>
                         <form class="patients-toolbar" id="patientSearchForm">
                             <div class="patients-search">
                                 <label for="patientSearch">Search Patient</label>
-                                <input type="search" id="patientSearch" name="search" class="form-control" placeholder="Search by patient ID, name, or contact number..." required>
+                                <input type="search" id="patientSearch" name="search" class="form-control" placeholder="Search by patient ID, name, or contact number...">
                             </div>
                             <button type="submit" class="btn btn-primary" id="searchPatientsButton">Search</button>
                             <button type="button" class="btn btn-secondary" id="resetPatientSearchButton">Reset</button>

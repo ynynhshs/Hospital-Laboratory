@@ -39,8 +39,19 @@ async function requireAuth(req, res, next) {
             });
         }
 
-        // Attach user to the request object
-        req.user = user;
+        // Attach a safe profile only. The password hash must never reach a
+        // controller response or the current-user endpoint.
+        req.user = {
+            id: user._id.toString(),
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+            status: user.status,
+            passwordVersion: user.passwordVersion || 0
+        };
         next();
     } catch (error) {
         console.error('Auth middleware error:', error);

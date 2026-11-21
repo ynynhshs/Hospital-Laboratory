@@ -414,20 +414,20 @@ test('references the existing Patient model', () => {
     assert.equal(patientPath.options.ref, 'Patient');
 });
 
-test('references the existing LabUser model for request ownership', () => {
+test('references the shared User model for request ownership', () => {
     assert.equal(
         LaboratoryRequest.schema.path('requestedBy').options.ref,
-        'LabUser'
+        'User'
     );
 
     assert.equal(
         LaboratoryRequest.schema.path('createdBy').options.ref,
-        'LabUser'
+        'User'
     );
 
     assert.equal(
         LaboratoryRequest.schema.path('updatedBy').options.ref,
-        'LabUser'
+        'User'
     );
 });
 

@@ -1,5 +1,6 @@
 const Specimen = require('./specimen.model');
 const LaboratoryRequest = require('../lab-requests/laboratory-request.model');
+const { logActivity } = require('../audit-logs/audit-log.service');
 
 // 1. Create a new specimen
 exports.createSpecimen = async (req, res, next) => {
@@ -26,6 +27,15 @@ exports.createSpecimen = async (req, res, next) => {
             collectedAt: collectedAt || new Date(),
             notes
         });
+
+        await logActivity(
+            req.user.username,
+            req.user.role,
+            'REGISTER_SPECIMEN',
+            'Specimen Management',
+            `Registered specimen ${specimen.specimenCode} for request ${request.requestNumber}`,
+            req.ip
+        );
 
         res.status(201).json({
             success: true,

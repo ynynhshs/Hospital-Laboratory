@@ -1,3 +1,5 @@
+const { randomBytes } = require('node:crypto');
+
 const User = require('../core/user.model');
 const { hashPassword } = require('../../shared/utils/password');
 
@@ -9,6 +11,10 @@ const ALLOWED_ROLES = [
     'requesting_clinician'
 ];
 
+function generateEmployeeId() {
+    return `LAB-${randomBytes(4).toString('hex').toUpperCase()}`;
+}
+
 async function createUser(userData) {
     const {
         username,
@@ -17,9 +23,8 @@ async function createUser(userData) {
         firstName,
         lastName,
         role
-    } = userData;
+    } = userData || {};
 
-    // Validate required input fields.
     if (
         !username ||
         !email ||
@@ -31,16 +36,18 @@ async function createUser(userData) {
         throw new Error('All user fields are required.');
     }
 
-    // Validate the requested laboratory role.
     if (!ALLOWED_ROLES.includes(role)) {
         throw new Error('Invalid laboratory user role.');
     }
 
-    // Prevent duplicate usernames and email addresses.
+    const normalizedUsername = String(username).trim().toLowerCase();
+    const normalizedEmail = String(email).trim().toLowerCase();
+
+    // The shared users collection is the only user collection.
     const existingUser = await User.findOne({
         $or: [
-            { username: username.trim().toLowerCase() },
-            { email: email.trim().toLowerCase() }
+            { username: normalizedUsername },
+            { email: normalizedEmail }
         ]
     });
 
@@ -48,23 +55,27 @@ async function createUser(userData) {
         throw new Error('Username or email address is already registered.');
     }
 
-    // Hash the password before saving.
+    let employeeId;
+    do {
+        employeeId = generateEmployeeId();
+    } while (await User.exists({ employeeId }));
+
     const passwordHash = await hashPassword(password);
 
-    // Create the account as inactive by default.
-    const newUser = new User({
-    username,
-    email,
-    passwordHash,
-    firstName,
-    lastName,
-    role,
-    accountStatus: 'inactive'
-});
-
-    return await newUser.save();
+    return User.create({
+        employeeId,
+        username: normalizedUsername,
+        email: normalizedEmail,
+        passwordHash,
+        passwordVersion: 0,
+        firstName: String(firstName).trim(),
+        lastName: String(lastName).trim(),
+        role,
+        status: 'Active'
+    });
 }
 
 module.exports = {
-    createUser
+    createUser,
+    ALLOWED_ROLES
 };

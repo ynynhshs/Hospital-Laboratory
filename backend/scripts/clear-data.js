@@ -2,19 +2,25 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 // Import all the models
-const Patient = require('../src/modules/core/patient.model');
 const LaboratoryRequest = require('../src/modules/lab-requests/laboratory-request.model');
 const Specimen = require('../src/modules/specimens/specimen.model');
 const Result = require('../src/modules/results/result.model');
 
 async function clearData() {
     try {
+        // SAFETY GUARD: never clear shared patient, user, or audit records.
+        // Even lab transactional records require an explicit confirmation flag.
+        if (process.argv[2] !== '--confirm-lab-transactional-reset') {
+            throw new Error(
+                'Refusing to clear data. Pass --confirm-lab-transactional-reset explicitly. Patients, users and audit logs are never cleared by this script.'
+            );
+        }
+
         const dbName = process.env.MONGODB_DB_NAME || 'medilink_lab_dev';
         await mongoose.connect(process.env.MONGODB_URI, { dbName: dbName });
         console.log(`Connected to database: ${dbName}...`);
 
-        console.log('Deleting all patients...');
-        await Patient.deleteMany({});
+        console.log('Patients are shared records and are NEVER deleted by this script.');
 
         console.log('Deleting all laboratory requests...');
         await LaboratoryRequest.deleteMany({});
@@ -25,8 +31,8 @@ async function clearData() {
         console.log('Deleting all results...');
         await Result.deleteMany({});
 
-        console.log('✅ All transactional data (Patients, Requests, Specimens, Results) has been successfully deleted!');
-        console.log('Note: Users and Test Catalog have been kept.');
+        console.log('✅ Laboratory transactional data (Requests, Specimens, Results) has been deleted.');
+        console.log('Note: Patients, Users and Audit Logs were never touched.');
         
         process.exit(0);
 

@@ -102,6 +102,15 @@ async function updateDraftRequestController(req, res, next) {
             req.user
         );
 
+        await logActivity(
+            req.user.username,
+            req.user.role,
+            'UPDATE_REQUEST',
+            'Laboratory Requests',
+            `Updated draft lab request ${laboratoryRequest.requestNumber}`,
+            req.ip
+        );
+
         return res.status(200).json({
             success: true,
             message: 'Laboratory request draft updated successfully.',

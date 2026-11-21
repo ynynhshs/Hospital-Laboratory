@@ -118,6 +118,21 @@ exports.verifyResult = async (req, res, next) => {
         const result = await Result.findById(resultId);
         if (!result) return res.status(404).json({ success: false, message: 'Result not found.' });
 
+        const verifierId = String(req.user._id || req.user.id);
+        if (String(result.enteredBy) === verifierId) {
+            return res.status(403).json({
+                success: false,
+                message: 'You cannot verify a laboratory result that you entered.'
+            });
+        }
+
+        if (result.status !== 'pending_verification') {
+            return res.status(409).json({
+                success: false,
+                message: 'Only results awaiting verification can be released.'
+            });
+        }
+
         result.status = 'released'; 
         result.verifiedBy = req.user._id || req.user.id; 
         result.verifiedAt = new Date();

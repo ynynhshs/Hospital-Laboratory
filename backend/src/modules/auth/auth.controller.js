@@ -2,7 +2,8 @@ const {
     authenticateUser,
     changePassword: updatePassword
 } = require('./auth.service');
-const { logActivity } = require('../audit-logs/audit-log.service'); // <-- ADDED IMPORT
+const { logActivity } = require('../audit-logs/audit-log.service');
+const User = require('../core/user.model');
 
 const SESSION_COOKIE_NAME = 'medilink.sid';
 
@@ -117,7 +118,29 @@ async function changePassword(req, res, next) {
 }
 
 // Handle user logout.
-function logout(req, res, next) {
+async function logout(req, res, next) {
+    // Record logout in the shared audit collection when the session identifies
+    // a real account. Anonymous requests keep the existing 200 response.
+    if (req.session && req.session.userId) {
+        try {
+            const user = await User.findById(req.session.userId)
+                .select('username role')
+                .lean();
+            if (user) {
+                await logActivity(
+                    user.username,
+                    user.role,
+                    'LOGOUT',
+                    'Authentication',
+                    'User logged out',
+                    req.ip
+                );
+            }
+        } catch (error) {
+            console.error('Failed to record logout:', error.message);
+        }
+    }
+
     if (!req.session) {
         res.clearCookie(SESSION_COOKIE_NAME, {
             path: '/',

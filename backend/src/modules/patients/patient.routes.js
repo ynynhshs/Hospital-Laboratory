@@ -1,11 +1,8 @@
 const express = require('express');
-
 const {
-    registerPatient,
     getPatientByCodeController,
     getPatientByIdController,
-    searchPatientsController,
-    updatePatientController // <-- ADDED THIS IMPORT
+    searchPatientsController
 } = require('./patient.controller');
 
 const {
@@ -16,18 +13,7 @@ const {
 const router = express.Router();
 
 // =========================================
-// 1. PATIENT REGISTRATION
-// =========================================
-
-router.post(
-    '/',
-    requireAuth,
-    authorizeRoles('lab_admin', 'lab_receptionist'),
-    registerPatient
-);
-
-// =========================================
-// 2. SEARCH AND LIST PATIENTS
+// 1. SEARCH AND LIST PATIENTS (Read-Only)
 // =========================================
 
 router.get(
@@ -44,7 +30,7 @@ router.get(
 );
 
 // =========================================
-// 3. GET PATIENT BY PATIENT CODE
+// 2. GET PATIENT BY PATIENT CODE (Read-Only)
 // =========================================
 
 router.get(
@@ -61,7 +47,7 @@ router.get(
 );
 
 // =========================================
-// 4. GET PATIENT BY MONGODB ID
+// 3. GET PATIENT BY MONGODB ID (Read-Only)
 // =========================================
 
 router.get(
@@ -75,17 +61,6 @@ router.get(
         'requesting_clinician'
     ),
     getPatientByIdController
-);
-
-// =========================================
-// 5. UPDATE PATIENT (Added this route)
-// =========================================
-
-router.patch(
-    '/:patientId',
-    requireAuth,
-    authorizeRoles('lab_admin', 'lab_receptionist'),
-    updatePatientController
 );
 
 module.exports = router;

@@ -1,0 +1,826 @@
+
+> medilink-laboratory-backend@1.0.0 test
+> node --test
+
+TAP version 13
+# Subtest: src\\modules\\test-catalog\\test-catalog.controller.js
+ok 1 - src\\modules\\test-catalog\\test-catalog.controller.js
+  ---
+  duration_ms: 2362.323
+  ...
+# Subtest: src\\modules\\test-catalog\\test-catalog.model.js
+ok 2 - src\\modules\\test-catalog\\test-catalog.model.js
+  ---
+  duration_ms: 2281.421
+  ...
+# Subtest: src\\modules\\test-catalog\\test-catalog.routes.js
+ok 3 - src\\modules\\test-catalog\\test-catalog.routes.js
+  ---
+  duration_ms: 2733.0204
+  ...
+# Subtest: src\\modules\\test-catalog\\test-catalog.service.js
+ok 4 - src\\modules\\test-catalog\\test-catalog.service.js
+  ---
+  duration_ms: 2281.4875
+  ...
+# Subtest: rejects a request without an authenticated session
+ok 5 - rejects a request without an authenticated session
+  ---
+  duration_ms: 2092.7024
+  ...
+# Subtest: rejects a session containing an unknown user ID
+ok 6 - rejects a session containing an unknown user ID
+  ---
+  duration_ms: 56.2587
+  ...
+# Subtest: rejects an inactive account
+ok 7 - rejects an inactive account
+  ---
+  duration_ms: 129.9195
+  ...
+# Subtest: rejects a stale password version
+ok 8 - rejects a stale password version
+  ---
+  duration_ms: 104.8625
+  ...
+# Subtest: allows an active user and attaches a safe profile
+ok 9 - allows an active user and attaches a safe profile
+  ---
+  duration_ms: 98.0587
+  ...
+# Subtest: rejects role authorization without an authenticated user
+ok 10 - rejects role authorization without an authenticated user
+  ---
+  duration_ms: 6.7265
+  ...
+# Subtest: allows an authorized role
+ok 11 - allows an authorized role
+  ---
+  duration_ms: 7.0518
+  ...
+# Subtest: rejects an unauthorized role
+ok 12 - rejects an unauthorized role
+  ---
+  duration_ms: 5.451
+  ...
+# Subtest: changes the password hash and increments the session version
+ok 13 - changes the password hash and increments the session version
+  ---
+  duration_ms: 2693.442
+  ...
+# Subtest: rejects a password change when the current password is incorrect
+ok 14 - rejects a password change when the current password is incorrect
+  ---
+  duration_ms: 213.0468
+  ...
+# Subtest: rejects short and common new passwords
+ok 15 - rejects short and common new passwords
+  ---
+  duration_ms: 78.3132
+  ...
+# Subtest: rejects reusing the current password
+ok 16 - rejects reusing the current password
+  ---
+  duration_ms: 70.9002
+  ...
+# Subtest: authenticates an active user using their username
+ok 17 - authenticates an active user using their username
+  ---
+  duration_ms: 2289.3131
+  ...
+# Subtest: authenticates an active user using their email
+ok 18 - authenticates an active user using their email
+  ---
+  duration_ms: 178.698
+  ...
+# Subtest: rejects an incorrect password
+ok 19 - rejects an incorrect password
+  ---
+  duration_ms: 168.5553
+  ...
+# Subtest: rejects an unknown username
+ok 20 - rejects an unknown username
+  ---
+  duration_ms: 11.6506
+  ...
+# Subtest: rejects an inactive account
+ok 21 - rejects an inactive account
+  ---
+  duration_ms: 149.8734
+  ...
+# Subtest: returns a last login time after successful authentication
+ok 22 - returns a last login time after successful authentication
+  ---
+  duration_ms: 156.0241
+  ...
+# Subtest: does not return the password hash
+ok 23 - does not return the password hash
+  ---
+  duration_ms: 141.9391
+  ...
+# Subtest: rejects empty or invalid login information
+ok 24 - rejects empty or invalid login information
+  ---
+  duration_ms: 6.9204
+  ...
+# Subtest: uses the shared users collection
+ok 25 - uses the shared users collection
+  ---
+  duration_ms: 5.5553
+  ...
+# Subtest: accepts valid shared user data
+ok 26 - accepts valid shared user data
+  ---
+  duration_ms: 18.723
+  ...
+# Subtest: rejects a user with missing required fields
+ok 27 - rejects a user with missing required fields
+  ---
+  duration_ms: 22.3821
+  ...
+# Subtest: defaults account status to Active
+ok 28 - defaults account status to Active
+  ---
+  duration_ms: 1.8017
+  ...
+# Subtest: rejects an unsupported account status
+ok 29 - rejects an unsupported account status
+  ---
+  duration_ms: 2.6246
+  ...
+# Subtest: excludes the password hash from normal query selection
+ok 30 - excludes the password hash from normal query selection
+  ---
+  duration_ms: 0.5438
+  ...
+# Subtest: removes the password hash from JSON output
+ok 31 - removes the password hash from JSON output
+  ---
+  duration_ms: 1.8844
+  ...
+# Subtest: defines automatic timestamps
+ok 32 - defines automatic timestamps
+  ---
+  duration_ms: 0.3872
+  ...
+# Subtest: accepts laboratory roles from the shared role set
+ok 33 - accepts laboratory roles from the shared role set
+  ---
+  duration_ms: 8.2801
+  ...
+# Subtest: creates an active user in the shared users collection
+ok 34 - creates an active user in the shared users collection
+  ---
+  duration_ms: 1049.4611
+  ...
+# Subtest: stores the password as an Argon2id hash
+ok 35 - stores the password as an Argon2id hash
+  ---
+  duration_ms: 114.6439
+  ...
+# Subtest: rejects account creation when required fields are missing
+ok 36 - rejects account creation when required fields are missing
+  ---
+  duration_ms: 5.1903
+  ...
+# Subtest: rejects an unsupported laboratory role
+ok 37 - rejects an unsupported laboratory role
+  ---
+  duration_ms: 3.8726
+  ...
+# Subtest: rejects a duplicate username
+ok 38 - rejects a duplicate username
+  ---
+  duration_ms: 68.9143
+  ...
+# Subtest: rejects a duplicate email address
+ok 39 - rejects a duplicate email address
+  ---
+  duration_ms: 75.361
+  ...
+# Subtest: does not expose the password hash in JSON output
+ok 40 - does not expose the password hash in JSON output
+  ---
+  duration_ms: 72.2886
+  ...
+# Subtest: accepts valid laboratory request data
+ok 41 - accepts valid laboratory request data
+  ---
+  duration_ms: 62.1156
+  ...
+# Subtest: rejects a request with missing required fields
+ok 42 - rejects a request with missing required fields
+  ---
+  duration_ms: 8.236
+  ...
+# Subtest: converts request number to uppercase and removes surrounding spaces
+ok 43 - converts request number to uppercase and removes surrounding spaces
+  ---
+  duration_ms: 12.507
+  ...
+# Subtest: rejects an unsupported request status
+ok 44 - rejects an unsupported request status
+  ---
+  duration_ms: 13.5256
+  ...
+# Subtest: rejects an unsupported request priority
+ok 45 - rejects an unsupported request priority
+  ---
+  duration_ms: 9.654
+  ...
+# Subtest: sets default request status and priority
+ok 46 - sets default request status and priority
+  ---
+  duration_ms: 25.9068
+  ...
+# Subtest: allows an empty test list when creating a draft request
+ok 47 - allows an empty test list when creating a draft request
+  ---
+  duration_ms: 7.7522
+  ...
+# Subtest: rejects an unsupported laboratory test category
+ok 48 - rejects an unsupported laboratory test category
+  ---
+  duration_ms: 8.124
+  ...
+# Subtest: rejects a requested test with missing snapshot information
+ok 49 - rejects a requested test with missing snapshot information
+  ---
+  duration_ms: 7.871
+  ...
+# Subtest: rejects an unsupported individual test status
+ok 50 - rejects an unsupported individual test status
+  ---
+  duration_ms: 21.8679
+  ...
+# Subtest: sets the default individual test status to pending
+ok 51 - sets the default individual test status to pending
+  ---
+  duration_ms: 16.1136
+  ...
+# Subtest: references the existing TestCatalog model
+ok 52 - references the existing TestCatalog model
+  ---
+  duration_ms: 0.5403
+  ...
+# Subtest: accepts valid request activity information
+ok 53 - accepts valid request activity information
+  ---
+  duration_ms: 3.6682
+  ...
+# Subtest: rejects an unsupported request activity action
+ok 54 - rejects an unsupported request activity action
+  ---
+  duration_ms: 8.8244
+  ...
+# Subtest: rejects a request activity without a message
+ok 55 - rejects a request activity without a message
+  ---
+  duration_ms: 6.0311
+  ...
+# Subtest: automatically assigns a timestamp to request activities
+ok 56 - automatically assigns a timestamp to request activities
+  ---
+  duration_ms: 7.4594
+  ...
+# Subtest: defines automatic request timestamps
+ok 57 - defines automatic request timestamps
+  ---
+  duration_ms: 6.2694
+  ...
+# Subtest: defines request number as a unique field
+ok 58 - defines request number as a unique field
+  ---
+  duration_ms: 0.5005
+  ...
+# Subtest: references the existing Patient model
+ok 59 - references the existing Patient model
+  ---
+  duration_ms: 0.8095
+  ...
+# Subtest: references the shared User model for request ownership
+ok 60 - references the shared User model for request ownership
+  ---
+  duration_ms: 3.3654
+  ...
+# Subtest: sets default clinical notes and empty activity history
+ok 61 - sets default clinical notes and empty activity history
+  ---
+  duration_ms: 19.5931
+  ...
+# Subtest: initializes request workflow timestamps as null
+ok 62 - initializes request workflow timestamps as null
+  ---
+  duration_ms: 15.246
+  ...
+# Subtest: defines a unique MongoDB index for request number
+ok 63 - defines a unique MongoDB index for request number
+  ---
+  duration_ms: 5.2978
+  ...
+# Subtest: uses the laboratory_requests MongoDB collection
+ok 64 - uses the laboratory_requests MongoDB collection
+  ---
+  duration_ms: 0.2977
+  ...
+# Subtest: generates a valid laboratory request number
+ok 65 - generates a valid laboratory request number
+  ---
+  duration_ms: 943.7797
+  ...
+# Subtest: creates a laboratory request draft successfully
+ok 66 - creates a laboratory request draft successfully
+  ---
+  duration_ms: 84.9943
+  ...
+# Subtest: allows creation of a draft without selected laboratory tests
+ok 67 - allows creation of a draft without selected laboratory tests
+  ---
+  duration_ms: 50.7103
+  ...
+# Subtest: rejects request creation when request information is missing
+ok 68 - rejects request creation when request information is missing
+  ---
+  duration_ms: 23.6753
+  ...
+# Subtest: rejects request creation without a valid authenticated user
+ok 69 - rejects request creation without a valid authenticated user
+  ---
+  duration_ms: 19.1216
+  ...
+# Subtest: rejects an invalid patient ID
+ok 70 - rejects an invalid patient ID
+  ---
+  duration_ms: 19.2298
+  ...
+# Subtest: rejects a request when the patient does not exist
+ok 71 - rejects a request when the patient does not exist
+  ---
+  duration_ms: 50.45
+  ...
+# Subtest: rejects an invalid laboratory test ID
+ok 72 - rejects an invalid laboratory test ID
+  ---
+  duration_ms: 31.1151
+  ...
+# Subtest: rejects duplicate laboratory test selections
+ok 73 - rejects duplicate laboratory test selections
+  ---
+  duration_ms: 32.2267
+  ...
+# Subtest: rejects a laboratory test selection that is not an array
+ok 74 - rejects a laboratory test selection that is not an array
+  ---
+  duration_ms: 24.2131
+  ...
+# Subtest: rejects an inactive laboratory test
+ok 75 - rejects an inactive laboratory test
+  ---
+  duration_ms: 31.7231
+  ...
+# Subtest: rejects a laboratory test that does not exist
+ok 76 - rejects a laboratory test that does not exist
+  ---
+  duration_ms: 23.8416
+  ...
+# Subtest: rejects an unsupported laboratory request priority
+ok 77 - rejects an unsupported laboratory request priority
+  ---
+  duration_ms: 20.9643
+  ...
+# Subtest: rejects clinical notes exceeding 2000 characters
+ok 78 - rejects clinical notes exceeding 2000 characters
+  ---
+  duration_ms: 29.5946
+  ...
+# Subtest: does not trust client-supplied request ownership, status, or request number
+ok 79 - does not trust client-supplied request ownership, status, or request number
+  ---
+  duration_ms: 32.1375
+  ...
+# Subtest: preserves the original order of selected laboratory tests
+ok 80 - preserves the original order of selected laboratory tests
+  ---
+  duration_ms: 44.2797
+  ...
+# Subtest: preserves the selected test information after catalog updates
+ok 81 - preserves the selected test information after catalog updates
+  ---
+  duration_ms: 50.0716
+  ...
+# Subtest: rejects more than 50 selected laboratory tests
+ok 82 - rejects more than 50 selected laboratory tests
+  ---
+  duration_ms: 39.2188
+  ...
+# Subtest: allows a receptionist to create a request for an active clinician
+ok 83 - allows a receptionist to create a request for an active clinician
+  ---
+  duration_ms: 36.0476
+  ...
+# Subtest: allows an administrator to create a request for an active clinician
+ok 84 - allows an administrator to create a request for an active clinician
+  ---
+  duration_ms: 34.7866
+  ...
+# Subtest: allows a requesting clinician to create their own request
+ok 85 - allows a requesting clinician to create their own request
+  ---
+  duration_ms: 34.4045
+  ...
+# Subtest: prevents a requesting clinician from creating a request for another clinician
+ok 86 - prevents a requesting clinician from creating a request for another clinician
+  ---
+  duration_ms: 22.2718
+  ...
+# Subtest: requires a requesting clinician ID for receptionist-created requests
+ok 87 - requires a requesting clinician ID for receptionist-created requests
+  ---
+  duration_ms: 21.4123
+  ...
+# Subtest: rejects an inactive requesting clinician
+ok 88 - rejects an inactive requesting clinician
+  ---
+  duration_ms: 26.7016
+  ...
+# Subtest: rejects a nonexistent requesting clinician
+ok 89 - rejects a nonexistent requesting clinician
+  ---
+  duration_ms: 27.1061
+  ...
+# Subtest: prevents laboratory technologists from creating requests
+ok 90 - prevents laboratory technologists from creating requests
+  ---
+  duration_ms: 22.2439
+  ...
+# Subtest: prevents result verifiers from creating requests
+ok 91 - prevents result verifiers from creating requests
+  ---
+  duration_ms: 23.5181
+  ...
+# Subtest: searches laboratory requests by request number
+ok 92 - searches laboratory requests by request number
+  ---
+  duration_ms: 94.5114
+  ...
+# Subtest: searches laboratory requests by patient code
+ok 93 - searches laboratory requests by patient code
+  ---
+  duration_ms: 57.8347
+  ...
+# Subtest: searches laboratory requests by a partial patient name
+ok 94 - searches laboratory requests by a partial patient name
+  ---
+  duration_ms: 51.4376
+  ...
+# Subtest: searches laboratory requests using the complete patient name
+ok 95 - searches laboratory requests using the complete patient name
+  ---
+  duration_ms: 51.4878
+  ...
+# Subtest: filters laboratory requests by status
+ok 96 - filters laboratory requests by status
+  ---
+  duration_ms: 70.5816
+  ...
+# Subtest: filters laboratory requests by priority
+ok 97 - filters laboratory requests by priority
+  ---
+  duration_ms: 83.356
+  ...
+# Subtest: combines search, status, and priority filters
+ok 98 - combines search, status, and priority filters
+  ---
+  duration_ms: 109.0732
+  ...
+# Subtest: paginates laboratory request results correctly
+ok 99 - paginates laboratory request results correctly
+  ---
+  duration_ms: 81.1441
+  ...
+# Subtest: rejects invalid pagination settings
+ok 100 - rejects invalid pagination settings
+  ---
+  duration_ms: 18.511
+  ...
+# Subtest: rejects invalid request status and priority filters
+ok 101 - rejects invalid request status and priority filters
+  ---
+  duration_ms: 18.0001
+  ...
+# Subtest: rejects invalid laboratory request search terms
+ok 102 - rejects invalid laboratory request search terms
+  ---
+  duration_ms: 19.0415
+  ...
+# Subtest: rejects invalid laboratory request search options
+ok 103 - rejects invalid laboratory request search options
+  ---
+  duration_ms: 17.3192
+  ...
+# Subtest: restricts requesting clinicians to their own laboratory requests
+ok 104 - restricts requesting clinicians to their own laboratory requests
+  ---
+  duration_ms: 63.3567
+  ...
+# Subtest: rejects a requesting clinician accessing another clinician request
+ok 105 - rejects a requesting clinician accessing another clinician request
+  ---
+  duration_ms: 38.7649
+  ...
+# Subtest: allows authorized laboratory staff roles to search all requests
+ok 106 - allows authorized laboratory staff roles to search all requests
+  ---
+  duration_ms: 113.9022
+  ...
+# Subtest: retrieves an existing laboratory request by ID
+ok 107 - retrieves an existing laboratory request by ID
+  ---
+  duration_ms: 43.2062
+  ...
+# Subtest: rejects an invalid laboratory request ID
+ok 108 - rejects an invalid laboratory request ID
+  ---
+  duration_ms: 21.3884
+  ...
+# Subtest: rejects a request ID that does not exist
+ok 109 - rejects a request ID that does not exist
+  ---
+  duration_ms: 19.7158
+  ...
+# Subtest: populates patient, clinician, creator, updater, and activity details
+ok 110 - populates patient, clinician, creator, updater, and activity details
+  ---
+  duration_ms: 47.6447
+  ...
+# Subtest: rejects laboratory request searches without authentication
+ok 111 - rejects laboratory request searches without authentication
+  ---
+  duration_ms: 15.8745
+  ...
+# Subtest: rejects individual request retrieval without authentication
+ok 112 - rejects individual request retrieval without authentication
+  ---
+  duration_ms: 26.1533
+  ...
+# Subtest: rejects laboratory request searches from unsupported roles
+ok 113 - rejects laboratory request searches from unsupported roles
+  ---
+  duration_ms: 16.8707
+  ...
+# Subtest: allows a receptionist to update a laboratory request draft
+ok 114 - allows a receptionist to update a laboratory request draft
+  ---
+  duration_ms: 63.1852
+  ...
+# Subtest: allows a requesting clinician to update their own draft
+ok 115 - allows a requesting clinician to update their own draft
+  ---
+  duration_ms: 47.8645
+  ...
+# Subtest: prevents a clinician from updating another clinician draft
+ok 116 - prevents a clinician from updating another clinician draft
+  ---
+  duration_ms: 34.4787
+  ...
+# Subtest: allows a laboratory administrator to update a draft
+ok 117 - allows a laboratory administrator to update a draft
+  ---
+  duration_ms: 44.0016
+  ...
+# Subtest: prevents laboratory technologists and result verifiers from updating drafts
+ok 118 - prevents laboratory technologists and result verifiers from updating drafts
+  ---
+  duration_ms: 26.4522
+  ...
+# Subtest: prevents updating requests that are no longer drafts
+ok 119 - prevents updating requests that are no longer drafts
+  ---
+  duration_ms: 30.7008
+  ...
+# Subtest: rejects an invalid request ID during draft update
+ok 120 - rejects an invalid request ID during draft update
+  ---
+  duration_ms: 15.1892
+  ...
+# Subtest: rejects updating a nonexistent laboratory request
+ok 121 - rejects updating a nonexistent laboratory request
+  ---
+  duration_ms: 16.0799
+  ...
+# Subtest: rejects missing or invalid update information
+ok 122 - rejects missing or invalid update information
+  ---
+  duration_ms: 35.6859
+  ...
+# Subtest: rejects an invalid patient ID during draft update
+ok 123 - rejects an invalid patient ID during draft update
+  ---
+  duration_ms: 26.8952
+  ...
+# Subtest: rejects a nonexistent patient during draft update
+ok 124 - rejects a nonexistent patient during draft update
+  ---
+  duration_ms: 30.0962
+  ...
+# Subtest: rejects an invalid test selection during draft update
+ok 125 - rejects an invalid test selection during draft update
+  ---
+  duration_ms: 27.0827
+  ...
+# Subtest: rejects duplicate laboratory tests during draft update
+ok 126 - rejects duplicate laboratory tests during draft update
+  ---
+  duration_ms: 29.4127
+  ...
+# Subtest: rejects inactive laboratory tests during draft update
+ok 127 - rejects inactive laboratory tests during draft update
+  ---
+  duration_ms: 29.4481
+  ...
+# Subtest: rejects an unsupported priority during draft update
+ok 128 - rejects an unsupported priority during draft update
+  ---
+  duration_ms: 28.3278
+  ...
+# Subtest: rejects invalid clinical notes during draft update
+ok 129 - rejects invalid clinical notes during draft update
+  ---
+  duration_ms: 24.9106
+  ...
+# Subtest: does not allow client updates to protected request fields
+ok 130 - does not allow client updates to protected request fields
+  ---
+  duration_ms: 30.3523
+  ...
+# Subtest: updates laboratory tests and creates new test snapshots
+ok 131 - updates laboratory tests and creates new test snapshots
+  ---
+  duration_ms: 52.0758
+  ...
+# Subtest: preserves existing request tests when only clinical notes are updated
+ok 132 - preserves existing request tests when only clinical notes are updated
+  ---
+  duration_ms: 47.419
+  ...
+# Subtest: allows a receptionist to submit a laboratory request draft
+ok 133 - allows a receptionist to submit a laboratory request draft
+  ---
+  duration_ms: 39.0807
+  ...
+# Subtest: allows a requesting clinician to submit their own draft
+ok 134 - allows a requesting clinician to submit their own draft
+  ---
+  duration_ms: 34.3032
+  ...
+# Subtest: rejects submission when no laboratory tests are selected
+ok 135 - rejects submission when no laboratory tests are selected
+  ---
+  duration_ms: 23.1183
+  ...
+# Subtest: prevents submitting a request more than once
+ok 136 - prevents submitting a request more than once
+  ---
+  duration_ms: 36.2014
+  ...
+# Subtest: prevents laboratory technologists and result verifiers from submitting requests
+ok 137 - prevents laboratory technologists and result verifiers from submitting requests
+  ---
+  duration_ms: 22.6847
+  ...
+# Subtest: prevents a clinician from submitting another clinician request
+ok 138 - prevents a clinician from submitting another clinician request
+  ---
+  duration_ms: 32.9144
+  ...
+# Subtest: rejects an invalid laboratory request ID during submission
+ok 139 - rejects an invalid laboratory request ID during submission
+  ---
+  duration_ms: 13.9674
+  ...
+# Subtest: rejects submission of a nonexistent laboratory request
+ok 140 - rejects submission of a nonexistent laboratory request
+  ---
+  duration_ms: 12.7573
+  ...
+# Subtest: rejects laboratory request submission without authentication
+ok 141 - rejects laboratory request submission without authentication
+  ---
+  duration_ms: 20.1966
+  ...
+# Subtest: generates a valid Argon2id password hash
+ok 142 - generates a valid Argon2id password hash
+  ---
+  duration_ms: 199.8475
+  ...
+# Subtest: verifies the correct password
+ok 143 - verifies the correct password
+  ---
+  duration_ms: 126.1007
+  ...
+# Subtest: rejects an incorrect password
+ok 144 - rejects an incorrect password
+  ---
+  duration_ms: 139.1664
+  ...
+# Subtest: rejects an empty password when hashing
+ok 145 - rejects an empty password when hashing
+  ---
+  duration_ms: 2.0555
+  ...
+# Subtest: rejects a non-string password when hashing
+ok 146 - rejects a non-string password when hashing
+  ---
+  duration_ms: 0.8487
+  ...
+# Subtest: returns false for an empty password during verification
+ok 147 - returns false for an empty password during verification
+  ---
+  duration_ms: 68.9386
+  ...
+# Subtest: returns false for a malformed password hash
+ok 148 - returns false for a malformed password hash
+  ---
+  duration_ms: 1.548
+  ...
+# Subtest: uses the shared patients collection
+ok 149 - uses the shared patients collection
+  ---
+  duration_ms: 1.85
+  ...
+# Subtest: accepts valid shared patient data
+ok 150 - accepts valid shared patient data
+  ---
+  duration_ms: 11.9969
+  ...
+# Subtest: rejects a patient with missing required fields
+ok 151 - rejects a patient with missing required fields
+  ---
+  duration_ms: 4.4366
+  ...
+# Subtest: rejects an unsupported sex value
+ok 152 - rejects an unsupported sex value
+  ---
+  duration_ms: 2.6774
+  ...
+# Subtest: allows optional patient information
+ok 153 - allows optional patient information
+  ---
+  duration_ms: 2.2396
+  ...
+# Subtest: defines unique patientId and automatic timestamps
+ok 154 - defines unique patientId and automatic timestamps
+  ---
+  duration_ms: 0.4461
+  ...
+# Subtest: creates a patient with an auto-generated patientId
+ok 155 - creates a patient with an auto-generated patientId
+  ---
+  duration_ms: 980.2236
+  ...
+# Subtest: rejects patient data missing required fields
+ok 156 - rejects patient data missing required fields
+  ---
+  duration_ms: 12.7345
+  ...
+# Subtest: searches existing shared patients by first or last name
+ok 157 - searches existing shared patients by first or last name
+  ---
+  duration_ms: 46.2882
+  ...
+# Subtest: searches older shared records with patientCode and contactNumber
+ok 158 - searches older shared records with patientCode and contactNumber
+  ---
+  duration_ms: 19.728
+  ...
+# Subtest: gets a patient by patientId or legacy patientCode
+ok 159 - gets a patient by patientId or legacy patientCode
+  ---
+  duration_ms: 25.8298
+  ...
+# Subtest: gets a patient by MongoDB _id and validates the ID
+ok 160 - gets a patient by MongoDB _id and validates the ID
+  ---
+  duration_ms: 12.996
+  ...
+# (node:20444) [MONGOOSE] Warning: mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: updates a patient without changing patientId
+ok 161 - updates a patient without changing patientId
+  ---
+  duration_ms: 22.4196
+  ...
+# Subtest: lists patients with pagination when no search term is supplied
+ok 162 - lists patients with pagination when no search term is supplied
+  ---
+  duration_ms: 15.9015
+  ...
+1..162
+# tests 162
+# suites 0
+# pass 162
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 10962.4583

@@ -61,9 +61,13 @@ async function getPatientByCode(patientId) {
         .trim()
         .toUpperCase();
 
-    // Updated to search the new 'patientId' field instead of 'patientCode'
+    // The shared patients collection contains both older (patientCode) and
+    // newer (patientId) records. Read both layouts without changing either.
     return await Patient.findOne({
-        patientId: normalizedPatientId
+        $or: [
+            { patientId: normalizedPatientId },
+            { patientCode: normalizedPatientId }
+        ]
     });
 }
 
@@ -113,12 +117,17 @@ async function searchPatients(searchTerm = '', options = {}) {
         const escapedSearchTerm = searchTerm.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const searchRegex = new RegExp(escapedSearchTerm, 'i');
 
+        // The shared collection has two field conventions. Search both so
+        // existing records from other MediLink subsystems remain findable.
         filter.$or = [
             { patientId: searchRegex },
+            { patientCode: searchRegex },
             { firstName: searchRegex },
             { middleName: searchRegex },
             { lastName: searchRegex },
-            { contactNo: searchRegex }
+            { fullName: searchRegex },
+            { contactNo: searchRegex },
+            { contactNumber: searchRegex }
         ];
     }
 
